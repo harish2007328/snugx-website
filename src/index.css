@@ -156,6 +156,6 @@ All colors MUST be HSL.
   height: 500px;
   background: transparent;
   border-radius: 100%;
-  box-shadow: 0 -20px 40px rgba(229, 255, 0, 0.3);
+  box-shadow: 0 -20px 200px #e5ff0099;
   filter: blur(1px);
 }
