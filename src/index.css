@@ -149,7 +149,7 @@ All colors MUST be HSL.
 /* Half oval with shadow */
 .hero-oval {
   position: absolute;
-  bottom: -50px;
+  bottom: -500px;
   left: 50%;
   transform: translateX(-50%);
   width: 3000px;
