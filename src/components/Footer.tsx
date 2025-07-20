@@ -1,23 +1,16 @@
-
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Twitter, Instagram, Linkedin, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
 const Footer = () => {
-  return (
-    <footer className="bg-dark-bg border-t border-white/10 mt-20">
+  return <footer className="bg-dark-bg border-t border-white/10 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <img 
-                src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" 
-                alt="Snugx Logo" 
-                className="w-8 h-8"
-              />
-              <span className="text-xl font-bold text-neon-green">snugx</span>
+              <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="Snugx Logo" className="w-10" />
+              
             </div>
             <p className="text-gray-400 text-sm">
               Transforming digital experiences with cutting-edge web design and development solutions.
@@ -80,11 +73,7 @@ const Footer = () => {
               Subscribe to our newsletter for the latest web design trends and tips.
             </p>
             <div className="space-y-2">
-              <Input 
-                type="email" 
-                placeholder="Your email address" 
-                className="bg-white/5 border-white/10 text-light-text placeholder:text-gray-500"
-              />
+              <Input type="email" placeholder="Your email address" className="bg-white/5 border-white/10 text-light-text placeholder:text-gray-500" />
               <Button className="w-full bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold">
                 Subscribe
               </Button>
@@ -117,8 +106,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
