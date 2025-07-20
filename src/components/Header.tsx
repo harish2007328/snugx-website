@@ -29,7 +29,7 @@ const Header = () => {
     <header className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
       isScrolled ? 'w-[95%] max-w-6xl' : 'w-[95%] max-w-6xl'
     }`}>
-      <nav className={`bg-secondary/5 backdrop-blur-md border border-light-text/20 transition-all duration-300 ${
+      <nav className={`bg-secondary/25 backdrop-blur-md border border-light-text/20 transition-all duration-300 ${
         isMenuOpen ? 'rounded-2xl' : 'rounded-full'
       } mx-auto px-0 py-0`}>
         <div className="flex items-center justify-between py-[10px] px-[10px]">
