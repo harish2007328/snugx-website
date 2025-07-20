@@ -34,7 +34,7 @@ const Header = () => {
   }];
   return <header className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${isScrolled ? 'w-[95%] max-w-6xl' : 'w-[95%] max-w-6xl'}`}>
       <nav className="glass-strong rounded-full mx-auto py-[10px] px-[12px]">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between py-[10px] px-[10px]">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover:scale-105 transition-transform">
             <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="Snugx Logo" className="h-7" />
