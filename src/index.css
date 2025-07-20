@@ -66,22 +66,14 @@ All colors MUST be HSL.
   }
 }
 
-/* Glassmorphism utilities */
+/* Solid design utilities */
 @layer utilities {
   .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
+    @apply bg-secondary/80 backdrop-blur-sm border border-white/20;
   }
   
   .glass-strong {
-    @apply bg-white/10 backdrop-blur-lg border border-white/20;
-  }
-  
-  .neon-glow {
-    box-shadow: 0 0 20px rgba(229, 255, 0, 0.3);
-  }
-  
-  .neon-glow-strong {
-    box-shadow: 0 0 40px rgba(229, 255, 0, 0.6);
+    @apply bg-secondary backdrop-blur-sm border border-white/30;
   }
 }
 
