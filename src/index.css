@@ -141,10 +141,6 @@ All colors MUST be HSL.
   margin-left: 0;
 }
 
-.avatar-stack .avatar-item:hover {
-  transform: scale(1.1);
-  z-index: 10;
-}
 
 /* Half oval with shadow */
 .hero-oval {
