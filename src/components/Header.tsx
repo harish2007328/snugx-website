@@ -37,7 +37,7 @@ const Header = () => {
         <div className="flex items-center justify-between py-[10px] px-[10px]">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover:scale-105 transition-transform">
-            <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="Snugx Logo" className="h-7" />
+            <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="Snugx Logo" className="h-7 pl-3 " />
             
           </Link>
 
