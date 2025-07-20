@@ -1,18 +1,22 @@
+
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Footer from '@/components/Footer';
+
 const Index = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
     };
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -20,60 +24,74 @@ const Index = () => {
         }
       });
     }, observerOptions);
+
     if (heroRef.current) observer.observe(heroRef.current);
     if (servicesRef.current) observer.observe(servicesRef.current);
     if (statsRef.current) observer.observe(statsRef.current);
+
     return () => observer.disconnect();
   }, []);
-  const services = [{
-    icon: Palette,
-    title: "Web Design",
-    description: "Stunning, user-centric designs that captivate and convert your audience.",
-    features: ["UI/UX Design", "Responsive Design", "Brand Integration"]
-  }, {
-    icon: Code,
-    title: "Web Development",
-    description: "Custom websites and applications built with cutting-edge technology.",
-    features: ["React Development", "Full-Stack Solutions", "Performance Optimization"]
-  }, {
-    icon: Zap,
-    title: "Webflow & Framer",
-    description: "No-code solutions that deliver exceptional performance and flexibility.",
-    features: ["Webflow Development", "Framer Prototypes", "CMS Integration"]
-  }];
-  const stats = [{
-    number: "150+",
-    label: "Projects Completed"
-  }, {
-    number: "98%",
-    label: "Client Satisfaction"
-  }, {
-    number: "2.5x",
-    label: "Average ROI Increase"
-  }, {
-    number: "24/7",
-    label: "Support Available"
-  }];
-  const testimonials = [{
-    name: "Sarah Johnson",
-    company: "TechStartup Inc.",
-    text: "Snugx transformed our digital presence completely. Our conversion rate increased by 300% after the redesign.",
-    rating: 5
-  }, {
-    name: "Mike Chen",
-    company: "E-commerce Plus",
-    text: "The team's attention to detail and technical expertise exceeded our expectations. Highly recommended!",
-    rating: 5
-  }, {
-    name: "Emily Rodriguez",
-    company: "Creative Agency",
-    text: "Professional, creative, and delivered on time. Our new website is exactly what we envisioned.",
-    rating: 5
-  }];
+
+  const services = [
+    {
+      icon: Palette,
+      title: "Web Design",
+      description: "Stunning, user-centric designs that captivate and convert your audience.",
+      features: ["UI/UX Design", "Responsive Design", "Brand Integration"]
+    },
+    {
+      icon: Code,
+      title: "Web Development", 
+      description: "Custom websites and applications built with cutting-edge technology.",
+      features: ["React Development", "Full-Stack Solutions", "Performance Optimization"]
+    },
+    {
+      icon: Zap,
+      title: "Webflow & Framer",
+      description: "No-code solutions that deliver exceptional performance and flexibility.",
+      features: ["Webflow Development", "Framer Prototypes", "CMS Integration"]
+    }
+  ];
+
+  const stats = [
+    { number: "150+", label: "Projects Completed" },
+    { number: "98%", label: "Client Satisfaction" },
+    { number: "2.5x", label: "Average ROI Increase" },
+    { number: "24/7", label: "Support Available" }
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      company: "TechStartup Inc.",
+      text: "Snugx transformed our digital presence completely. Our conversion rate increased by 300% after the redesign.",
+      rating: 5
+    },
+    {
+      name: "Mike Chen",
+      company: "E-commerce Plus",
+      text: "The team's attention to detail and technical expertise exceeded our expectations. Highly recommended!",
+      rating: 5
+    },
+    {
+      name: "Emily Rodriguez",
+      company: "Creative Agency",
+      text: "Professional, creative, and delivered on time. Our new website is exactly what we envisioned.",
+      rating: 5
+    }
+  ];
 
   // Sample avatar images from Unsplash
-  const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
-  return <div className="min-h-screen">
+  const avatarImages = [
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
+  ];
+
+  return (
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
         <div className="max-w-7xl mx-auto text-center space-y-12 relative z-10">
@@ -95,43 +113,48 @@ const Index = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button size="lg" className="btn-primary px-8 py-4 text-base group" asChild>
+            <Button size="lg" className="btn-primary px-8 py-4 text-base border-2 border-neon-green transition-all group" asChild>
               <Link to="/contact">
                 <User className="mr-2 w-5 h-5" />
                 Book a call With Harish
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
               </Link>
             </Button>
-            <Button size="lg" className="btn-secondary px-8 py-4 text-base" asChild>
+            <Button size="lg" className="btn-secondary px-8 py-4 text-base transition-all" asChild>
               <Link to="/case-studies">View Our Works</Link>
             </Button>
           </div>
 
           {/* Avatar Stack and Text */}
-          <div className="mt-16 mb-16 flex flex-col sm:flex-row items-center justify-center gap-6 ">
+          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6">
             <div className="avatar-stack">
-              {avatarImages.map((src, index) => <div key={index} className="avatar-item w-8 h-8">
-                  <img src={src} alt={`Happy client ${index + 1}`} className="w-full h-full object-cover rounded-full" loading="eager" />
-                </div>)}
+              {avatarImages.map((src, index) => (
+                <div key={index} className="avatar-item w-6 h-6">
+                  <img 
+                    src={src} 
+                    alt={`Happy client ${index + 1}`}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                </div>
+              ))}
             </div>
             <p className="text-gray-400 text-sm font-medium">30+ Happy agencies, startups, and consultants</p>
           </div>
         </div>
-        
-        {/* Half oval with shadow */}
-        <div className="hero-oval"></div>
       </section>
 
       {/* Stats Section */}
       <section ref={statsRef} className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => <Card key={index} className="bg-secondary border-2 border-light-text/20 text-center p-8 hover:border-neon-green/50 transition-all">
+            {stats.map((stat, index) => (
+              <Card key={index} className="bg-secondary border-2 border-light-text/20 text-center p-8 hover:border-neon-green/50 transition-all">
                 <CardContent className="p-0">
                   <div className="text-4xl font-bold text-neon-green mb-3">{stat.number}</div>
                   <div className="text-gray-300 font-medium">{stat.label}</div>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -149,19 +172,23 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map((service, index) => <Card key={index} className="bg-secondary border-2 border-light-text/20 hover:border-neon-green/50 transition-all duration-300 group">
+            {services.map((service, index) => (
+              <Card key={index} className="bg-secondary border-2 border-light-text/20 hover:border-neon-green/50 transition-all duration-300 group">
                 <CardContent className="p-10 text-center">
                   <service.icon size={48} className="text-neon-green mx-auto mb-8 group-hover:scale-110 transition-transform" />
                   <h3 className="text-xl font-semibold mb-6">{service.title}</h3>
                   <p className="text-gray-300 mb-8 font-normal">{service.description}</p>
                   <ul className="space-y-3">
-                    {service.features.map((feature, idx) => <li key={idx} className="flex items-center justify-center space-x-3 text-sm text-gray-400">
+                    {service.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-center justify-center space-x-3 text-sm text-gray-400">
                         <CheckCircle size={16} className="text-neon-green" />
                         <span className="font-normal">{feature}</span>
-                      </li>)}
+                      </li>
+                    ))}
                   </ul>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -184,7 +211,7 @@ const Index = () => {
               <CardContent className="p-8">
                 <h3 className="text-xl font-semibold mb-3">E-commerce Redesign</h3>
                 <p className="text-gray-400 mb-6 font-normal">300% increase in conversions</p>
-                <Button className="btn-secondary" size="sm">
+                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -195,7 +222,7 @@ const Index = () => {
               <CardContent className="p-8">
                 <h3 className="text-xl font-semibold mb-3">SaaS Platform</h3>
                 <p className="text-gray-400 mb-6 font-normal">250% user engagement boost</p>
-                <Button className="btn-secondary" size="sm">
+                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -206,7 +233,7 @@ const Index = () => {
               <CardContent className="p-8">
                 <h3 className="text-xl font-semibold mb-3">Brand Identity</h3>
                 <p className="text-gray-400 mb-6 font-normal">Complete digital transformation</p>
-                <Button className="btn-secondary" size="sm">
+                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -214,7 +241,7 @@ const Index = () => {
           </div>
 
           <div className="text-center">
-            <Button size="lg" className="btn-primary px-10 py-4" asChild>
+            <Button size="lg" className="btn-primary px-10 py-4 border-2 border-neon-green" asChild>
               <Link to="/case-studies">
                 View All Case Studies
                 <ArrowRight className="ml-3" />
@@ -234,10 +261,13 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => <Card key={index} className="bg-secondary border-2 border-light-text/20">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="bg-secondary border-2 border-light-text/20">
                 <CardContent className="p-10">
                   <div className="flex mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-5 h-5 text-neon-green fill-current" />)}
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-neon-green fill-current" />
+                    ))}
                   </div>
                   <p className="text-gray-300 mb-8 italic font-normal text-base">"{testimonial.text}"</p>
                   <div>
@@ -245,7 +275,8 @@ const Index = () => {
                     <div className="text-neon-green font-medium">{testimonial.company}</div>
                   </div>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -261,10 +292,10 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button size="lg" className="btn-primary px-10 py-4" asChild>
+            <Button size="lg" className="btn-primary px-10 py-4 text-base" asChild>
               <Link to="/contact">Start Your Project Today</Link>
             </Button>
-            <Button size="lg" className="btn-secondary px-10 py-4" asChild>
+            <Button size="lg" className="btn-secondary px-10 py-4 text-base" asChild>
               <Link to="/pricing">View Pricing</Link>
             </Button>
           </div>
@@ -272,6 +303,8 @@ const Index = () => {
       </section>
 
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
