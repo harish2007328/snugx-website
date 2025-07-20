@@ -10,44 +10,44 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 6.7%; /* #111111 */
+    --foreground: 0 0% 96.1%; /* #f5f5f5 */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 6.7%;
+    --card-foreground: 0 0% 96.1%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 6.7%;
+    --popover-foreground: 0 0% 96.1%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 75 100% 90%;  /* #e5ff00 */
+    --primary-foreground: 0 0% 6.7%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 13%;
+    --secondary-foreground: 0 0% 96.1%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 75 100% 90%;
+    --accent-foreground: 0 0% 6.7%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 96.1%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 75 100% 90%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 6.7%;
+    --sidebar-foreground: 0 0% 96.1%;
+    --sidebar-primary: 75 100% 90%;
+    --sidebar-primary-foreground: 0 0% 6.7%;
+    --sidebar-accent: 0 0% 13%;
+    --sidebar-accent-foreground: 0 0% 96.1%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 75 100% 90%;
   }
 }
 
@@ -66,41 +66,69 @@ All colors MUST be HSL.
   }
 }
 
-/* Solid design utilities */
-@layer utilities {
-  .glass {
-    @apply bg-secondary/80 backdrop-blur-sm border border-white/20;
-  }
-  
-  .glass-strong {
-    @apply bg-secondary backdrop-blur-sm border border-white/30;
-  }
+/* Noise effect */
+.noise-effect {
+  position: relative;
 }
 
-/* Custom cursor */
-.custom-cursor {
-  cursor: none;
-}
-
-.cursor-dot {
-  width: 20px;
-  height: 20px;
-  background: #e5ff00;
-  border-radius: 50%;
-  position: fixed;
+.noise-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(229,255,0,0.1) 1px, transparent 0);
+  background-size: 20px 20px;
   pointer-events: none;
-  z-index: 9999;
-  transition: all 0.1s ease;
-  mix-blend-mode: difference;
+  z-index: 1;
 }
 
-.cursor-outline {
-  width: 40px;
-  height: 40px;
-  border: 2px solid rgba(229, 255, 0, 0.5);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9998;
-  transition: all 0.3s ease;
+/* Logo carousel styles */
+.logo-carousel {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.logo-carousel-track {
+  display: inline-flex;
+  animation: scroll 30s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Curved bottom with gradient */
+.curved-bottom {
+  position: relative;
+}
+
+.curved-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(180deg, transparent 0%, #e5ff00 100%);
+  clip-path: ellipse(100% 100% at 50% 100%);
+}
+
+/* Hero background */
+.hero-bg {
+  background-image: url('/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: rotate(90deg) scale(1.5);
+  opacity: 0.2;
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: -1;
 }

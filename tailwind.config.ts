@@ -63,7 +63,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom Snugx brand colors
+				// Only approved colors
 				'neon-green': '#e5ff00',
 				'dark-bg': '#111111',
 				'light-text': '#f5f5f5'

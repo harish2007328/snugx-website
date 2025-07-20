@@ -19,19 +19,18 @@ const Header = () => {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Case Studies', path: '/case-studies' },
-    { name: 'Pricing', path: '/pricing' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'Works', path: '/case-studies' },
+    { name: 'Services', path: '/pricing' },
+    { name: 'Benefits', path: '/about' },
+    { name: 'Testimonials', path: '/blog' }
   ];
 
   return (
     <header className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
       isScrolled ? 'w-[95%] max-w-6xl' : 'w-[95%] max-w-6xl'
     }`}>
-      <nav className={`bg-secondary/95 backdrop-blur-md border border-white/20 transition-all duration-300 ${
-        isMenuOpen ? 'rounded-3xl' : 'rounded-full'
+      <nav className={`bg-secondary/95 backdrop-blur-md border border-light-text/20 transition-all duration-300 noise-effect ${
+        isMenuOpen ? 'rounded-2xl' : 'rounded-full'
       } mx-auto px-0 py-0`}>
         <div className="flex items-center justify-between py-[10px] px-[10px]">
           {/* Logo */}
@@ -57,13 +56,13 @@ const Header = () => {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Button className="bg-neon-green text-dark-bg hover:bg-neon-green/90 font-semibold px-6 py-2 rounded-full border-2 border-neon-green hover:border-neon-green/90 transition-all" asChild>
-              <Link to="/contact">Get Quote</Link>
+              <Link to="/contact">Let's Chat</Link>
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden p-2 text-light-text hover:text-neon-green transition-colors rounded-full hover:bg-white/10"
+            className="md:hidden p-2 text-light-text hover:text-neon-green transition-colors rounded-full hover:bg-light-text/5"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -72,22 +71,22 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-6 pt-2 px-6 border-t border-white/10">
+          <div className="md:hidden pb-6 pt-2 px-6 border-t border-light-text/10 rounded-b-2xl bg-secondary/98 backdrop-blur-md">
             <div className="flex flex-col space-y-4">
               {navItems.map(item => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`text-base font-medium transition-colors hover:text-neon-green py-2 px-4 rounded-lg hover:bg-white/5 ${
-                    location.pathname === item.path ? 'text-neon-green bg-white/10 font-semibold' : 'text-light-text'
+                  className={`text-base font-medium transition-colors hover:text-neon-green py-3 px-4 rounded-xl hover:bg-light-text/5 ${
+                    location.pathname === item.path ? 'text-neon-green bg-light-text/10 font-semibold' : 'text-light-text'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
-              <Button className="bg-neon-green text-dark-bg hover:bg-neon-green/90 font-semibold rounded-full w-full mt-4 border-2 border-neon-green" asChild>
-                <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Get Quote</Link>
+              <Button className="bg-neon-green text-dark-bg hover:bg-neon-green/90 font-semibold rounded-full w-full mt-4 border-2 border-neon-green py-3" asChild>
+                <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Let's Chat</Link>
               </Button>
             </div>
           </div>
