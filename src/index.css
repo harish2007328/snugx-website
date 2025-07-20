@@ -66,12 +66,12 @@ All colors MUST be HSL.
   }
 }
 
-/* Noise effect */
-.noise-effect {
+/* Noise effect - only for hero section */
+.hero-noise-effect {
   position: relative;
 }
 
-.noise-effect::before {
+.hero-noise-effect::before {
   content: '';
   position: absolute;
   top: 0;
@@ -85,50 +85,57 @@ All colors MUST be HSL.
   z-index: 1;
 }
 
-/* Logo carousel styles */
-.logo-carousel {
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.logo-carousel-track {
-  display: inline-flex;
-  animation: scroll 30s linear infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* Curved bottom with gradient */
-.curved-bottom {
+/* Glowing dot animation */
+.glow-dot {
   position: relative;
 }
 
-.curved-bottom::after {
+.glow-dot::before {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
-  background: linear-gradient(180deg, transparent 0%, #e5ff00 100%);
-  clip-path: ellipse(100% 100% at 50% 100%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: #e5ff00;
+  border-radius: 50%;
+  animation: glow-pulse 2s ease-in-out infinite;
 }
 
-/* Hero background */
-.hero-bg {
-  background-image: url('/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transform: rotate(90deg) scale(1.5);
-  opacity: 0.2;
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  z-index: -1;
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(229, 255, 0, 0.5), 0 0 10px rgba(229, 255, 0, 0.3);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(229, 255, 0, 0.8), 0 0 20px rgba(229, 255, 0, 0.6);
+    opacity: 0.8;
+  }
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-neon-green text-dark-bg hover:bg-neon-green/90 font-bold rounded-full transition-all;
+}
+
+.btn-secondary {
+  @apply border-2 border-light-text/30 text-light-text hover:bg-light-text/10 hover:border-light-text/50 bg-transparent rounded-full font-medium transition-all;
+}
+
+/* Overlapping avatars */
+.avatar-stack {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-stack .avatar-item {
+  position: relative;
+  border: 3px solid #111111;
+  border-radius: 50%;
+  margin-left: -12px;
+}
+
+.avatar-stack .avatar-item:first-child {
+  margin-left: 0;
 }

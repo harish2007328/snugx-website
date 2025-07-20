@@ -29,7 +29,7 @@ const Header = () => {
     <header className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
       isScrolled ? 'w-[95%] max-w-6xl' : 'w-[95%] max-w-6xl'
     }`}>
-      <nav className={`bg-secondary/95 backdrop-blur-md border border-light-text/20 transition-all duration-300 noise-effect ${
+      <nav className={`bg-secondary/95 backdrop-blur-md border border-light-text/20 transition-all duration-300 ${
         isMenuOpen ? 'rounded-2xl' : 'rounded-full'
       } mx-auto px-0 py-0`}>
         <div className="flex items-center justify-between py-[10px] px-[10px]">
@@ -55,7 +55,7 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button className="bg-neon-green text-dark-bg hover:bg-neon-green/90 font-semibold px-6 py-2 rounded-full border-2 border-neon-green hover:border-neon-green/90 transition-all" asChild>
+            <Button className="btn-primary px-6 py-2 border-2 border-neon-green hover:border-neon-green/90" asChild>
               <Link to="/contact">Let's Chat</Link>
             </Button>
           </div>
@@ -71,7 +71,7 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-6 pt-2 px-6 border-t border-light-text/10 rounded-b-2xl bg-secondary/98 backdrop-blur-md">
+          <div className="md:hidden pb-6 pt-2 px-6 border-t border-light-text/10 bg-secondary/98 backdrop-blur-md rounded-b-2xl">
             <div className="flex flex-col space-y-4">
               {navItems.map(item => (
                 <Link
@@ -85,7 +85,7 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <Button className="bg-neon-green text-dark-bg hover:bg-neon-green/90 font-semibold rounded-full w-full mt-4 border-2 border-neon-green py-3" asChild>
+              <Button className="btn-primary border-2 border-neon-green py-3 w-full mt-4" asChild>
                 <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Let's Chat</Link>
               </Button>
             </div>

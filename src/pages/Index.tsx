@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User } from 'lucide-react';
@@ -80,25 +81,29 @@ const Index = () => {
     }
   ];
 
-  const logoPartners = [
-    "CONNER", "SCHWINN", "AMAZONE", "Texboy.", "BIK BOK", "MAGIF", "CONNER"
+  // Sample avatar images from Unsplash
+  const avatarImages = [
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
   ];
 
   return (
-    <div className="min-h-screen noise-effect">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-20 bg-dark-bg curved-bottom overflow-hidden">
-        <div className="hero-bg"></div>
+      <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
         <div className="max-w-7xl mx-auto text-center space-y-12 relative z-10">
           {/* Free Consultation Badge */}
-          <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-6 py-3 text-sm font-medium">
-            <div className="w-2 h-2 bg-neon-green rounded-full"></div>
+          <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-4 py-2 text-sm font-medium">
+            <div className="w-2 h-2 glow-dot"></div>
             <span>Free Consultation</span>
           </div>
 
           <div className="space-y-8">
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight">
-              We craft <span className="text-neon-green font-bold">bold ✦</span>
+            <h1 className="text-5xl md:text-7xl font-semibold leading-tight tracking-tight">
+              We craft <span className="text-neon-green font-semibold">bold ✦</span>
               <br />
               websites that just hit.
             </h1>
@@ -108,36 +113,38 @@ const Index = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button size="lg" className="bg-neon-green text-dark-bg hover:bg-neon-green/90 font-bold px-8 py-4 text-base rounded-full transition-all group" asChild>
+            <Button size="lg" className="btn-primary px-8 py-4 text-base border-2 border-neon-green transition-all group" asChild>
               <Link to="/contact">
                 <User className="mr-2 w-5 h-5" />
                 Book a call With Harish
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-light-text/30 text-light-text hover:bg-light-text/10 hover:border-light-text/50 px-8 py-4 text-base rounded-full font-medium transition-all" asChild>
+            <Button size="lg" className="btn-secondary px-8 py-4 text-base transition-all" asChild>
               <Link to="/case-studies">View Our Works</Link>
             </Button>
           </div>
 
-          {/* Logo Carousel */}
-          <div className="mt-16 space-y-8">
-            <p className="text-gray-400 text-sm font-medium">Trusted by 30+ agencies, startups, and consultants</p>
-            <div className="logo-carousel">
-              <div className="logo-carousel-track">
-                {[...logoPartners, ...logoPartners].map((logo, index) => (
-                  <div key={index} className="flex items-center justify-center min-w-[200px] h-16 mx-8">
-                    <span className="text-gray-500 text-lg font-bold tracking-wider">{logo}</span>
-                  </div>
-                ))}
-              </div>
+          {/* Avatar Stack and Text */}
+          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div className="avatar-stack">
+              {avatarImages.map((src, index) => (
+                <div key={index} className="avatar-item w-12 h-12">
+                  <img 
+                    src={src} 
+                    alt={`Happy client ${index + 1}`}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                </div>
+              ))}
             </div>
+            <p className="text-gray-400 text-sm font-medium">30+ Happy agencies, startups, and consultants</p>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section ref={statsRef} className="py-20 px-4 bg-secondary/20 noise-effect">
+      <section ref={statsRef} className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -153,10 +160,10 @@ const Index = () => {
       </section>
 
       {/* Services Section */}
-      <section ref={servicesRef} className="py-20 px-4 noise-effect">
+      <section ref={servicesRef} className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
               Our <span className="text-neon-green">Expertise ✦</span>
             </h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto font-normal">
@@ -169,7 +176,7 @@ const Index = () => {
               <Card key={index} className="bg-secondary border-2 border-light-text/20 hover:border-neon-green/50 transition-all duration-300 group">
                 <CardContent className="p-10 text-center">
                   <service.icon size={48} className="text-neon-green mx-auto mb-8 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-6">{service.title}</h3>
+                  <h3 className="text-xl font-semibold mb-6">{service.title}</h3>
                   <p className="text-gray-300 mb-8 font-normal">{service.description}</p>
                   <ul className="space-y-3">
                     {service.features.map((feature, idx) => (
@@ -187,10 +194,10 @@ const Index = () => {
       </section>
 
       {/* Featured Case Studies Preview */}
-      <section className="py-20 px-4 bg-secondary/20 noise-effect">
+      <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
               Success <span className="text-neon-green">Stories ✦</span>
             </h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto font-normal">
@@ -202,9 +209,9 @@ const Index = () => {
             <Card className="bg-secondary border-2 border-light-text/20 hover:border-neon-green/50 transition-all group overflow-hidden">
               <div className="aspect-video bg-neon-green/20" />
               <CardContent className="p-8">
-                <h3 className="text-xl font-bold mb-3">E-commerce Redesign</h3>
+                <h3 className="text-xl font-semibold mb-3">E-commerce Redesign</h3>
                 <p className="text-gray-400 mb-6 font-normal">300% increase in conversions</p>
-                <Button variant="outline" size="sm" className="border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green font-medium">
+                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -213,9 +220,9 @@ const Index = () => {
             <Card className="bg-secondary border-2 border-light-text/20 hover:border-neon-green/50 transition-all group overflow-hidden">
               <div className="aspect-video bg-neon-green/20" />
               <CardContent className="p-8">
-                <h3 className="text-xl font-bold mb-3">SaaS Platform</h3>
+                <h3 className="text-xl font-semibold mb-3">SaaS Platform</h3>
                 <p className="text-gray-400 mb-6 font-normal">250% user engagement boost</p>
-                <Button variant="outline" size="sm" className="border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green font-medium">
+                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -224,9 +231,9 @@ const Index = () => {
             <Card className="bg-secondary border-2 border-light-text/20 hover:border-neon-green/50 transition-all group overflow-hidden">
               <div className="aspect-video bg-neon-green/20" />
               <CardContent className="p-8">
-                <h3 className="text-xl font-bold mb-3">Brand Identity</h3>
+                <h3 className="text-xl font-semibold mb-3">Brand Identity</h3>
                 <p className="text-gray-400 mb-6 font-normal">Complete digital transformation</p>
-                <Button variant="outline" size="sm" className="border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green font-medium">
+                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -234,7 +241,7 @@ const Index = () => {
           </div>
 
           <div className="text-center">
-            <Button size="lg" className="bg-neon-green text-dark-bg hover:bg-neon-green/90 font-bold px-10 py-4 rounded-full border-2 border-neon-green" asChild>
+            <Button size="lg" className="btn-primary px-10 py-4 border-2 border-neon-green" asChild>
               <Link to="/case-studies">
                 View All Case Studies
                 <ArrowRight className="ml-3" />
@@ -245,10 +252,10 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-4 noise-effect">
+      <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
               What Our <span className="text-neon-green">Clients Say ✦</span>
             </h2>
           </div>
@@ -264,7 +271,7 @@ const Index = () => {
                   </div>
                   <p className="text-gray-300 mb-8 italic font-normal text-base">"{testimonial.text}"</p>
                   <div>
-                    <div className="font-bold text-base">{testimonial.name}</div>
+                    <div className="font-semibold text-base">{testimonial.name}</div>
                     <div className="text-neon-green font-medium">{testimonial.company}</div>
                   </div>
                 </CardContent>
@@ -275,9 +282,9 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-secondary/20 noise-effect">
+      <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-4xl mx-auto text-center space-y-10">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Ready to <span className="text-neon-green">Transform ✦</span> Your Business?
           </h2>
           <p className="text-lg text-gray-300 font-normal">
@@ -285,10 +292,10 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button size="lg" className="bg-neon-green text-dark-bg hover:bg-neon-green/90 font-bold px-10 py-4 text-base rounded-full" asChild>
+            <Button size="lg" className="btn-primary px-10 py-4 text-base" asChild>
               <Link to="/contact">Start Your Project Today</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-light-text/30 text-light-text hover:bg-light-text/10 hover:border-light-text/50 px-10 py-4 text-base rounded-full font-medium" asChild>
+            <Button size="lg" className="btn-secondary px-10 py-4 text-base" asChild>
               <Link to="/pricing">View Pricing</Link>
             </Button>
           </div>
