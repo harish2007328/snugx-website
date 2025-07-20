@@ -158,4 +158,5 @@ All colors MUST be HSL.
   border-radius: 100%;
   box-shadow: 0 -20px 200px #e5ff0099;
   filter: blur(1px);
+  z-index: 5;
 }
