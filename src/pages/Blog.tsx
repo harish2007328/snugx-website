@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Calendar, User, ArrowRight, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -349,7 +348,7 @@ const Blog = () => {
               placeholder="Your email address" 
               className="bg-white/5 border-white/10 text-light-text placeholder:text-gray-500"
             />
-            <Button className="bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold rounded-full">
+            <Button className="btn-primary">
               Subscribe
             </Button>
           </div>

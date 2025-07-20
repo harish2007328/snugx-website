@@ -278,7 +278,7 @@ const Admin = () => {
                   setEditingCase(emptyCaseStudy);
                   setShowCaseForm(true);
                 }}
-                className="bg-neon-green text-dark-bg hover:bg-neon-green/80"
+                className="btn-primary"
               >
                 <Plus className="mr-2 w-4 h-4" />
                 Add Case Study
@@ -388,7 +388,7 @@ const Admin = () => {
                   <div className="flex space-x-2">
                     <Button 
                       onClick={() => saveCaseStudy(editingCase)}
-                      className="bg-neon-green text-dark-bg hover:bg-neon-green/80"
+                     className="btn-primary"
                     >
                       <Save className="mr-2 w-4 h-4" />
                       Save
@@ -457,7 +457,7 @@ const Admin = () => {
                   setEditingBlog(emptyBlogPost);
                   setShowBlogForm(true);
                 }}
-                className="bg-neon-green text-dark-bg hover:bg-neon-green/80"
+                className="btn-primary"
               >
                 <Plus className="mr-2 w-4 h-4" />
                 Add Blog Post
@@ -538,7 +538,7 @@ const Admin = () => {
                   <div className="flex space-x-2">
                     <Button 
                       onClick={() => saveBlogPost(editingBlog)}
-                      className="bg-neon-green text-dark-bg hover:bg-neon-green/80"
+                     className="btn-primary"
                     >
                       <Save className="mr-2 w-4 h-4" />
                       Save

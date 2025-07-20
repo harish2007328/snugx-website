@@ -33,21 +33,14 @@ const NotFound = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  className="bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold px-6 py-3 rounded-full"
-                  asChild
-                >
+                <Button className="btn-primary px-6 py-3" asChild>
                   <Link to="/">
                     <Home className="mr-2 w-4 h-4" />
                     Go Home
                   </Link>
                 </Button>
                 
-                <Button 
-                  variant="outline"
-                  className="border-white/20 text-light-text hover:bg-white/10 px-6 py-3 rounded-full glass"
-                  onClick={() => window.history.back()}
-                >
+                <Button className="btn-secondary px-6 py-3" onClick={() => window.history.back()}>
                   <ArrowLeft className="mr-2 w-4 h-4" />
                   Go Back
                 </Button>
