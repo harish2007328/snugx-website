@@ -152,10 +152,10 @@ All colors MUST be HSL.
   bottom: -50px;
   left: 50%;
   transform: translateX(-50%);
-  width: 200px;
-  height: 100px;
+  width: 3000px;
+  height: 500px;
   background: transparent;
-  border-radius: 100px 100px 0 0;
+  border-radius: 100%;
   box-shadow: 0 -20px 40px rgba(229, 255, 0, 0.3);
   filter: blur(1px);
 }
