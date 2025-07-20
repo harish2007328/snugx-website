@@ -108,7 +108,7 @@ const Index = () => {
           </div>
 
           {/* Avatar Stack and Text */}
-          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 mx-0 my-[6px]">
+          <div className="mt-16 mb-16 flex flex-col sm:flex-row items-center justify-center gap-6 mx-0 my-[6px]">
             <div className="avatar-stack">
               {avatarImages.map((src, index) => <div key={index} className="avatar-item w-6 h-6">
                   <img src={src} alt={`Happy client ${index + 1}`} className="w-full h-full object-cover rounded-full" loading="eager" />
