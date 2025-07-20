@@ -251,7 +251,7 @@ const CaseStudies = () => {
           
           <Button 
             size="lg" 
-            className="bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold px-8 py-4 text-lg rounded-full neon-glow-strong"
+           className="btn-primary px-8 py-4"
             asChild
           >
             <Link to="/contact">Start Your Project</Link>

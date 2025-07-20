@@ -55,7 +55,7 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button className="btn-primary px-6 py-2 border-2 border-neon-green hover:border-neon-green/90" asChild>
+            <Button className="btn-primary px-6 py-2" asChild>
               <Link to="/contact">Let's Chat</Link>
             </Button>
           </div>
@@ -85,7 +85,7 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <Button className="btn-primary border-2 border-neon-green py-3 w-full mt-4" asChild>
+              <Button className="btn-primary py-3 w-full mt-4" asChild>
                 <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Let's Chat</Link>
               </Button>
             </div>

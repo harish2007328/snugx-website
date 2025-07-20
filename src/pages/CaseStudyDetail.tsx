@@ -182,7 +182,7 @@ const CaseStudyDetail = () => {
               
               {caseStudy.live_url && (
                 <Button 
-                  className="bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold rounded-full"
+                  className="btn-primary"
                   asChild
                 >
                   <a href={caseStudy.live_url} target="_blank" rel="noopener noreferrer">
@@ -295,7 +295,7 @@ const CaseStudyDetail = () => {
           
           <Button 
             size="lg" 
-            className="bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold px-8 py-4 text-lg rounded-full neon-glow-strong"
+           className="btn-primary px-8 py-4"
             asChild
           >
             <Link to="/contact">Start Your Project</Link>

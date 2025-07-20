@@ -157,7 +157,7 @@ const Contact = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold py-3 rounded-full neon-glow"
+                    className="w-full btn-primary py-3"
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                     <Send className="ml-2 w-4 h-4" />
@@ -271,7 +271,7 @@ const Contact = () => {
           </p>
           <Button 
             size="lg" 
-            className="bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold px-8 py-4 text-lg rounded-full neon-glow-strong"
+           className="btn-primary px-8 py-4"
             onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
           >
             Get Your Free Quote Now

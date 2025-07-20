@@ -268,7 +268,7 @@ const BlogPost = () => {
             </p>
             <Button 
               size="lg" 
-              className="bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold px-8 py-4 rounded-full neon-glow"
+             className="btn-primary px-8 py-4"
               asChild
             >
               <Link to="/contact">Get Started Today</Link>

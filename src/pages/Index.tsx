@@ -83,11 +83,11 @@ const Index = () => {
 
   // Sample avatar images from Unsplash
   const avatarImages = [
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-    "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
+    "/hero-images/c1.png",
+    "/hero-images/c2.png",
+    "/hero-images/c3.png",
+    "/hero-images/c4.png",
+    "/hero-images/c5.png"
   ];
 
   return (
@@ -113,14 +113,14 @@ const Index = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button size="lg" className="btn-primary px-8 py-4 text-base border-2 border-neon-green transition-all group" asChild>
+            <Button size="lg" className="btn-primary px-8 py-4 text-base group" asChild>
               <Link to="/contact">
                 <User className="mr-2 w-5 h-5" />
                 Book a call With Harish
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
               </Link>
             </Button>
-            <Button size="lg" className="btn-secondary px-8 py-4 text-base transition-all" asChild>
+            <Button size="lg" className="btn-secondary px-8 py-4 text-base" asChild>
               <Link to="/case-studies">View Our Works</Link>
             </Button>
           </div>
@@ -134,6 +134,7 @@ const Index = () => {
                     src={src} 
                     alt={`Happy client ${index + 1}`}
                     className="w-full h-full object-cover rounded-full"
+                    loading="eager"
                   />
                 </div>
               ))}
@@ -141,6 +142,9 @@ const Index = () => {
             <p className="text-gray-400 text-sm font-medium">30+ Happy agencies, startups, and consultants</p>
           </div>
         </div>
+        
+        {/* Half oval with shadow */}
+        <div className="hero-oval"></div>
       </section>
 
       {/* Stats Section */}
@@ -211,7 +215,7 @@ const Index = () => {
               <CardContent className="p-8">
                 <h3 className="text-xl font-semibold mb-3">E-commerce Redesign</h3>
                 <p className="text-gray-400 mb-6 font-normal">300% increase in conversions</p>
-                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
+                <Button className="btn-secondary" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -222,7 +226,7 @@ const Index = () => {
               <CardContent className="p-8">
                 <h3 className="text-xl font-semibold mb-3">SaaS Platform</h3>
                 <p className="text-gray-400 mb-6 font-normal">250% user engagement boost</p>
-                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
+                <Button className="btn-secondary" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -233,7 +237,7 @@ const Index = () => {
               <CardContent className="p-8">
                 <h3 className="text-xl font-semibold mb-3">Brand Identity</h3>
                 <p className="text-gray-400 mb-6 font-normal">Complete digital transformation</p>
-                <Button className="btn-secondary border-2 border-neon-green/50 text-neon-green hover:bg-neon-green/10 hover:border-neon-green" size="sm">
+                <Button className="btn-secondary" size="sm">
                   View Case Study
                 </Button>
               </CardContent>
@@ -241,7 +245,7 @@ const Index = () => {
           </div>
 
           <div className="text-center">
-            <Button size="lg" className="btn-primary px-10 py-4 border-2 border-neon-green" asChild>
+            <Button size="lg" className="btn-primary px-10 py-4" asChild>
               <Link to="/case-studies">
                 View All Case Studies
                 <ArrowRight className="ml-3" />
@@ -292,10 +296,10 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button size="lg" className="btn-primary px-10 py-4 text-base" asChild>
+            <Button size="lg" className="btn-primary px-10 py-4" asChild>
               <Link to="/contact">Start Your Project Today</Link>
             </Button>
-            <Button size="lg" className="btn-secondary px-10 py-4 text-base" asChild>
+            <Button size="lg" className="btn-secondary px-10 py-4" asChild>
               <Link to="/pricing">View Pricing</Link>
             </Button>
           </div>
