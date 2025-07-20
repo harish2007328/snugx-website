@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Eye, Save, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,24 +16,24 @@ interface CaseStudy {
   id?: string;
   title: string;
   description: string;
-  thumbnail: string;
+  thumbnail?: string;
   category: string;
-  live_url: string;
+  live_url?: string;
   tags: string[];
-  content: string;
-  client: string;
-  duration: string;
+  content?: string;
+  client?: string;
+  duration?: string;
   results: string[];
 }
 
 interface BlogPost {
   id?: string;
   title: string;
-  excerpt: string;
+  excerpt?: string;
   content: string;
   author: string;
   tags: string[];
-  featured_image: string;
+  featured_image?: string;
   published: boolean;
 }
 
@@ -81,7 +81,11 @@ const Admin = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching case studies:', error);
+        return;
+      }
+      
       setCaseStudies(data || []);
     } catch (error) {
       console.error('Error fetching case studies:', error);
@@ -95,7 +99,11 @@ const Admin = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching blog posts:', error);
+        return;
+      }
+      
       setBlogPosts(data || []);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
@@ -104,17 +112,30 @@ const Admin = () => {
 
   const saveCaseStudy = async (caseStudy: CaseStudy) => {
     try {
+      const caseStudyData = {
+        title: caseStudy.title,
+        description: caseStudy.description,
+        thumbnail: caseStudy.thumbnail || null,
+        category: caseStudy.category,
+        live_url: caseStudy.live_url || null,
+        tags: caseStudy.tags,
+        content: caseStudy.content || null,
+        client: caseStudy.client || null,
+        duration: caseStudy.duration || null,
+        results: caseStudy.results
+      };
+
       if (caseStudy.id) {
         const { error } = await supabase
           .from('case_studies')
-          .update(caseStudy)
+          .update(caseStudyData)
           .eq('id', caseStudy.id);
 
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from('case_studies')
-          .insert([caseStudy]);
+          .insert([caseStudyData]);
 
         if (error) throw error;
       }
@@ -128,6 +149,7 @@ const Admin = () => {
       setEditingCase(null);
       setShowCaseForm(false);
     } catch (error) {
+      console.error('Error saving case study:', error);
       toast({
         title: "Error",
         description: "Failed to save case study. Please try again.",
@@ -138,17 +160,27 @@ const Admin = () => {
 
   const saveBlogPost = async (blogPost: BlogPost) => {
     try {
+      const blogPostData = {
+        title: blogPost.title,
+        excerpt: blogPost.excerpt || null,
+        content: blogPost.content,
+        author: blogPost.author,
+        tags: blogPost.tags,
+        featured_image: blogPost.featured_image || null,
+        published: blogPost.published
+      };
+
       if (blogPost.id) {
         const { error } = await supabase
           .from('blog_posts')
-          .update(blogPost)
+          .update(blogPostData)
           .eq('id', blogPost.id);
 
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from('blog_posts')
-          .insert([blogPost]);
+          .insert([blogPostData]);
 
         if (error) throw error;
       }
@@ -162,6 +194,7 @@ const Admin = () => {
       setEditingBlog(null);
       setShowBlogForm(false);
     } catch (error) {
+      console.error('Error saving blog post:', error);
       toast({
         title: "Error",
         description: "Failed to save blog post. Please try again.",
@@ -171,6 +204,8 @@ const Admin = () => {
   };
 
   const deleteCaseStudy = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this case study?')) return;
+    
     try {
       const { error } = await supabase
         .from('case_studies')
@@ -186,6 +221,7 @@ const Admin = () => {
 
       fetchCaseStudies();
     } catch (error) {
+      console.error('Error deleting case study:', error);
       toast({
         title: "Error",
         description: "Failed to delete case study. Please try again.",
@@ -195,6 +231,8 @@ const Admin = () => {
   };
 
   const deleteBlogPost = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this blog post?')) return;
+    
     try {
       const { error } = await supabase
         .from('blog_posts')
@@ -210,6 +248,7 @@ const Admin = () => {
 
       fetchBlogPosts();
     } catch (error) {
+      console.error('Error deleting blog post:', error);
       toast({
         title: "Error",
         description: "Failed to delete blog post. Please try again.",
@@ -286,7 +325,7 @@ const Admin = () => {
                     <div>
                       <Label>Client</Label>
                       <Input
-                        value={editingCase.client}
+                        value={editingCase.client || ''}
                         onChange={(e) => setEditingCase({...editingCase, client: e.target.value})}
                         className="bg-white/5 border-white/10"
                       />
@@ -294,7 +333,7 @@ const Admin = () => {
                     <div>
                       <Label>Duration</Label>
                       <Input
-                        value={editingCase.duration}
+                        value={editingCase.duration || ''}
                         onChange={(e) => setEditingCase({...editingCase, duration: e.target.value})}
                         className="bg-white/5 border-white/10"
                       />
@@ -304,7 +343,7 @@ const Admin = () => {
                   <div>
                     <Label>Thumbnail URL</Label>
                     <Input
-                      value={editingCase.thumbnail}
+                      value={editingCase.thumbnail || ''}
                       onChange={(e) => setEditingCase({...editingCase, thumbnail: e.target.value})}
                       className="bg-white/5 border-white/10"
                     />
@@ -313,7 +352,7 @@ const Admin = () => {
                   <div>
                     <Label>Live URL</Label>
                     <Input
-                      value={editingCase.live_url}
+                      value={editingCase.live_url || ''}
                       onChange={(e) => setEditingCase({...editingCase, live_url: e.target.value})}
                       className="bg-white/5 border-white/10"
                     />
@@ -323,7 +362,7 @@ const Admin = () => {
                     <Label>Tags (comma-separated)</Label>
                     <Input
                       value={editingCase.tags.join(', ')}
-                      onChange={(e) => setEditingCase({...editingCase, tags: e.target.value.split(', ')})}
+                      onChange={(e) => setEditingCase({...editingCase, tags: e.target.value.split(', ').filter(tag => tag.trim())})}
                       className="bg-white/5 border-white/10"
                     />
                   </div>
@@ -332,7 +371,7 @@ const Admin = () => {
                     <Label>Results (comma-separated)</Label>
                     <Input
                       value={editingCase.results.join(', ')}
-                      onChange={(e) => setEditingCase({...editingCase, results: e.target.value.split(', ')})}
+                      onChange={(e) => setEditingCase({...editingCase, results: e.target.value.split(', ').filter(result => result.trim())})}
                       className="bg-white/5 border-white/10"
                     />
                   </div>
@@ -340,7 +379,7 @@ const Admin = () => {
                   <div>
                     <Label>Content (HTML)</Label>
                     <Textarea
-                      value={editingCase.content}
+                      value={editingCase.content || ''}
                       onChange={(e) => setEditingCase({...editingCase, content: e.target.value})}
                       className="bg-white/5 border-white/10 min-h-[200px]"
                     />
@@ -375,7 +414,7 @@ const Admin = () => {
                 <Card key={caseStudy.id} className="glass">
                   <div className="aspect-video overflow-hidden rounded-t-lg">
                     <img 
-                      src={caseStudy.thumbnail || 'https://via.placeholder.com/400x200'}
+                      src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop'}
                       alt={caseStudy.title}
                       className="w-full h-full object-cover"
                     />
@@ -445,7 +484,7 @@ const Admin = () => {
                   <div>
                     <Label>Excerpt</Label>
                     <Textarea
-                      value={editingBlog.excerpt}
+                      value={editingBlog.excerpt || ''}
                       onChange={(e) => setEditingBlog({...editingBlog, excerpt: e.target.value})}
                       className="bg-white/5 border-white/10"
                     />
@@ -472,7 +511,7 @@ const Admin = () => {
                   <div>
                     <Label>Featured Image URL</Label>
                     <Input
-                      value={editingBlog.featured_image}
+                      value={editingBlog.featured_image || ''}
                       onChange={(e) => setEditingBlog({...editingBlog, featured_image: e.target.value})}
                       className="bg-white/5 border-white/10"
                     />
@@ -482,7 +521,7 @@ const Admin = () => {
                     <Label>Tags (comma-separated)</Label>
                     <Input
                       value={editingBlog.tags.join(', ')}
-                      onChange={(e) => setEditingBlog({...editingBlog, tags: e.target.value.split(', ')})}
+                      onChange={(e) => setEditingBlog({...editingBlog, tags: e.target.value.split(', ').filter(tag => tag.trim())})}
                       className="bg-white/5 border-white/10"
                     />
                   </div>
@@ -525,7 +564,7 @@ const Admin = () => {
                 <Card key={post.id} className="glass">
                   <div className="aspect-video overflow-hidden rounded-t-lg">
                     <img 
-                      src={post.featured_image || 'https://via.placeholder.com/400x200'}
+                      src={post.featured_image || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=200&fit=crop'}
                       alt={post.title}
                       className="w-full h-full object-cover"
                     />
