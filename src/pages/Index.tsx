@@ -129,7 +129,7 @@ const Index = () => {
           <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6">
             <div className="avatar-stack">
               {avatarImages.map((src, index) => (
-                <div key={index} className="avatar-item w-12 h-12">
+                <div key={index} className="avatar-item w-8 h-8">
                   <img 
                     src={src} 
                     alt={`Happy client ${index + 1}`}
