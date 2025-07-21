@@ -93,7 +93,7 @@ const Pricing = () => {
     <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="py-20 px-4 text-center">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto px-8">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Simple, <span className="text-neon-green">Transparent</span> Pricing
           </h1>
@@ -119,12 +119,12 @@ const Pricing = () => {
 
       {/* Pricing Cards */}
       <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {plans.map((plan, index) => (
               <Card 
                 key={index} 
-                className={`glass relative overflow-hidden transition-all duration-300 hover:glass-strong ${
+                className={`bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 relative overflow-hidden transition-all duration-300 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 backdrop-blur-sm ${
                   plan.popular ? 'ring-2 ring-neon-green' : ''
                 }`}
               >
@@ -174,7 +174,7 @@ const Pricing = () => {
 
       {/* Add-ons */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Popular Add-ons</h2>
             <p className="text-gray-400">Enhance your website with these additional services</p>
@@ -182,7 +182,7 @@ const Pricing = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {addOns.map((addon, index) => (
-              <div key={index} className="flex justify-between items-center p-4 glass rounded-lg">
+              <div key={index} className="flex justify-between items-center p-4 bg-gradient-to-r from-dark-bg via-secondary/20 to-dark-bg border border-white/10 rounded-lg hover:border-neon-green/30 transition-all duration-300 backdrop-blur-sm">
                 <span className="text-light-text">{addon.name}</span>
                 <span className="text-neon-green font-semibold">{addon.price}</span>
               </div>
@@ -193,17 +193,20 @@ const Pricing = () => {
 
       {/* FAQ */}
       <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto px-8">
           <h2 className="text-3xl font-bold text-center mb-12">
             Frequently Asked <span className="text-neon-green">Questions</span>
           </h2>
           
           <div className="space-y-6">
             {faqs.map((faq, index) => (
-              <Card key={index} className="glass">
-                <CardContent className="p-6">
+              <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+                <CardContent className="p-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
+                  <div className="relative z-10">
                   <h3 className="text-lg font-semibold mb-3 text-neon-green">{faq.question}</h3>
                   <p className="text-gray-300">{faq.answer}</p>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -213,7 +216,7 @@ const Pricing = () => {
 
       {/* CTA */}
       <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="w-full max-w-6xl mx-auto text-center px-8">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Get <span className="text-neon-green">Started?</span>
           </h2>

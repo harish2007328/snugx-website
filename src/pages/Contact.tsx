@@ -75,7 +75,7 @@ const Contact = () => {
     <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="py-20 px-4 text-center">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto px-8">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Let's Build Something <span className="text-neon-green">Amazing</span>
           </h1>
@@ -94,14 +94,16 @@ const Contact = () => {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 py-20">
+      <div className="w-full mx-auto px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Form */}
           <div>
             <h2 className="text-3xl font-bold mb-8">Get Your Free Quote</h2>
             
-            <Card className="glass">
-              <CardContent className="p-8">
+            <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+              <CardContent className="p-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-16 translate-x-16" />
+                <div className="relative z-10">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium mb-2">Name *</label>
@@ -163,6 +165,7 @@ const Contact = () => {
                     <Send className="ml-2 w-4 h-4" />
                   </Button>
                 </form>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -173,8 +176,10 @@ const Contact = () => {
               <h2 className="text-3xl font-bold mb-8">Get in Touch</h2>
               
               <div className="space-y-6">
-                <Card className="glass">
-                  <CardContent className="p-6">
+                <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+                  <CardContent className="p-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
+                    <div className="relative z-10">
                     <div className="flex items-center space-x-4">
                       <div className="p-3 bg-neon-green/20 rounded-full">
                         <Mail className="w-6 h-6 text-neon-green" />
@@ -184,11 +189,14 @@ const Contact = () => {
                         <p className="text-gray-400">hello@snugx.agency</p>
                       </div>
                     </div>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="glass">
-                  <CardContent className="p-6">
+                <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+                  <CardContent className="p-6 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 -translate-x-8" />
+                    <div className="relative z-10">
                     <div className="flex items-center space-x-4">
                       <div className="p-3 bg-neon-green/20 rounded-full">
                         <Phone className="w-6 h-6 text-neon-green" />
@@ -198,11 +206,14 @@ const Contact = () => {
                         <p className="text-gray-400">+1 (555) 123-4567</p>
                       </div>
                     </div>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="glass">
-                  <CardContent className="p-6">
+                <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+                  <CardContent className="p-6 relative overflow-hidden">
+                    <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full translate-y-8 translate-x-8" />
+                    <div className="relative z-10">
                     <div className="flex items-center space-x-4">
                       <div className="p-3 bg-neon-green/20 rounded-full">
                         <MapPin className="w-6 h-6 text-neon-green" />
@@ -212,14 +223,17 @@ const Contact = () => {
                         <p className="text-gray-400">San Francisco, CA</p>
                       </div>
                     </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
             </div>
 
             {/* Process Overview */}
-            <Card className="glass">
-              <CardContent className="p-8">
+            <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+              <CardContent className="p-8 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-neon-green/5 to-transparent opacity-50" />
+                <div className="relative z-10">
                 <h3 className="text-xl font-bold mb-6 text-neon-green">Our Process</h3>
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
@@ -254,6 +268,7 @@ const Contact = () => {
                     </div>
                   </div>
                 </div>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -262,7 +277,7 @@ const Contact = () => {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="w-full max-w-6xl mx-auto text-center px-8">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Transform Your Business?
           </h2>

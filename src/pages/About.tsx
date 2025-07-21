@@ -76,7 +76,7 @@ const About = () => {
     <div className="min-h-screen pt-24">
       {/* Hero Section */}
       <section className="py-20 px-4 text-center">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto px-8">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             We're <span className="text-neon-green">Snugx</span>
           </h1>
@@ -97,7 +97,7 @@ const About = () => {
 
       {/* Story Section */}
       <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6">Our Story</h2>
@@ -128,7 +128,7 @@ const About = () => {
 
       {/* Values Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full mx-auto px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">Our Values</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -137,22 +137,23 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card key={index} className="glass text-center hover:glass-strong transition-all">
-                <CardContent className="p-8">
+            {values.map((value, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 text-center hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+                <CardContent className="p-8 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-neon-green/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative z-10">
                   <value.icon size={48} className="text-neon-green mx-auto mb-6" />
                   <h3 className="text-xl font-bold mb-4">{value.title}</h3>
                   <p className="text-gray-300 text-sm">{value.description}</p>
+                  </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
 
       {/* Team Section */}
       <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full mx-auto px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">Meet Our Team</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -161,8 +162,7 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <Card key={index} className="glass overflow-hidden hover:glass-strong transition-all group">
+            {team.map((member, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 overflow-hidden hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm">
                 <div className="aspect-square overflow-hidden">
                   <img 
                     src={member.image}
@@ -187,31 +187,36 @@ const About = () => {
                     </a>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
 
       {/* Mission & Vision */}
       <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <Card className="glass">
-              <CardContent className="p-8">
+            <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+              <CardContent className="p-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-16 translate-x-16" />
+                <div className="relative z-10">
                 <h3 className="text-2xl font-bold mb-6 text-neon-green">Our Mission</h3>
                 <p className="text-gray-300 text-lg leading-relaxed">
                   To empower businesses with exceptional digital experiences that drive growth, engagement, and success. We're committed to delivering innovative solutions that not only meet but exceed our clients' expectations.
                 </p>
+                </div>
               </CardContent>
             </Card>
 
-            <Card className="glass">
-              <CardContent className="p-8">
+            <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+              <CardContent className="p-8 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-16 -translate-x-16" />
+                <div className="relative z-10">
                 <h3 className="text-2xl font-bold mb-6 text-neon-green">Our Vision</h3>
                 <p className="text-gray-300 text-lg leading-relaxed">
                   To be the leading digital agency that transforms how businesses connect with their audiences online. We envision a world where every business, regardless of size, has access to world-class digital experiences.
                 </p>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -220,7 +225,7 @@ const About = () => {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="w-full max-w-6xl mx-auto text-center px-8">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Work <span className="text-neon-green">Together?</span>
           </h2>

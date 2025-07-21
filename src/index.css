@@ -116,11 +116,20 @@ All colors MUST be HSL.
 
 /* Button styles */
 .btn-primary {
-  @apply bg-neon-green text-dark-bg hover:bg-neon-green/90 font-bold rounded-full transition-all;
+  @apply bg-neon-green text-dark-bg hover:bg-neon-green/90 font-bold rounded-full transition-all shadow-lg hover:shadow-neon-green/20;
 }
 
 .btn-secondary {
-  @apply border-2 border-light-text/30 text-light-text hover:bg-light-text/10 hover:border-light-text/50 bg-transparent rounded-full font-medium transition-all;
+  @apply border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 bg-white/5 rounded-full font-medium transition-all backdrop-blur-sm;
+}
+
+/* Professional glass effect */
+.glass {
+  @apply bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 backdrop-blur-sm;
+}
+
+.glass-strong {
+  @apply bg-gradient-to-br from-dark-bg via-secondary/30 to-dark-bg border border-neon-green/30 backdrop-blur-md shadow-xl shadow-neon-green/10;
 }
 
 /* Overlapping avatars */
