@@ -28,76 +28,6 @@ const CaseStudyDetail = () => {
   const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Dummy data for demo
-  const dummyData: Record<string, CaseStudy> = {
-    '1': {
-      id: '1',
-      title: 'E-commerce Platform Redesign',
-      description: 'Complete redesign of an e-commerce platform that increased conversions by 300% and improved user engagement significantly.',
-      thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=600&fit=crop',
-      category: 'E-commerce',
-      live_url: 'https://example.com',
-      tags: ['Web Design', 'UX/UI', 'Conversion Optimization', 'React', 'Shopify'],
-      content: `
-        <h2>The Challenge</h2>
-        <p>Our client, a growing e-commerce business, was struggling with a 2% conversion rate and high bounce rates. Their existing website was outdated, slow, and not mobile-optimized.</p>
-        
-        <h2>Our Approach</h2>
-        <p>We conducted extensive user research and competitor analysis to understand the pain points. Our strategy focused on:</p>
-        <ul>
-          <li>Streamlining the checkout process</li>
-          <li>Improving product discovery</li>
-          <li>Optimizing for mobile devices</li>
-          <li>Enhancing site performance</li>
-        </ul>
-        
-        <h2>The Solution</h2>
-        <p>We delivered a completely redesigned e-commerce platform with modern UI/UX, fast loading times, and intuitive navigation. The new design featured a clean, minimal aesthetic with strategic use of colors and typography to guide users toward conversion.</p>
-        
-        <h2>Technologies Used</h2>
-        <p>React, Next.js, Tailwind CSS, Shopify Plus, Google Analytics 4, Hotjar for user behavior analysis.</p>
-      `,
-      client: 'TechStore Inc.',
-      duration: '12 weeks',
-      results: [
-        '300% increase in conversion rate',
-        '65% reduction in bounce rate',
-        '150% increase in average order value',
-        '90% improvement in page load speed',
-        '40% increase in mobile conversions'
-      ],
-      created_at: '2024-01-15'
-    },
-    '2': {
-      id: '2',
-      title: 'SaaS Dashboard Interface',
-      description: 'Modern dashboard design for a SaaS platform with improved user experience and 250% increase in user engagement.',
-      thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop',
-      category: 'SaaS',
-      live_url: 'https://example.com',
-      tags: ['Dashboard Design', 'UX/UI', 'Data Visualization', 'React', 'TypeScript'],
-      content: `
-        <h2>The Challenge</h2>
-        <p>A SaaS company needed to redesign their complex dashboard to improve user engagement and reduce customer churn. The existing interface was cluttered and difficult to navigate.</p>
-        
-        <h2>Our Approach</h2>
-        <p>We redesigned the entire user experience focusing on data hierarchy, intuitive navigation, and actionable insights.</p>
-        
-        <h2>The Solution</h2>
-        <p>A clean, modern dashboard with improved data visualization, better information architecture, and enhanced user workflows.</p>
-      `,
-      client: 'DataFlow Pro',
-      duration: '10 weeks',
-      results: [
-        '250% increase in user engagement',
-        '40% reduction in support tickets',
-        '30% decrease in customer churn',
-        '80% faster task completion'
-      ],
-      created_at: '2024-01-10'
-    }
-  };
-
   useEffect(() => {
     fetchCaseStudy();
   }, [id]);
@@ -113,12 +43,10 @@ const CaseStudyDetail = () => {
         .single();
 
       if (error) throw error;
-
-      setCaseStudy(data || dummyData[id] || null);
+      setCaseStudy(data);
     } catch (error) {
       console.error('Error fetching case study:', error);
-      // Use dummy data as fallback
-      setCaseStudy(dummyData[id || '1'] || null);
+      setCaseStudy(null);
     } finally {
       setLoading(false);
     }
@@ -140,6 +68,7 @@ const CaseStudyDetail = () => {
       <div className="min-h-screen pt-24 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Case Study Not Found</h1>
+          <p className="text-gray-400 mb-6">The case study you're looking for doesn't exist.</p>
           <Link to="/case-studies">
             <Button className="bg-neon-green text-dark-bg">
               <ArrowLeft className="mr-2 w-4 h-4" />
@@ -195,7 +124,7 @@ const CaseStudyDetail = () => {
             
             <div className="relative">
               <img 
-                src={caseStudy.thumbnail}
+                src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'}
                 alt={caseStudy.title}
                 className="rounded-lg shadow-2xl w-full"
               />
@@ -209,21 +138,25 @@ const CaseStudyDetail = () => {
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <Card className="glass text-center">
-              <CardContent className="p-6">
-                <Calendar className="w-8 h-8 text-neon-green mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">Duration</h3>
-                <p className="text-gray-400">{caseStudy.duration}</p>
-              </CardContent>
-            </Card>
+            {caseStudy.duration && (
+              <Card className="glass text-center">
+                <CardContent className="p-6">
+                  <Calendar className="w-8 h-8 text-neon-green mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">Duration</h3>
+                  <p className="text-gray-400">{caseStudy.duration}</p>
+                </CardContent>
+              </Card>
+            )}
             
-            <Card className="glass text-center">
-              <CardContent className="p-6">
-                <Tag className="w-8 h-8 text-neon-green mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">Client</h3>
-                <p className="text-gray-400">{caseStudy.client}</p>
-              </CardContent>
-            </Card>
+            {caseStudy.client && (
+              <Card className="glass text-center">
+                <CardContent className="p-6">
+                  <Tag className="w-8 h-8 text-neon-green mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">Client</h3>
+                  <p className="text-gray-400">{caseStudy.client}</p>
+                </CardContent>
+              </Card>
+            )}
             
             <Card className="glass text-center">
               <CardContent className="p-6">
@@ -235,27 +168,31 @@ const CaseStudyDetail = () => {
           </div>
           
           {/* Tags */}
-          <div className="flex flex-wrap gap-3 justify-center mb-16">
-            {caseStudy.tags.map((tag, index) => (
-              <Badge key={index} variant="outline" className="border-white/20 text-gray-400">
-                {tag}
-              </Badge>
-            ))}
-          </div>
+          {caseStudy.tags && caseStudy.tags.length > 0 && (
+            <div className="flex flex-wrap gap-3 justify-center mb-16">
+              {caseStudy.tags.map((tag, index) => (
+                <Badge key={index} variant="outline" className="border-white/20 text-gray-400">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Content */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="prose prose-invert prose-lg max-w-none">
-            <div 
-              dangerouslySetInnerHTML={{ __html: caseStudy.content }}
-              className="text-gray-300 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>p]:mb-4 [&>ul]:mb-4 [&>li]:mb-2"
-            />
+      {caseStudy.content && (
+        <section className="py-20 px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="prose prose-invert prose-lg max-w-none">
+              <div 
+                dangerouslySetInnerHTML={{ __html: caseStudy.content }}
+                className="text-gray-300 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>p]:mb-4 [&>ul]:mb-4 [&>li]:mb-2"
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Results */}
       {caseStudy.results && caseStudy.results.length > 0 && (
@@ -295,7 +232,7 @@ const CaseStudyDetail = () => {
           
           <Button 
             size="lg" 
-           className="btn-primary px-8 py-4"
+            className="btn-primary px-8 py-4"
             asChild
           >
             <Link to="/contact">Start Your Project</Link>

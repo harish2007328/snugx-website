@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Eye, EyeOff, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface CaseStudy {
   id?: string;
@@ -38,6 +39,7 @@ interface BlogPost {
 }
 
 const Admin = () => {
+  const { user, signOut } = useAuth();
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [editingCase, setEditingCase] = useState<CaseStudy | null>(null);
@@ -64,7 +66,7 @@ const Admin = () => {
     title: '',
     excerpt: '',
     content: '',
-    author: '',
+    author: user?.email || '',
     tags: [],
     featured_image: '',
     published: false
@@ -278,6 +280,18 @@ const Admin = () => {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Success",
+        description: "Signed out successfully!"
+      });
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen pt-24 flex items-center justify-center">
@@ -292,11 +306,21 @@ const Admin = () => {
   return (
     <div className="min-h-screen pt-24 px-4">
       <div className="max-w-7xl mx-auto py-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">
-            Admin <span className="text-neon-green">Dashboard</span>
-          </h1>
-          <p className="text-gray-400">Manage your projects and blog posts</p>
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold mb-2">
+              Admin <span className="text-neon-green">Dashboard</span>
+            </h1>
+            <p className="text-gray-400">Welcome back, {user?.email}</p>
+          </div>
+          <Button 
+            onClick={handleSignOut}
+            variant="outline"
+            className="btn-secondary"
+          >
+            <LogOut className="mr-2 w-4 h-4" />
+            Sign Out
+          </Button>
         </div>
 
         <Tabs defaultValue="case-studies" className="w-full">

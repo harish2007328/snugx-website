@@ -1,7 +1,7 @@
+
 import { useState, useEffect } from 'react';
-import { Calendar, User, ArrowRight, Search } from 'lucide-react';
+import { Calendar, ArrowRight, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
@@ -16,111 +16,20 @@ interface BlogPost {
   author: string;
   tags: string[];
   featured_image: string;
-  created_at: string;
   published: boolean;
+  created_at: string;
 }
 
 const Blog = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTag, setSelectedTag] = useState('All');
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // Dummy data for demo
-  const dummyPosts: BlogPost[] = [
-    {
-      id: '1',
-      title: 'The Future of Web Design: Trends to Watch in 2024',
-      excerpt: 'Explore the latest web design trends that are shaping the digital landscape in 2024, from AI-powered interfaces to sustainable design practices.',
-      content: 'Full blog content here...',
-      author: 'Alex Johnson',
-      tags: ['Web Design', 'Trends', 'UX/UI'],
-      featured_image: 'https://images.unsplash.com/photo-1558655146-364adaf25998?w=800&h=400&fit=crop',
-      created_at: '2024-01-20',
-      published: true
-    },
-    {
-      id: '2',
-      title: 'Optimizing Website Performance: A Complete Guide',
-      excerpt: 'Learn how to boost your website\'s performance with proven optimization techniques that improve user experience and search rankings.',
-      content: 'Full blog content here...',
-      author: 'Sarah Chen',
-      tags: ['Performance', 'SEO', 'Development'],
-      featured_image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop',
-      created_at: '2024-01-18',
-      published: true
-    },
-    {
-      id: '3',
-      title: 'Building Accessible Websites: Best Practices',
-      excerpt: 'Discover essential accessibility principles and practical tips to make your websites inclusive for all users.',
-      content: 'Full blog content here...',
-      author: 'Marcus Rodriguez',
-      tags: ['Accessibility', 'Best Practices', 'Inclusive Design'],
-      featured_image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop',
-      created_at: '2024-01-15',
-      published: true
-    },
-    {
-      id: '4',
-      title: 'The Psychology of Color in Web Design',
-      excerpt: 'Understanding how colors influence user behavior and emotions can significantly impact your website\'s effectiveness.',
-      content: 'Full blog content here...',
-      author: 'Alex Johnson',
-      tags: ['Color Theory', 'Psychology', 'Design'],
-      featured_image: 'https://images.unsplash.com/photo-1502691876148-a84978e59af8?w=800&h=400&fit=crop',
-      created_at: '2024-01-12',
-      published: true
-    },
-    {
-      id: '5',
-      title: 'Mobile-First Design Strategy',
-      excerpt: 'Why starting your design process with mobile in mind leads to better user experiences across all devices.',
-      content: 'Full blog content here...',
-      author: 'Sarah Chen',
-      tags: ['Mobile Design', 'Responsive', 'Strategy'],
-      featured_image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=400&fit=crop',
-      created_at: '2024-01-10',
-      published: true
-    },
-    {
-      id: '6',
-      title: 'Converting Visitors to Customers: CRO Essentials',
-      excerpt: 'Master the art of conversion rate optimization with proven strategies that turn website visitors into paying customers.',
-      content: 'Full blog content here...',
-      author: 'Marcus Rodriguez',
-      tags: ['CRO', 'Conversion', 'Marketing'],
-      featured_image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=800&h=400&fit=crop',
-      created_at: '2024-01-08',
-      published: true
-    }
-  ];
-
-  const allTags = ['All', 'Web Design', 'Development', 'UX/UI', 'SEO', 'Performance', 'Accessibility', 'Trends'];
+  const [selectedTag, setSelectedTag] = useState<string>('All');
 
   useEffect(() => {
-    fetchPosts();
+    fetchBlogPosts();
   }, []);
 
-  useEffect(() => {
-    let filtered = posts;
-
-    if (searchTerm) {
-      filtered = filtered.filter(post => 
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (selectedTag !== 'All') {
-      filtered = filtered.filter(post => post.tags.includes(selectedTag));
-    }
-
-    setFilteredPosts(filtered);
-  }, [posts, searchTerm, selectedTag]);
-
-  const fetchPosts = async () => {
+  const fetchBlogPosts = async () => {
     try {
       const { data, error } = await supabase
         .from('blog_posts')
@@ -129,15 +38,26 @@ const Blog = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-
-      setPosts(data && data.length > 0 ? data : dummyPosts);
+      setBlogPosts(data || []);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
-      setPosts(dummyPosts);
+      setBlogPosts([]);
     } finally {
       setLoading(false);
     }
   };
+
+  const getAllTags = () => {
+    const tags = new Set<string>();
+    blogPosts.forEach(post => {
+      post.tags?.forEach(tag => tags.add(tag));
+    });
+    return Array.from(tags);
+  };
+
+  const filteredPosts = selectedTag === 'All' 
+    ? blogPosts 
+    : blogPosts.filter(post => post.tags?.includes(selectedTag));
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -164,27 +84,29 @@ const Blog = () => {
       <section className="py-20 px-4 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Design <span className="text-neon-green">Insights</span>
+            Our <span className="text-neon-green">Blog</span>
           </h1>
           <p className="text-xl text-gray-300 mb-8">
-            Stay updated with the latest trends, tips, and insights from the world of web design and development.
+            Stay updated with the latest insights, tutorials, and industry trends in web development and design.
           </p>
           
-          {/* Search and Filter */}
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-12">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                type="text"
-                placeholder="Search articles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white/5 border-white/10 text-light-text placeholder:text-gray-500 w-80"
-              />
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
-              {allTags.map((tag) => (
+          {/* Tag Filter */}
+          {getAllTags().length > 0 && (
+            <div className="flex flex-wrap justify-center gap-3 mt-12">
+              <Button
+                variant={selectedTag === 'All' ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedTag('All')}
+                className={`rounded-full ${
+                  selectedTag === 'All' 
+                    ? 'btn-primary' 
+                    : 'btn-secondary'
+                }`}
+              >
+                <Tag className="w-4 h-4 mr-2" />
+                All
+              </Button>
+              {getAllTags().map((tag) => (
                 <Button
                   key={tag}
                   variant={selectedTag === tag ? "default" : "outline"}
@@ -192,112 +114,62 @@ const Blog = () => {
                   onClick={() => setSelectedTag(tag)}
                   className={`rounded-full ${
                     selectedTag === tag 
-                      ? 'bg-neon-green text-dark-bg hover:bg-neon-green/80' 
-                      : 'border-white/20 text-light-text hover:bg-white/10 glass'
+                      ? 'btn-primary' 
+                      : 'btn-secondary'
                   }`}
                 >
+                  <Tag className="w-4 h-4 mr-2" />
                   {tag}
                 </Button>
               ))}
             </div>
-          </div>
+          )}
         </div>
       </section>
 
-      {/* Featured Post */}
-      {filteredPosts.length > 0 && (
-        <section className="py-20 px-4">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center">Featured Article</h2>
-            
-            <Card className="glass overflow-hidden hover:glass-strong transition-all">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                <div className="aspect-video lg:aspect-auto">
-                  <img 
-                    src={filteredPosts[0].featured_image}
-                    alt={filteredPosts[0].title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
-                  <div className="flex items-center space-x-4 text-sm text-gray-400 mb-4">
-                    <div className="flex items-center space-x-2">
-                      <Calendar size={16} />
-                      <span>{formatDate(filteredPosts[0].created_at)}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <User size={16} />
-                      <span>{filteredPosts[0].author}</span>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 hover:text-neon-green transition-colors">
-                    {filteredPosts[0].title}
-                  </h3>
-                  
-                  <p className="text-gray-300 mb-6">
-                    {filteredPosts[0].excerpt}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {filteredPosts[0].tags.slice(0, 3).map((tag, index) => (
-                      <Badge key={index} variant="outline" className="border-neon-green/30 text-neon-green">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  
-                  <Button 
-                    className="bg-neon-green text-dark-bg hover:bg-neon-green/80 font-semibold rounded-full w-fit"
-                    asChild
-                  >
-                    <Link to={`/blog/${filteredPosts[0].id}`}>
-                      Read More
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </div>
-            </Card>
-          </div>
-        </section>
-      )}
-
-      {/* Blog Posts Grid */}
+      {/* Blog Posts */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center">Latest Articles</h2>
-          
           {filteredPosts.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-xl text-gray-400">No articles found matching your criteria.</p>
+              <div className="mb-8">
+                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                  <Tag className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">No Blog Posts Yet</h3>
+                <p className="text-xl text-gray-400 mb-6">
+                  {selectedTag === 'All' 
+                    ? 'No blog posts have been published yet.' 
+                    : `No blog posts found for the "${selectedTag}" tag.`
+                  }
+                </p>
+                <p className="text-gray-500">
+                  Visit the admin panel to create your first blog post.
+                </p>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.slice(1).map((post) => (
-                <Card key={post.id} className="glass hover:glass-strong transition-all group overflow-hidden">
+              {filteredPosts.map((post) => (
+                <Card key={post.id} className="glass hover:glass-strong transition-all duration-300 group overflow-hidden">
                   <div className="aspect-video overflow-hidden">
                     <img 
-                      src={post.featured_image}
+                      src={post.featured_image || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop'}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   
                   <CardContent className="p-6">
-                    <div className="flex items-center space-x-4 text-sm text-gray-400 mb-3">
-                      <div className="flex items-center space-x-1">
-                        <Calendar size={14} />
-                        <span>{formatDate(post.created_at)}</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center text-gray-400 text-sm">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        {formatDate(post.created_at)}
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <User size={14} />
-                        <span>{post.author}</span>
-                      </div>
+                      <span className="text-sm text-gray-400">By {post.author}</span>
                     </div>
                     
-                    <h3 className="text-lg font-bold mb-3 group-hover:text-neon-green transition-colors line-clamp-2">
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-neon-green transition-colors">
                       {post.title}
                     </h3>
                     
@@ -306,21 +178,26 @@ const Blog = () => {
                     </p>
                     
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {post.tags.slice(0, 2).map((tag, index) => (
+                      {post.tags?.slice(0, 3).map((tag, index) => (
                         <Badge key={index} variant="outline" className="text-xs border-white/20 text-gray-400">
                           {tag}
                         </Badge>
                       ))}
+                      {post.tags && post.tags.length > 3 && (
+                        <Badge variant="outline" className="text-xs border-white/20 text-gray-400">
+                          +{post.tags.length - 3}
+                        </Badge>
+                      )}
                     </div>
                     
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="w-full border-neon-green/30 text-neon-green hover:bg-neon-green/10 group"
+                      className="w-full btn-secondary group"
                       asChild
                     >
                       <Link to={`/blog/${post.id}`}>
-                        Read Article
+                        Read More
                         <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Link>
                     </Button>
@@ -332,26 +209,23 @@ const Blog = () => {
         </div>
       </section>
 
-      {/* Newsletter CTA */}
+      {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-6">
-            Stay in the <span className="text-neon-green">Loop</span>
+            Ready to Start Your <span className="text-neon-green">Project?</span>
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Get the latest design insights and industry trends delivered to your inbox.
+            Let's discuss how we can bring your vision to life with cutting-edge web solutions.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <Input 
-              type="email" 
-              placeholder="Your email address" 
-              className="bg-white/5 border-white/10 text-light-text placeholder:text-gray-500"
-            />
-            <Button className="btn-primary">
-              Subscribe
-            </Button>
-          </div>
+          <Button 
+            size="lg" 
+            className="btn-primary px-8 py-4"
+            asChild
+          >
+            <Link to="/contact">Get Started Today</Link>
+          </Button>
         </div>
       </section>
 
