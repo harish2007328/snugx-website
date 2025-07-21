@@ -119,7 +119,7 @@ const Index = () => {
         </div>
         
         {/* Half oval with shadow */}
-        <div className="hero-oval"></div>
+        
       </section>
 
       {/* Stats Section */}
