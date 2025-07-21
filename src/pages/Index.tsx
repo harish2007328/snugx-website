@@ -4,12 +4,10 @@ import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Footer from '@/components/Footer';
-
 const Index = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
@@ -27,7 +25,6 @@ const Index = () => {
     if (statsRef.current) observer.observe(statsRef.current);
     return () => observer.disconnect();
   }, []);
-
   const services = [{
     icon: Palette,
     title: "Web Design",
@@ -44,7 +41,6 @@ const Index = () => {
     description: "No-code solutions that deliver exceptional performance and flexibility.",
     features: ["Webflow Development", "Framer Prototypes", "CMS Integration"]
   }];
-
   const stats = [{
     number: "150+",
     label: "Projects Completed"
@@ -58,7 +54,6 @@ const Index = () => {
     number: "24/7",
     label: "Support Available"
   }];
-
   const testimonials = [{
     name: "Sarah Johnson",
     company: "TechStartup Inc.",
@@ -78,7 +73,6 @@ const Index = () => {
 
   // Sample avatar images from Unsplash
   const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
-
   return <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
@@ -114,7 +108,7 @@ const Index = () => {
           </div>
 
           {/* Avatar Stack and Text */}
-          <div className="mt-16 mb-16 flex flex-col sm:flex-row items-center justify-center gap-3 mx-0 my-[6px]">
+          <div className="mt-16 mb-16 flex flex-col sm:flex-row items-center justify-center gap-6 mx-0 my-[6px]">
             <div className="avatar-stack">
               {avatarImages.map((src, index) => <div key={index} className="avatar-item w-6 h-6">
                   <img src={src} alt={`Happy client ${index + 1}`} className="w-full h-full object-cover rounded-full" loading="eager" />
@@ -135,7 +129,7 @@ const Index = () => {
             {stats.map((stat, index) => <Card key={index} className="bg-secondary border-2 border-light-text/20 text-center p-8 hover:border-neon-green/50 transition-all">
                 <CardContent className="p-0">
                   <div className="text-4xl font-bold text-neon-green mb-3">{stat.number}</div>
-                  <div className="text-gray-300 font-medium">{stat.label}</div>
+                  <div className="text-gray-300 font-medium bg-black/0">{stat.label}</div>
                 </CardContent>
               </Card>)}
           </div>
@@ -280,5 +274,4 @@ const Index = () => {
       <Footer />
     </div>;
 };
-
 export default Index;
