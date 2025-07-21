@@ -71,8 +71,8 @@ const Index = () => {
     rating: 5
   }];
 
-  // Sample avatar images from Unsplash
-  const avatarImages = ["/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png", "/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png", "/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png", "/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png", "/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"];
+  // Sample avatar images
+  const avatarImages = ["/hero-images/c1.png", "/hero-images/c1.png", "/hero-images/c1.png", "/hero-images/c1.png", "/hero-images/c1.png"];
   return <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
