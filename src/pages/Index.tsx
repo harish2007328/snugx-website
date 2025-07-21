@@ -167,7 +167,7 @@ const Index = () => {
       </section>
 
       {/* Featured Case Studies Preview */}
-      <section className="py-20 px-4 bg-secondary/20">
+      <section className="py-20 px-4 bg-black/0">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
