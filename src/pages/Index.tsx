@@ -119,7 +119,7 @@ const Index = () => {
         </div>
         
         {/* Half oval with shadow */}
-        <div className="hero-oval"></div>
+        
       </section>
 
       {/* Stats Section */}
@@ -129,7 +129,7 @@ const Index = () => {
             {stats.map((stat, index) => <Card key={index} className="bg-secondary border-2 border-light-text/20 text-center p-8 hover:border-neon-green/50 transition-all">
                 <CardContent className="p-0">
                   <div className="text-4xl font-bold text-neon-green mb-3">{stat.number}</div>
-                  <div className="text-gray-300 font-medium">{stat.label}</div>
+                  <div className="text-gray-300 font-medium bg-black/0">{stat.label}</div>
                 </CardContent>
               </Card>)}
           </div>
@@ -167,7 +167,7 @@ const Index = () => {
       </section>
 
       {/* Featured Case Studies Preview */}
-      <section className="py-20 px-4 bg-secondary/20">
+      <section className="py-20 px-4 bg-black/0">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">

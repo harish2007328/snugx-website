@@ -27,70 +27,6 @@ const CaseStudies = () => {
 
   const categories = ['All', 'E-commerce', 'SaaS', 'Corporate', 'Portfolio', 'Startup'];
 
-  // Dummy data for demo purposes
-  const dummyData: CaseStudy[] = [
-    {
-      id: '1',
-      title: 'E-commerce Platform Redesign',
-      description: 'Complete redesign of an e-commerce platform that increased conversions by 300% and improved user engagement significantly.',
-      thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
-      category: 'E-commerce',
-      live_url: 'https://example.com',
-      tags: ['Web Design', 'UX/UI', 'Conversion Optimization'],
-      created_at: '2024-01-15'
-    },
-    {
-      id: '2',
-      title: 'SaaS Dashboard Interface',
-      description: 'Modern dashboard design for a SaaS platform with improved user experience and 250% increase in user engagement.',
-      thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-      category: 'SaaS',
-      live_url: 'https://example.com',
-      tags: ['Dashboard Design', 'UX/UI', 'Data Visualization'],
-      created_at: '2024-01-10'
-    },
-    {
-      id: '3',
-      title: 'Tech Startup Branding',
-      description: 'Complete brand identity and website for an AI startup, establishing strong market presence and credibility.',
-      thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
-      category: 'Startup',
-      live_url: 'https://example.com',
-      tags: ['Branding', 'Web Design', 'Startup'],
-      created_at: '2024-01-05'
-    },
-    {
-      id: '4',
-      title: 'Corporate Website Redesign',
-      description: 'Professional corporate website redesign that improved brand image and generated 400% more qualified leads.',
-      thumbnail: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop',
-      category: 'Corporate',
-      live_url: 'https://example.com',
-      tags: ['Corporate Design', 'Lead Generation', 'Professional'],
-      created_at: '2023-12-20'
-    },
-    {
-      id: '5',
-      title: 'Creative Portfolio Website',
-      description: 'Stunning portfolio website for a creative agency showcasing their work with innovative interactions and animations.',
-      thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop',
-      category: 'Portfolio',
-      live_url: 'https://example.com',
-      tags: ['Portfolio', 'Creative', 'Animation'],
-      created_at: '2023-12-15'
-    },
-    {
-      id: '6',
-      title: 'Online Learning Platform',
-      description: 'Educational platform design with intuitive navigation and engaging user experience for better learning outcomes.',
-      thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop',
-      category: 'E-commerce',
-      live_url: 'https://example.com',
-      tags: ['Education', 'UX/UI', 'Platform Design'],
-      created_at: '2023-12-10'
-    }
-  ];
-
   useEffect(() => {
     fetchCaseStudies();
   }, []);
@@ -112,12 +48,10 @@ const CaseStudies = () => {
 
       if (error) throw error;
 
-      // Use dummy data if no data in database
-      setCaseStudies(data && data.length > 0 ? data : dummyData);
+      setCaseStudies(data || []);
     } catch (error) {
       console.error('Error fetching case studies:', error);
-      // Use dummy data as fallback
-      setCaseStudies(dummyData);
+      setCaseStudies([]);
     } finally {
       setLoading(false);
     }
@@ -156,8 +90,8 @@ const CaseStudies = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`rounded-full ${
                   selectedCategory === category 
-                    ? 'bg-neon-green text-dark-bg hover:bg-neon-green/80' 
-                    : 'border-white/20 text-light-text hover:bg-white/10 glass'
+                    ? 'btn-primary' 
+                    : 'btn-secondary'
                 }`}
               >
                 <Filter className="w-4 h-4 mr-2" />
@@ -173,7 +107,21 @@ const CaseStudies = () => {
         <div className="max-w-7xl mx-auto">
           {filteredStudies.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-xl text-gray-400">No case studies found for the selected category.</p>
+              <div className="mb-8">
+                <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                  <ExternalLink className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">No Projects Yet</h3>
+                <p className="text-xl text-gray-400 mb-6">
+                  {selectedCategory === 'All' 
+                    ? 'No case studies have been created yet.' 
+                    : `No case studies found for the "${selectedCategory}" category.`
+                  }
+                </p>
+                <p className="text-gray-500">
+                  Visit the admin panel to add your first project showcase.
+                </p>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -181,7 +129,7 @@ const CaseStudies = () => {
                 <Card key={study.id} className="glass hover:glass-strong transition-all duration-300 group overflow-hidden">
                   <div className="aspect-video overflow-hidden">
                     <img 
-                      src={study.thumbnail}
+                      src={study.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
                       alt={study.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -223,7 +171,7 @@ const CaseStudies = () => {
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="w-full border-neon-green/30 text-neon-green hover:bg-neon-green/10 group"
+                      className="w-full btn-secondary group"
                       asChild
                     >
                       <Link to={`/case-studies/${study.id}`}>
@@ -251,7 +199,7 @@ const CaseStudies = () => {
           
           <Button 
             size="lg" 
-           className="btn-primary px-8 py-4"
+            className="btn-primary px-8 py-4"
             asChild
           >
             <Link to="/contact">Start Your Project</Link>
