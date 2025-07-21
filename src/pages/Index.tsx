@@ -123,7 +123,7 @@ const Index = () => {
       </section>
 
       {/* Stats Section */}
-      <section ref={statsRef} className="py-20 px-4 bg-secondary/20">
+      <section ref={statsRef} className="py-20 px-4 bg-secondary/0">
         <div className="w-full mx-auto px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/30 to-dark-bg border border-white/10 text-center p-8 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
