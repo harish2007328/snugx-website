@@ -72,7 +72,7 @@ const Index = () => {
   }];
 
   // Sample avatar images
-  const avatarImages = ["/hero-images/c1.png", "/hero-images/c1.png", "/hero-images/c1.png", "/hero-images/c1.png", "/hero-images/c1.png"];
+  const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
   return <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
