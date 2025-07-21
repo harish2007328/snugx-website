@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,8 @@ const Index = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+  const [animatedStats, setAnimatedStats] = useState([0, 0, 0, 0]);
+  const [hasAnimated, setHasAnimated] = useState(false);
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
@@ -17,6 +19,12 @@ const Index = () => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate-fade-in');
+          
+          // Trigger stats animation when stats section is visible
+          if (entry.target === statsRef.current && !hasAnimated) {
+            setHasAnimated(true);
+            animateStats();
+          }
         }
       });
     }, observerOptions);
@@ -25,6 +33,29 @@ const Index = () => {
     if (statsRef.current) observer.observe(statsRef.current);
     return () => observer.disconnect();
   }, []);
+
+  const animateStats = () => {
+    const targets = [150, 98, 2.5, 24];
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const timer = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      
+      setAnimatedStats(targets.map(target => {
+        const current = Math.round(target * progress);
+        return current;
+      }));
+      
+      if (currentStep >= steps) {
+        clearInterval(timer);
+        setAnimatedStats(targets);
+      }
+    }, stepDuration);
+  };
   const services = [{
     icon: Palette,
     title: "Web Design",
@@ -43,16 +74,16 @@ const Index = () => {
   }];
   const stats = [{
     number: "150+",
-    label: "Projects Completed"
+    label: "Projects\nCompleted"
   }, {
     number: "98%",
-    label: "Client Satisfaction"
+    label: "Client\nSatisfaction"
   }, {
     number: "2.5x",
-    label: "Average ROI Increase"
+    label: "Average ROI\nIncrease"
   }, {
     number: "24/7",
-    label: "Support Available"
+    label: "Support\nAvailable"
   }];
   const testimonials = [{
     name: "Sarah Johnson",
@@ -124,12 +155,17 @@ const Index = () => {
 
       {/* Stats Section */}
       <section ref={statsRef} className="py-20 px-4 bg-secondary/0">
-        <div className="w-full mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/30 to-dark-bg border border-white/10 text-center p-8 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
                 <CardContent className="p-0">
-                  <div className="text-4xl font-bold text-neon-green mb-3">{stat.number}</div>
-                  <div className="text-gray-300 font-medium bg-black/0">{stat.label}</div>
+                  <div className="text-4xl font-bold text-neon-green mb-3">
+                    {index === 0 && `${animatedStats[0]}+`}
+                    {index === 1 && `${animatedStats[1]}%`}
+                    {index === 2 && `${animatedStats[2]}x`}
+                    {index === 3 && `${Math.floor(animatedStats[3])}/7`}
+                  </div>
+                  <div className="text-gray-300 font-medium bg-black/0 whitespace-pre-line leading-tight">{stat.label}</div>
                 </CardContent>
               </Card>)}
           </div>
@@ -138,7 +174,7 @@ const Index = () => {
 
       {/* Services Section */}
       <section ref={servicesRef} className="py-20 px-4">
-        <div className="w-full mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
               Our <span className="text-neon-green">Expertise ✦</span>
@@ -171,7 +207,7 @@ const Index = () => {
 
       {/* Featured Case Studies Preview */}
       <section className="py-20 px-4 bg-black/0">
-        <div className="w-full mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
               Success <span className="text-neon-green">Stories ✦</span>
@@ -235,7 +271,7 @@ const Index = () => {
 
       {/* Testimonials */}
       <section className="py-20 px-4">
-        <div className="w-full mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
               What Our <span className="text-neon-green">Clients Say ✦</span>
@@ -264,7 +300,7 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-secondary/20">
-        <div className="w-full max-w-6xl mx-auto text-center space-y-10 px-8">
+        <div className="max-w-7xl mx-auto text-center space-y-10 px-8">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Ready to <span className="text-neon-green">Transform ✦</span> Your Business?
           </h2>

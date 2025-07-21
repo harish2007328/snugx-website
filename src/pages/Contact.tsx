@@ -75,7 +75,7 @@ const Contact = () => {
     <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="py-20 px-4 text-center">
-        <div className="w-full max-w-6xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Let's Build Something <span className="text-neon-green">Amazing</span>
           </h1>
@@ -95,6 +95,7 @@ const Contact = () => {
       </section>
 
       <div className="w-full mx-auto px-8 py-20">
+      <div className="max-w-7xl mx-auto px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Form */}
           <div>
@@ -277,7 +278,7 @@ const Contact = () => {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
-        <div className="w-full max-w-6xl mx-auto text-center px-8">
+        <div className="max-w-7xl mx-auto text-center px-8">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Transform Your Business?
           </h2>

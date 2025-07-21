@@ -76,7 +76,7 @@ const About = () => {
     <div className="min-h-screen pt-24">
       {/* Hero Section */}
       <section className="py-20 px-4 text-center">
-        <div className="w-full max-w-6xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             We're <span className="text-neon-green">Snugx</span>
           </h1>
@@ -97,7 +97,7 @@ const About = () => {
 
       {/* Story Section */}
       <section className="py-20 px-4">
-        <div className="w-full max-w-6xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6">Our Story</h2>
@@ -128,7 +128,7 @@ const About = () => {
 
       {/* Values Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
-        <div className="w-full mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">Our Values</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -153,7 +153,7 @@ const About = () => {
 
       {/* Team Section */}
       <section className="py-20 px-4">
-        <div className="w-full mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">Meet Our Team</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -194,7 +194,7 @@ const About = () => {
 
       {/* Mission & Vision */}
       <section className="py-20 px-4">
-        <div className="w-full max-w-6xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
               <CardContent className="p-8 relative overflow-hidden">
@@ -225,7 +225,7 @@ const About = () => {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
-        <div className="w-full max-w-6xl mx-auto text-center px-8">
+        <div className="max-w-7xl mx-auto text-center px-8">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Work <span className="text-neon-green">Together?</span>
           </h2>

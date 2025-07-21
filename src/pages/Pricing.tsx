@@ -93,7 +93,7 @@ const Pricing = () => {
     <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="py-20 px-4 text-center">
-        <div className="w-full max-w-6xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Simple, <span className="text-neon-green">Transparent</span> Pricing
           </h1>
@@ -119,7 +119,7 @@ const Pricing = () => {
 
       {/* Pricing Cards */}
       <section className="py-20 px-4">
-        <div className="w-full mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {plans.map((plan, index) => (
               <Card 
@@ -174,7 +174,7 @@ const Pricing = () => {
 
       {/* Add-ons */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
-        <div className="w-full max-w-6xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Popular Add-ons</h2>
             <p className="text-gray-400">Enhance your website with these additional services</p>
@@ -193,7 +193,7 @@ const Pricing = () => {
 
       {/* FAQ */}
       <section className="py-20 px-4">
-        <div className="w-full max-w-6xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8">
           <h2 className="text-3xl font-bold text-center mb-12">
             Frequently Asked <span className="text-neon-green">Questions</span>
           </h2>
@@ -216,7 +216,7 @@ const Pricing = () => {
 
       {/* CTA */}
       <section className="py-20 px-4">
-        <div className="w-full max-w-6xl mx-auto text-center px-8">
+        <div className="max-w-7xl mx-auto text-center px-8">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Get <span className="text-neon-green">Started?</span>
           </h2>

@@ -120,7 +120,7 @@ All colors MUST be HSL.
 }
 
 .btn-secondary {
-  @apply border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 bg-white/5 rounded-full font-medium transition-all backdrop-blur-sm;
+  @apply border border-white/20 text-light-text hover:bg-white/10 hover:border-white/40 hover:text-white bg-white/5 rounded-full font-medium transition-all backdrop-blur-sm;
 }
 
 /* Professional glass effect */
