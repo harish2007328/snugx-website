@@ -69,6 +69,7 @@ All colors MUST be HSL.
 /* Noise effect - only for hero section */
 .hero-noise-effect {
   position: relative;
+  overflow: hidden;
 }
 
 .hero-noise-effect::before {
@@ -85,6 +86,193 @@ All colors MUST be HSL.
   z-index: 1;
 }
 
+/* Hero Background Elements */
+.hero-blur-circle-1 {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(229, 255, 0, 0.3) 0%, rgba(229, 255, 0, 0.1) 50%, transparent 100%);
+  border-radius: 50%;
+  filter: blur(40px);
+  animation: float-1 8s ease-in-out infinite;
+  z-index: 1;
+}
+
+.hero-blur-circle-2 {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(229, 255, 0, 0.4) 0%, rgba(229, 255, 0, 0.15) 50%, transparent 100%);
+  border-radius: 50%;
+  filter: blur(30px);
+  animation: float-2 6s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes float-1 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-20px) translateX(-10px);
+    opacity: 1;
+  }
+}
+
+@keyframes float-2 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(15px) translateX(8px);
+    opacity: 0.5;
+  }
+}
+
+/* Comet Animations */
+.comet {
+  position: absolute;
+  width: 4px;
+  height: 80px;
+  background: linear-gradient(to top, rgba(229, 255, 0, 0.8) 0%, rgba(229, 255, 0, 0.4) 50%, transparent 100%);
+  border-radius: 2px;
+  box-shadow: 
+    0 0 10px rgba(229, 255, 0, 0.6),
+    0 0 20px rgba(229, 255, 0, 0.4),
+    0 0 30px rgba(229, 255, 0, 0.2);
+  z-index: 1;
+}
+
+.comet-1 {
+  left: 20%;
+  animation: comet-rise-1 4s linear infinite;
+  animation-delay: -1s;
+}
+
+.comet-2 {
+  left: 35%;
+  animation: comet-rise-2 6s linear infinite;
+  animation-delay: -2.5s;
+}
+
+.comet-3 {
+  left: 50%;
+  animation: comet-rise-3 5s linear infinite;
+  animation-delay: -0.5s;
+}
+
+.comet-4 {
+  left: 65%;
+  animation: comet-rise-4 7s linear infinite;
+  animation-delay: -3s;
+}
+
+.comet-5 {
+  left: 80%;
+  animation: comet-rise-5 4.5s linear infinite;
+  animation-delay: -1.8s;
+}
+
+@keyframes comet-rise-1 {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+    transform: translateX(0px);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100vh;
+    opacity: 0;
+    transform: translateX(15px);
+  }
+}
+
+@keyframes comet-rise-2 {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+    transform: translateX(0px);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100vh;
+    opacity: 0;
+    transform: translateX(-25px);
+  }
+}
+
+@keyframes comet-rise-3 {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+    transform: translateX(0px);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100vh;
+    opacity: 0;
+    transform: translateX(35px);
+  }
+}
+
+@keyframes comet-rise-4 {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+    transform: translateX(0px);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100vh;
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+}
+
+@keyframes comet-rise-5 {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+    transform: translateX(0px);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 100vh;
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
 /* Glowing dot animation */
 .glow-dot {
   position: relative;
@@ -165,42 +353,63 @@ All colors MUST be HSL.
   z-index: 5;
 }
 
-/* Review Carousel Animations */
-@keyframes scroll-right {
+/* Testimonial Vertical Animations */
+@keyframes scroll-up {
   0% {
-    transform: translateX(-100%);
+    transform: translateY(100%);
   }
   100% {
-    transform: translateX(0%);
+    transform: translateY(-100%);
   }
 }
 
-@keyframes scroll-left {
+@keyframes scroll-down {
   0% {
-    transform: translateX(0%);
+    transform: translateY(-100%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateY(100%);
   }
 }
 
-@keyframes scroll-right-fast {
+@keyframes scroll-up-fast {
   0% {
-    transform: translateX(-100%);
+    transform: translateY(100%);
   }
   100% {
-    transform: translateX(0%);
+    transform: translateY(-100%);
   }
 }
 
-.animate-scroll-right {
-  animation: scroll-right 40s linear infinite;
+.animate-scroll-up {
+  animation: scroll-up 30s linear infinite;
 }
 
-.animate-scroll-left {
-  animation: scroll-left 35s linear infinite;
+.animate-scroll-down {
+  animation: scroll-down 25s linear infinite;
 }
 
-.animate-scroll-right-fast {
-  animation: scroll-right-fast 25s linear infinite;
+.animate-scroll-up-fast {
+  animation: scroll-up-fast 20s linear infinite;
+}
+
+/* Responsive testimonial columns */
+.testimonial-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  overflow: hidden;
+  height: 600px;
+}
+
+@media (max-width: 1024px) {
+  .testimonial-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonial-columns {
+    grid-template-columns: 1fr;
+  }
 }

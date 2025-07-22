@@ -3,14 +3,26 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
 const Index = () => {
+interface CaseStudy {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  category: string;
+  results: string[];
+}
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const [animatedStats, setAnimatedStats] = useState([0, 0, 0, 0]);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [featuredCaseStudies, setFeaturedCaseStudies] = useState<CaseStudy[]>([]);
   useEffect(() => {
+    fetchFeaturedCaseStudies();
+    
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
@@ -34,6 +46,20 @@ const Index = () => {
     return () => observer.disconnect();
   }, []);
 
+  const fetchFeaturedCaseStudies = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('case_studies')
+        .select('*')
+        .limit(3)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setFeaturedCaseStudies(data || []);
+    } catch (error) {
+      console.error('Error fetching featured case studies:', error);
+    }
+  };
   const animateStats = () => {
     const targets = [150, 98, 2.5, 24];
     const duration = 2000; // 2 seconds
@@ -228,46 +254,41 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
-              <div className="aspect-video bg-gradient-to-br from-neon-green/20 to-neon-green/5 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/50 to-transparent" />
+          {featuredCaseStudies.length === 0 ? (
+            <div className="text-center py-20">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                <Star className="w-12 h-12 text-gray-400" />
               </div>
-              <CardContent className="p-8 relative">
-                <h3 className="text-xl font-semibold mb-3">E-commerce Redesign</h3>
-                <p className="text-gray-400 mb-6 font-normal">300% increase in conversions</p>
-                <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm">
-                  View Case Study
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
-              <div className="aspect-video bg-gradient-to-br from-neon-green/20 to-neon-green/5 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/50 to-transparent" />
-              </div>
-              <CardContent className="p-8 relative">
-                <h3 className="text-xl font-semibold mb-3">SaaS Platform</h3>
-                <p className="text-gray-400 mb-6 font-normal">250% user engagement boost</p>
-                <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm">
-                  View Case Study
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
-              <div className="aspect-video bg-gradient-to-br from-neon-green/20 to-neon-green/5 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/50 to-transparent" />
-              </div>
-              <CardContent className="p-8 relative">
-                <h3 className="text-xl font-semibold mb-3">Brand Identity</h3>
-                <p className="text-gray-400 mb-6 font-normal">Complete digital transformation</p>
-                <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm">
-                  View Case Study
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+              <h3 className="text-2xl font-bold mb-2">No Case Studies Yet</h3>
+              <p className="text-xl text-gray-400 mb-6">
+                Add your first case study from the admin panel to showcase your work.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {featuredCaseStudies.map((caseStudy) => (
+                <Card key={caseStudy.id} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
+                      alt={caseStudy.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <CardContent className="p-8 relative">
+                    <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
+                    <p className="text-gray-400 mb-6 font-normal">{caseStudy.description}</p>
+                    {caseStudy.results && caseStudy.results.length > 0 && (
+                      <p className="text-neon-green text-sm mb-4 font-medium">{caseStudy.results[0]}</p>
+                    )}
+                    <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm" asChild>
+                      <Link to={`/case-studies/${caseStudy.id}`}>View Case Study</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
           <div className="text-center">
             <Button size="lg" className="btn-primary px-10 py-4" asChild>
@@ -280,7 +301,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Reviews Carousel */}
+      {/* Testimonials Vertical Carousel */}
       <section className="py-20 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
@@ -289,17 +310,17 @@ const Index = () => {
             </h2>
           </div>
 
-          <div className="relative">
-            {/* Top Row - Moving Right */}
-            <div className="flex space-x-6 animate-scroll-right mb-6">
-              {[...testimonials, ...testimonials].map((testimonial, index) => (
-                <Card key={`top-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm min-w-[350px] flex-shrink-0">
+          <div className="testimonial-columns">
+            {/* Column 1 - Moving Up */}
+            <div className="flex flex-col space-y-6 animate-scroll-up">
+              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                <Card key={`col1-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
                         <img 
-                          src={index % 3 === 0 ? '/src/assets/client1.jpg' : index % 3 === 1 ? '/src/assets/client2.jpg' : '/src/assets/client3.jpg'} 
+                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
                           alt={testimonial.name}
                           className="w-12 h-12 rounded-full object-cover mr-4"
                         />
@@ -318,16 +339,16 @@ const Index = () => {
               ))}
             </div>
 
-            {/* Middle Row - Moving Left */}
-            <div className="flex space-x-6 animate-scroll-left mb-6">
-              {[...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => (
-                <Card key={`middle-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm min-w-[350px] flex-shrink-0">
+            {/* Column 2 - Moving Down */}
+            <div className="flex flex-col space-y-6 animate-scroll-down hidden lg:flex">
+              {[...testimonials.slice().reverse(), ...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => (
+                <Card key={`col2-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 -translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
                         <img 
-                          src={index % 3 === 0 ? '/src/assets/client2.jpg' : index % 3 === 1 ? '/src/assets/client3.jpg' : '/src/assets/client1.jpg'} 
+                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
                           alt={testimonial.name}
                           className="w-12 h-12 rounded-full object-cover mr-4"
                         />
@@ -346,16 +367,16 @@ const Index = () => {
               ))}
             </div>
 
-            {/* Bottom Row - Moving Right (Faster) */}
-            <div className="flex space-x-6 animate-scroll-right-fast">
-              {[...testimonials, ...testimonials].map((testimonial, index) => (
-                <Card key={`bottom-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm min-w-[350px] flex-shrink-0">
+            {/* Column 3 - Moving Up Fast */}
+            <div className="flex flex-col space-y-6 animate-scroll-up-fast hidden md:flex">
+              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                <Card key={`col3-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
                         <img 
-                          src={index % 3 === 0 ? '/src/assets/client3.jpg' : index % 3 === 1 ? '/src/assets/client1.jpg' : '/src/assets/client2.jpg'} 
+                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
                           alt={testimonial.name}
                           className="w-12 h-12 rounded-full object-cover mr-4"
                         />
