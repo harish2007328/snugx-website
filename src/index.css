@@ -88,26 +88,26 @@ All colors MUST be HSL.
 /* Hero Background Elements */
 .hero-blur-circle-1 {
   position: absolute;
-  top: -15%;
-  right: -15%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(229, 255, 0, 0.3) 0%, rgba(229, 255, 0, 0.1) 50%, transparent 100%);
+  top: -50%;
+  left: 0%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(229, 255, 0, 0.4) 0%, rgba(229, 255, 0, 0.1) 50%, transparent 100%);
   border-radius: 50%;
-  filter: blur(40px);
+  filter: blur(50px);
   animation: float-1 8s ease-in-out infinite;
   z-index: 1;
 }
 
 .hero-blur-circle-2 {
   position: absolute;
-  top: -10%;
+  top: -20%;
   left: -10%;
   width: 300px;
   height: 300px;
   background: radial-gradient(circle, rgba(229, 255, 0, 0.4) 0%, rgba(229, 255, 0, 0.15) 50%, transparent 100%);
   border-radius: 50%;
-  filter: blur(30px);
+  filter: blur(50px);
   animation: float-2 6s ease-in-out infinite;
   z-index: 1;
 }
@@ -137,27 +137,34 @@ All colors MUST be HSL.
 /* Comet Animations */
 .comet {
   position: absolute;
-  width: 2px;
-  height: 120px;
-  background: linear-gradient(to top, rgba(229, 255, 0, 0) 0%, rgba(229, 255, 0, 0.3) 20%, rgba(229, 255, 0, 0.8) 80%, rgba(229, 255, 0, 1) 100%);
-  border-radius: 0 0 1px 1px;
-  box-shadow: 
-    0 0 4px rgba(229, 255, 0, 0.8),
-    0 0 8px rgba(229, 255, 0, 0.4);
+  width: 1.5px;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    rgba(229, 255, 0, 1) 0%,
+    rgba(229, 255, 0, 0) 100%);
+  border-radius: 8px 8px 0 0;
+  box-shadow: none;
   z-index: 1;
+  opacity: 0; /* Start hidden */
 }
 
 .comet::before {
   content: '';
   position: absolute;
-  top: 0;
+  top: -2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  background: rgba(229, 255, 0, 1);
+  width: 2px;
+  height: 2px;
+  background: #e5ff00;
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(229, 255, 0, 0.8);
+  /* Drop shadow glow effect */
+  box-shadow:
+    0 0 1px 1px #e5ff00,
+    0 0 2px 2px #e5ff0066;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .comet-1 {
@@ -167,13 +174,13 @@ All colors MUST be HSL.
 }
 
 .comet-2 {
-  left: 30%;
+  left: 50%;
   animation: comet-rise 8s linear infinite;
   animation-delay: -3s;
 }
 
 .comet-3 {
-  left: 70%;
+  left: 85%;
   animation: comet-rise 7s linear infinite;
   animation-delay: -2s;
 }
@@ -192,35 +199,6 @@ All colors MUST be HSL.
   100% {
     bottom: 100vh;
     opacity: 0;
-  }
-}
-
-/* Glowing dot animation */
-.glow-dot {
-  position: relative;
-}
-
-.glow-dot::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
-  background: #e5ff00;
-  border-radius: 50%;
-  animation: glow-pulse 2s ease-in-out infinite;
-}
-
-@keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(229, 255, 0, 0.5), 0 0 10px rgba(229, 255, 0, 0.3);
-    opacity: 1;
-  }
-  50% {
-    box-shadow: 0 0 10px rgba(229, 255, 0, 0.8), 0 0 20px rgba(229, 255, 0, 0.6);
-    opacity: 0.8;
   }
 }
 
@@ -334,4 +312,37 @@ All colors MUST be HSL.
   .testimonial-columns {
     grid-template-columns: 1fr;
   }
+}
+
+/* Glow Animation for Neon Elements */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: rgba(229, 255, 0, 0.725) 0px 0px 8.73633px 0px, rgba(229, 255, 0, 0.525) 0px 0px 17.4727px 0px;
+    opacity: 0.850547;
+  }
+  50% {
+    box-shadow: rgba(229, 255, 0, 1) 0px 0px 16px 0px, rgba(229, 255, 0, 0.8) 0px 0px 32px 0px;
+    opacity: 1;
+  }
+}
+
+.glow-dot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  vertical-align: middle;
+}
+
+.glow-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: #e5ff00;
+  border-radius: 50%;
+  animation: glow-pulse 2s ease-in-out infinite;
 }
