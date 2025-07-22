@@ -152,6 +152,7 @@ interface CaseStudy {
         {/* Blurred Circles */}
         <div className="hero-blur-circle-1"></div>
         <div className="hero-blur-circle-2"></div>
+        <div className="hero-blur-circle-3"></div>
         
         {/* Comet Animations */}
         <div className="comet comet-1"></div>

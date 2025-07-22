@@ -94,7 +94,7 @@ All colors MUST be HSL.
   height: 700px;
   background: radial-gradient(circle, rgba(229, 255, 0, 0.4) 0%, rgba(229, 255, 0, 0.1) 50%, transparent 100%);
   border-radius: 50%;
-  filter: blur(50px);
+  filter: blur(200px);
   animation: float-1 8s ease-in-out infinite;
   z-index: 1;
 }
@@ -107,31 +107,22 @@ All colors MUST be HSL.
   height: 300px;
   background: radial-gradient(circle, rgba(229, 255, 0, 0.4) 0%, rgba(229, 255, 0, 0.15) 50%, transparent 100%);
   border-radius: 50%;
-  filter: blur(50px);
+  filter: blur(200px);
   animation: float-2 6s ease-in-out infinite;
   z-index: 1;
 }
 
-@keyframes float-1 {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-    opacity: 0.7;
-  }
-  50% {
-    transform: translateY(-20px) translateX(-10px);
-    opacity: 1;
-  }
-}
-
-@keyframes float-2 {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateY(15px) translateX(8px);
-    opacity: 0.5;
-  }
+.hero-blur-circle-3 {
+  position: absolute;
+  bottom: 50%;
+  right: -250px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(229, 255, 0, 0.4) 0%, rgba(229, 255, 0, 0.15) 50%, transparent 100%);
+  border-radius: 50%;
+  filter: blur(200px);
+  animation: float-2 6s ease-in-out infinite;
+  z-index: 1;
 }
 
 /* Comet Animations */
@@ -291,6 +282,35 @@ All colors MUST be HSL.
 
 .animate-scroll-up-fast {
   animation: scroll-up-fast 20s linear infinite;
+}
+
+/* Duplicate testimonial animations */
+@keyframes scroll-up-duplicate {
+  0% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scroll-down-duplicate {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(50%);
+  }
+}
+
+.animate-scroll-up-duplicate {
+  animation: scroll-up-duplicate 30s linear infinite;
+  animation-fill-mode: both;
+}
+
+.animate-scroll-down-duplicate {
+  animation: scroll-down-duplicate 25s linear infinite;
+  animation-fill-mode: both;
 }
 
 /* Responsive testimonial columns */
