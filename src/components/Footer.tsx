@@ -11,13 +11,6 @@ const Footer = () => {
             <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="Snugx Logo" className="h-10 mx-auto" />
           </div>
           
-          {/* Description */}
-          <div className="max-w-2xl mx-auto">
-            <p className="text-gray-400 text-lg leading-relaxed">
-              18-year-old web designer from Tenkasi crafting bold websites that convert. One-man agency serving clients worldwide, powered by coffee and passion.
-            </p>
-          </div>
-          
           {/* Social Links */}
           <div className="flex justify-center space-x-6">
             <a href="https://x.com/Harishs86646512" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-neon-green transition-colors p-2 rounded-full hover:bg-neon-green/10">
