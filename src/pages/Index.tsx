@@ -48,14 +48,30 @@ interface CaseStudy {
 
   const fetchFeaturedCaseStudies = async () => {
     try {
-      const { data, error } = await supabase
-        .from('case_studies')
-        .select('*')
-        .limit(3)
-        .order('created_at', { ascending: false });
+      // Get homepage project IDs from localStorage
+      const homepageProjects = JSON.parse(localStorage.getItem('homepage_projects') || '[]');
+      
+      if (homepageProjects.length === 0) {
+        // Fallback to latest 3 if no homepage projects selected
+        const { data, error } = await supabase
+          .from('case_studies')
+          .select('*')
+          .limit(3)
+          .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setFeaturedCaseStudies(data || []);
+        if (error) throw error;
+        setFeaturedCaseStudies(data || []);
+      } else {
+        // Fetch specific homepage projects
+        const { data, error } = await supabase
+          .from('case_studies')
+          .select('*')
+          .in('id', homepageProjects);
+
+        if (error) throw error;
+        setFeaturedCaseStudies(data || []);
+      }
+
     } catch (error) {
       console.error('Error fetching featured case studies:', error);
     }
@@ -141,8 +157,6 @@ interface CaseStudy {
         <div className="comet comet-1"></div>
         <div className="comet comet-2"></div>
         <div className="comet comet-3"></div>
-        <div className="comet comet-4"></div>
-        <div className="comet comet-5"></div>
         
         <div className="w-full mx-auto text-center space-y-12 relative z-10 max-w-none px-8">
           {/* Free Consultation Badge */}

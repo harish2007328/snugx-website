@@ -89,10 +89,10 @@ All colors MUST be HSL.
 /* Hero Background Elements */
 .hero-blur-circle-1 {
   position: absolute;
-  top: 10%;
-  right: 10%;
-  width: 200px;
-  height: 200px;
+  top: -15%;
+  right: -15%;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(circle, rgba(229, 255, 0, 0.3) 0%, rgba(229, 255, 0, 0.1) 50%, transparent 100%);
   border-radius: 50%;
   filter: blur(40px);
@@ -102,10 +102,10 @@ All colors MUST be HSL.
 
 .hero-blur-circle-2 {
   position: absolute;
-  top: 50%;
-  right: 5%;
-  width: 120px;
-  height: 120px;
+  top: -10%;
+  left: -10%;
+  width: 300px;
+  height: 300px;
   background: radial-gradient(circle, rgba(229, 255, 0, 0.4) 0%, rgba(229, 255, 0, 0.15) 50%, transparent 100%);
   border-radius: 50%;
   filter: blur(30px);
@@ -138,52 +138,51 @@ All colors MUST be HSL.
 /* Comet Animations */
 .comet {
   position: absolute;
-  width: 4px;
-  height: 80px;
-  background: linear-gradient(to top, rgba(229, 255, 0, 0.8) 0%, rgba(229, 255, 0, 0.4) 50%, transparent 100%);
-  border-radius: 2px;
+  width: 2px;
+  height: 120px;
+  background: linear-gradient(to top, rgba(229, 255, 0, 0) 0%, rgba(229, 255, 0, 0.3) 20%, rgba(229, 255, 0, 0.8) 80%, rgba(229, 255, 0, 1) 100%);
+  border-radius: 0 0 1px 1px;
   box-shadow: 
-    0 0 10px rgba(229, 255, 0, 0.6),
-    0 0 20px rgba(229, 255, 0, 0.4),
-    0 0 30px rgba(229, 255, 0, 0.2);
+    0 0 4px rgba(229, 255, 0, 0.8),
+    0 0 8px rgba(229, 255, 0, 0.4);
   z-index: 1;
 }
 
+.comet::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: rgba(229, 255, 0, 1);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(229, 255, 0, 0.8);
+}
+
 .comet-1 {
-  left: 20%;
-  animation: comet-rise-1 4s linear infinite;
+  left: 15%;
+  animation: comet-rise 6s linear infinite;
   animation-delay: -1s;
 }
 
 .comet-2 {
-  left: 35%;
-  animation: comet-rise-2 6s linear infinite;
-  animation-delay: -2.5s;
-}
-
-.comet-3 {
-  left: 50%;
-  animation: comet-rise-3 5s linear infinite;
-  animation-delay: -0.5s;
-}
-
-.comet-4 {
-  left: 65%;
-  animation: comet-rise-4 7s linear infinite;
+  left: 30%;
+  animation: comet-rise 8s linear infinite;
   animation-delay: -3s;
 }
 
-.comet-5 {
-  left: 80%;
-  animation: comet-rise-5 4.5s linear infinite;
-  animation-delay: -1.8s;
+.comet-3 {
+  left: 70%;
+  animation: comet-rise 7s linear infinite;
+  animation-delay: -2s;
 }
 
-@keyframes comet-rise-1 {
+@keyframes comet-rise {
   0% {
     bottom: -100px;
     opacity: 0;
-    transform: translateX(0px);
   }
   10% {
     opacity: 1;
@@ -194,85 +193,7 @@ All colors MUST be HSL.
   100% {
     bottom: 100vh;
     opacity: 0;
-    transform: translateX(15px);
   }
-}
-
-@keyframes comet-rise-2 {
-  0% {
-    bottom: -100px;
-    opacity: 0;
-    transform: translateX(0px);
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    bottom: 100vh;
-    opacity: 0;
-    transform: translateX(-25px);
-  }
-}
-
-@keyframes comet-rise-3 {
-  0% {
-    bottom: -100px;
-    opacity: 0;
-    transform: translateX(0px);
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    bottom: 100vh;
-    opacity: 0;
-    transform: translateX(35px);
-  }
-}
-
-@keyframes comet-rise-4 {
-  0% {
-    bottom: -100px;
-    opacity: 0;
-    transform: translateX(0px);
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    bottom: 100vh;
-    opacity: 0;
-    transform: translateX(-15px);
-  }
-}
-
-@keyframes comet-rise-5 {
-  0% {
-    bottom: -100px;
-    opacity: 0;
-    transform: translateX(0px);
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    bottom: 100vh;
-    opacity: 0;
-    transform: translateX(20px);
-  }
-}
 /* Glowing dot animation */
 .glow-dot {
   position: relative;

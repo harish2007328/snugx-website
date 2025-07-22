@@ -47,6 +47,7 @@ const Admin = () => {
   const [showCaseForm, setShowCaseForm] = useState(false);
   const [showBlogForm, setShowBlogForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [homepageProjects, setHomepageProjects] = useState<string[]>([]);
   const { toast } = useToast();
 
   const emptyCaseStudy: CaseStudy = {
@@ -77,6 +78,7 @@ const Admin = () => {
   useEffect(() => {
     fetchCaseStudies();
     fetchBlogPosts();
+    fetchHomepageProjects();
   }, []);
 
   const fetchCaseStudies = async () => {
@@ -266,6 +268,33 @@ const Admin = () => {
     }
   };
 
+  const fetchHomepageProjects = async () => {
+    try {
+      // For now, we'll store homepage project IDs in localStorage
+      // In a real app, you'd store this in a separate table
+      const stored = localStorage.getItem('homepage_projects');
+      if (stored) {
+        setHomepageProjects(JSON.parse(stored));
+      }
+    } catch (error) {
+      console.error('Error fetching homepage projects:', error);
+    }
+  };
+
+  const toggleHomepageProject = (projectId: string) => {
+    const updated = homepageProjects.includes(projectId)
+      ? homepageProjects.filter(id => id !== projectId)
+      : [...homepageProjects, projectId].slice(0, 3); // Max 3 projects
+    
+    setHomepageProjects(updated);
+    localStorage.setItem('homepage_projects', JSON.stringify(updated));
+    
+    toast({
+      title: "Success",
+      description: "Homepage projects updated successfully!"
+    });
+  };
+
   const handleCaseFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingCase) {
@@ -324,9 +353,12 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="case-studies" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-8">
+          <TabsList className="grid w-full grid-cols-3 bg-white/5 mb-8">
             <TabsTrigger value="case-studies" className="text-white">
               Case Studies ({caseStudies.length})
+            </TabsTrigger>
+            <TabsTrigger value="homepage" className="text-white">
+              Homepage Projects
             </TabsTrigger>
             <TabsTrigger value="blog-posts" className="text-white">
               Blog Posts ({blogPosts.length})
@@ -598,6 +630,89 @@ const Admin = () => {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="homepage" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Homepage Featured Projects</h2>
+              <div className="text-sm text-gray-400">
+                Select up to 3 projects to feature on the homepage
+              </div>
+            </div>
+
+            {caseStudies.length === 0 ? (
+              <Card className="glass">
+                <CardContent className="text-center py-12">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                    <Plus className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">No Projects Available</h3>
+                  <p className="text-gray-400 mb-4">Create some case studies first to feature them on the homepage.</p>
+                  <Button 
+                    onClick={() => {
+                      setEditingCase(emptyCaseStudy);
+                      setShowCaseForm(true);
+                    }}
+                    className="btn-primary"
+                  >
+                    Create Your First Project
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {caseStudies.map((caseStudy) => (
+                  <Card 
+                    key={caseStudy.id} 
+                    className={`glass hover:glass-strong transition-all duration-300 cursor-pointer ${
+                      homepageProjects.includes(caseStudy.id!) ? 'ring-2 ring-neon-green' : ''
+                    }`}
+                    onClick={() => caseStudy.id && toggleHomepageProject(caseStudy.id)}
+                  >
+                    <div className="aspect-video overflow-hidden rounded-t-lg">
+                      <img 
+                        src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop'}
+                        alt={caseStudy.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="secondary" className="bg-neon-green/20 text-neon-green">
+                          {caseStudy.category}
+                        </Badge>
+                        {homepageProjects.includes(caseStudy.id!) && (
+                          <div className="w-6 h-6 bg-neon-green rounded-full flex items-center justify-center">
+                            <span className="text-dark-bg text-xs font-bold">✓</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <h3 className="font-bold mb-2 line-clamp-2">{caseStudy.title}</h3>
+                      <p className="text-sm text-gray-400 mb-4 line-clamp-2">{caseStudy.description}</p>
+                      
+                      <div className="text-xs text-center">
+                        {homepageProjects.includes(caseStudy.id!) ? (
+                          <span className="text-neon-green font-medium">Featured on Homepage</span>
+                        ) : (
+                          <span className="text-gray-500">Click to feature on homepage</span>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+
+            <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+              <h3 className="text-lg font-semibold mb-3 text-neon-green">How it works:</h3>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li>• Click on any project card to toggle its homepage feature status</li>
+                <li>• You can select up to 3 projects to be featured on the homepage</li>
+                <li>• Featured projects will appear in the "Success Stories" section</li>
+                <li>• Changes are saved automatically and will reflect on the homepage immediately</li>
+              </ul>
+            </div>
           </TabsContent>
 
           <TabsContent value="blog-posts" className="space-y-6">
