@@ -107,6 +107,17 @@ const Index = () => {
   return <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
+        {/* Blurred Circles */}
+        <div className="hero-blur-circle-1"></div>
+        <div className="hero-blur-circle-2"></div>
+        
+        {/* Comet Animations */}
+        <div className="comet comet-1"></div>
+        <div className="comet comet-2"></div>
+        <div className="comet comet-3"></div>
+        <div className="comet comet-4"></div>
+        <div className="comet comet-5"></div>
+        
         <div className="w-full mx-auto text-center space-y-12 relative z-10 max-w-none px-8">
           {/* Free Consultation Badge */}
           <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-4 py-2 text-sm font-medium">
