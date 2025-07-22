@@ -269,8 +269,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 px-4">
+      {/* Reviews Carousel */}
+      <section className="py-20 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
@@ -278,22 +278,90 @@ const Index = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
-                <CardContent className="p-10 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-10 translate-x-10" />
-                  <div className="relative z-10">
-                  <div className="flex mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-5 h-5 text-neon-green fill-current" />)}
-                  </div>
-                  <p className="text-gray-300 mb-8 italic font-normal text-base">"{testimonial.text}"</p>
-                  <div>
-                    <div className="font-semibold text-base">{testimonial.name}</div>
-                    <div className="text-neon-green font-medium">{testimonial.company}</div>
-                  </div>
-                  </div>
-                </CardContent>
-              </Card>)}
+          <div className="relative">
+            {/* Top Row - Moving Right */}
+            <div className="flex space-x-6 animate-scroll-right mb-6">
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
+                <Card key={`top-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm min-w-[350px] flex-shrink-0">
+                  <CardContent className="p-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
+                    <div className="relative z-10">
+                      <div className="flex items-center mb-6">
+                        <img 
+                          src={index % 3 === 0 ? '/src/assets/client1.jpg' : index % 3 === 1 ? '/src/assets/client2.jpg' : '/src/assets/client3.jpg'} 
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover mr-4"
+                        />
+                        <div>
+                          <div className="font-semibold text-sm">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
+                        </div>
+                      </div>
+                      <div className="flex mb-4">
+                        {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-neon-green fill-current" />)}
+                      </div>
+                      <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Middle Row - Moving Left */}
+            <div className="flex space-x-6 animate-scroll-left mb-6">
+              {[...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => (
+                <Card key={`middle-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm min-w-[350px] flex-shrink-0">
+                  <CardContent className="p-8 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 -translate-x-8" />
+                    <div className="relative z-10">
+                      <div className="flex items-center mb-6">
+                        <img 
+                          src={index % 3 === 0 ? '/src/assets/client2.jpg' : index % 3 === 1 ? '/src/assets/client3.jpg' : '/src/assets/client1.jpg'} 
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover mr-4"
+                        />
+                        <div>
+                          <div className="font-semibold text-sm">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
+                        </div>
+                      </div>
+                      <div className="flex mb-4">
+                        {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-neon-green fill-current" />)}
+                      </div>
+                      <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Bottom Row - Moving Right (Faster) */}
+            <div className="flex space-x-6 animate-scroll-right-fast">
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
+                <Card key={`bottom-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm min-w-[350px] flex-shrink-0">
+                  <CardContent className="p-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
+                    <div className="relative z-10">
+                      <div className="flex items-center mb-6">
+                        <img 
+                          src={index % 3 === 0 ? '/src/assets/client3.jpg' : index % 3 === 1 ? '/src/assets/client1.jpg' : '/src/assets/client2.jpg'} 
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover mr-4"
+                        />
+                        <div>
+                          <div className="font-semibold text-sm">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
+                        </div>
+                      </div>
+                      <div className="flex mb-4">
+                        {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-neon-green fill-current" />)}
+                      </div>
+                      <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>

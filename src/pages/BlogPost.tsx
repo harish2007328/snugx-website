@@ -154,14 +154,14 @@ const BlogPost = () => {
           <div className="prose prose-invert prose-lg max-w-none">
             <div 
               dangerouslySetInnerHTML={{ __html: blogPost.content }}
-              className="text-gray-300 [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:text-neon-green [&>h1]:mb-6 [&>h1]:mt-8 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-neon-green [&>h3]:mb-3 [&>h3]:mt-6 [&>p]:mb-4 [&>p]:leading-relaxed [&>ul]:mb-4 [&>ol]:mb-4 [&>li]:mb-2 [&>blockquote]:border-l-4 [&>blockquote]:border-neon-green [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:text-gray-400 [&>code]:bg-white/10 [&>code]:px-2 [&>code]:py-1 [&>code]:rounded [&>code]:text-neon-green [&>pre]:bg-white/10 [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto"
+              className="text-gray-300 text-left [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:text-neon-green [&>h1]:mb-6 [&>h1]:mt-8 [&>h1]:text-left [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>h2]:text-left [&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-neon-green [&>h3]:mb-3 [&>h3]:mt-6 [&>h3]:text-left [&>p]:mb-4 [&>p]:leading-relaxed [&>p]:text-left [&>ul]:mb-4 [&>ul]:text-left [&>ol]:mb-4 [&>ol]:text-left [&>li]:mb-2 [&>li]:text-left [&>blockquote]:border-l-4 [&>blockquote]:border-neon-green [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:text-gray-400 [&>blockquote]:text-left [&>code]:bg-white/10 [&>code]:px-2 [&>code]:py-1 [&>code]:rounded [&>code]:text-neon-green [&>pre]:bg-white/10 [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto"
             />
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
+      <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Transform Your <span className="text-neon-green">Business?</span>

@@ -8,57 +8,54 @@ import Footer from '@/components/Footer';
 const Pricing = () => {
   const plans = [
     {
-      name: "Starter",
-      price: "$2,999",
-      description: "Perfect for small businesses and startups",
+      name: "Starter Plan",
+      price: "₹6,999",
+      description: "Great for personal use, portfolios, or small one-page sites",
       features: [
-        "5-page responsive website",
-        "Modern design & UI/UX",
-        "Mobile optimization",
-        "Contact form integration",
-        "SEO basics",
-        "2 rounds of revisions",
-        "30-day support"
+        "1-page website (like a landing page)",
+        "Mobile-friendly design",
+        "Contact form setup",
+        "Social media links",
+        "Help with domain & hosting"
       ],
       popular: false,
-      deliveryTime: "7-10 days"
+      deliveryTime: "3–5 days",
+      icon: "🟢"
     },
     {
-      name: "Professional",
-      price: "$5,999",
-      description: "Ideal for growing businesses",
+      name: "Standard Plan",
+      price: "₹14,999",
+      description: "Perfect for small businesses or creators who need a full website",
       features: [
-        "10-page responsive website",
-        "Custom design & branding",
-        "CMS integration",
-        "E-commerce functionality",
-        "Advanced SEO",
-        "Analytics setup",
-        "3 rounds of revisions",
-        "60-day support",
-        "Performance optimization"
+        "Up to 5 pages (Home, About, Services, Contact, etc.)",
+        "Custom design made for your brand",
+        "Smooth scroll and animations",
+        "Works on phone, tablet, and computer",
+        "Basic SEO (for better search visibility)",
+        "Contact form + social links",
+        "Help setting up domain & hosting"
       ],
       popular: true,
-      deliveryTime: "10-14 days"
+      deliveryTime: "7–10 days",
+      icon: "🟡"
     },
     {
-      name: "Enterprise",
-      price: "$12,999",
-      description: "For large businesses and complex projects",
+      name: "Premium Plan",
+      price: "₹29,999+",
+      description: "For brands or shops who want an advanced and powerful site",
       features: [
-        "Unlimited pages",
-        "Custom web application",
-        "Advanced integrations",
-        "Database design",
-        "User authentication",
-        "API development",
-        "Unlimited revisions",
-        "6-month support",
-        "Dedicated project manager",
-        "Training sessions"
+        "Up to 10 pages or product catalog",
+        "Online shop setup (Shopify or WooCommerce)",
+        "Blog or portfolio section",
+        "WhatsApp chat button & lead form",
+        "Strong SEO setup (Google search ready)",
+        "Advanced animations",
+        "Google Analytics + custom features",
+        "Ongoing support (optional)"
       ],
       popular: false,
-      deliveryTime: "14-21 days"
+      deliveryTime: "12–15+ days",
+      icon: "🔴"
     }
   ];
 
@@ -138,10 +135,11 @@ const Pricing = () => {
                 )}
                 
                 <CardHeader className="text-center pb-8 pt-8">
+                  <div className="text-3xl mb-4">{plan.icon}</div>
                   <CardTitle className="text-2xl font-bold mb-2">{plan.name}</CardTitle>
                   <div className="text-4xl font-bold text-neon-green mb-2">{plan.price}</div>
-                  <p className="text-gray-400 text-sm mb-4">{plan.description}</p>
-                  <div className="text-sm text-neon-green">Delivery: {plan.deliveryTime}</div>
+                  <p className="text-gray-400 text-sm mb-4 italic">{plan.description}</p>
+                  <div className="text-sm text-neon-green">📦 Ready in {plan.deliveryTime}</div>
                 </CardHeader>
                 
                 <CardContent className="space-y-4">
@@ -173,7 +171,7 @@ const Pricing = () => {
       </section>
 
       {/* Add-ons */}
-      <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
+      <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Popular Add-ons</h2>
@@ -215,10 +213,10 @@ const Pricing = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto text-center px-8">
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Get <span className="text-neon-green">Started?</span>
+            Ready to Transform Your <span className="text-neon-green">Business?</span>
           </h2>
           <p className="text-xl text-gray-300 mb-8">
             Let's discuss your project and find the perfect solution for your business.

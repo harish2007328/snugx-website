@@ -29,8 +29,8 @@ const Header = () => {
     <header className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${
       isScrolled ? 'w-[95%] max-w-6xl' : 'w-[95%] max-w-6xl'
     }`}>
-      <nav className={`bg-secondary/25 backdrop-blur-md border border-light-text/20 transition-all duration-300 ${
-        isMenuOpen ? 'rounded-2xl' : 'rounded-full'
+      <nav className={`bg-secondary/25 backdrop-blur-md border border-light-text/20 transition-all duration-500 ease-out ${
+        isMenuOpen ? 'rounded-3xl' : 'rounded-full'
       } mx-auto px-0 py-0`}>
         <div className="flex items-center justify-between py-[10px] px-[10px]">
           {/* Logo */}
@@ -71,21 +71,21 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-6 pt-2 px-6 border-t border-light-text/10 bg-secondary/98 backdrop-blur-md rounded-b-2xl">
-            <div className="flex flex-col space-y-4">
+          <div className="md:hidden pb-8 pt-6 px-8 border-t border-light-text/10 bg-secondary/98 backdrop-blur-md rounded-b-3xl animate-fade-in">
+            <div className="flex flex-col space-y-6">
               {navItems.map(item => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`text-base font-medium transition-colors hover:text-neon-green py-3 px-4 rounded-xl hover:bg-light-text/5 ${
-                    location.pathname === item.path ? 'text-neon-green bg-light-text/10 font-semibold' : 'text-light-text'
+                  className={`text-lg font-medium transition-all duration-300 hover:text-neon-green py-4 px-0 text-left hover:translate-x-2 ${
+                    location.pathname === item.path ? 'text-neon-green font-semibold' : 'text-light-text'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
-              <Button className="btn-primary py-3 w-full mt-4" asChild>
+              <Button className="btn-primary py-4 w-full mt-6 text-base" asChild>
                 <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Let's Chat</Link>
               </Button>
             </div>

@@ -127,7 +127,7 @@ const About = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
+      <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">Our Values</h2>
@@ -224,10 +224,10 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
+      <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto text-center px-8">
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Work <span className="text-neon-green">Together?</span>
+            Ready to Transform Your <span className="text-neon-green">Business?</span>
           </h2>
           <p className="text-xl text-gray-300 mb-8">
             Let's create something amazing together. We'd love to hear about your project.

@@ -120,7 +120,7 @@ All colors MUST be HSL.
 }
 
 .btn-secondary {
-  @apply border border-white/20 text-light-text hover:bg-white/10 hover:border-white/40 hover:text-white bg-white/5 rounded-full font-medium transition-all backdrop-blur-sm;
+  @apply border border-white/20 text-light-text hover:bg-white/10 hover:border-white/40 hover:text-dark-bg bg-white/5 rounded-full font-medium transition-all backdrop-blur-sm;
 }
 
 /* Professional glass effect */
@@ -163,4 +163,44 @@ All colors MUST be HSL.
   border-radius: 100%;
   box-shadow: 0 -20px 250px #e5ff00;
   z-index: 5;
+}
+
+/* Review Carousel Animations */
+@keyframes scroll-right {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes scroll-right-fast {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-scroll-right {
+  animation: scroll-right 40s linear infinite;
+}
+
+.animate-scroll-left {
+  animation: scroll-left 35s linear infinite;
+}
+
+.animate-scroll-right-fast {
+  animation: scroll-right-fast 25s linear infinite;
 }
