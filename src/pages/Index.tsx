@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User, ExternalLink } from 'lucide-react';
+import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
-
 const Index = () => {
   interface CaseStudy {
     id: string;
@@ -16,14 +15,12 @@ const Index = () => {
     category: string;
     results: string[];
   }
-
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const [animatedStats, setAnimatedStats] = useState([0, 0, 0, 0]);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [featuredCaseStudies, setFeaturedCaseStudies] = useState<CaseStudy[]>([]);
-
   useEffect(() => {
     fetchFeaturedCaseStudies();
     const observerOptions = {
@@ -48,7 +45,6 @@ const Index = () => {
     if (statsRef.current) observer.observe(statsRef.current);
     return () => observer.disconnect();
   }, []);
-
   const fetchFeaturedCaseStudies = async () => {
     try {
       // Get homepage project IDs from localStorage
@@ -76,7 +72,6 @@ const Index = () => {
       console.error('Error fetching featured case studies:', error);
     }
   };
-
   const animateStats = () => {
     const targets = [150, 98, 2.5, 24];
     const duration = 2000; // 2 seconds
@@ -96,31 +91,22 @@ const Index = () => {
       }
     }, stepDuration);
   };
-
-  const services = [
-    {
-      icon: Palette,
-      title: "Web Design & UI/UX",
-      description: "Creating visually stunning and user-centric designs that captivate your audience and drive conversions.",
-      features: ["Custom UI/UX Design", "Responsive Layouts", "Brand Integration", "User Experience Optimization"],
-      image: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=400&h=300&fit=crop"
-    },
-    {
-      icon: Code,
-      title: "Full-Stack Development",
-      description: "Modern web applications built with cutting-edge technologies for optimal performance and scalability.",
-      features: ["React & Next.js", "Node.js Backend", "Database Integration", "API Development"],
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop"
-    },
-    {
-      icon: Zap,
-      title: "Branding & Digital Solutions",
-      description: "Complete digital transformation with branding, optimization, and modern web solutions.",
-      features: ["Brand Identity", "SEO Optimization", "Performance Tuning", "Digital Strategy"],
-      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=300&fit=crop"
-    }
-  ];
-
+  const services = [{
+    icon: Palette,
+    title: "Web Design",
+    description: "Stunning, user-centric designs that captivate and convert your audience.",
+    features: ["UI/UX Design", "Responsive Design", "Brand Integration"]
+  }, {
+    icon: Code,
+    title: "Web Development",
+    description: "Custom websites and applications built with cutting-edge technology.",
+    features: ["React Development", "Full-Stack Solutions", "Performance Optimization"]
+  }, {
+    icon: Zap,
+    title: "Webflow & Framer",
+    description: "No-code solutions that deliver exceptional performance and flexibility.",
+    features: ["Webflow Development", "Framer Prototypes", "CMS Integration"]
+  }];
   const stats = [{
     number: "150+",
     label: "Projects\nCompleted"
@@ -134,7 +120,6 @@ const Index = () => {
     number: "24/7",
     label: "Support\nAvailable"
   }];
-
   const testimonials = [{
     name: "Sarah Johnson",
     company: "TechStartup Inc.",
@@ -154,66 +139,19 @@ const Index = () => {
 
   // Sample avatar images
   const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
-
-  const faqs = [
-    {
-      question: "What services does snugx offer?",
-      answer: "We provide web design, web development, branding, UI/UX, and full-stack website solutions tailored to your business needs."
-    },
-    {
-      question: "Do you build websites for startups and small businesses?",
-      answer: "Absolutely! We specialize in helping startups and small businesses launch fast with powerful, scalable web solutions."
-    },
-    {
-      question: "How much does a website cost?",
-      answer: (
-        <span>
-          Our pricing depends on your project's size and complexity. Check our{' '}
-          <Link to="/pricing" className="text-neon-green hover:underline inline-flex items-center gap-1">
-            Pricing Page <ExternalLink size={12} />
-          </Link>
-          {' '}for transparent packages or contact us for a custom quote.
-        </span>
-      )
-    },
-    {
-      question: "How long does it take to build a website?",
-      answer: "It typically takes 2–4 weeks depending on the design, functionality, and your feedback response time."
-    },
-    {
-      question: "Do you provide ongoing support after the website is live?",
-      answer: "Yes! We offer maintenance and support plans to keep your site updated, secure, and running smoothly."
-    },
-    {
-      question: "Can I update the website content myself?",
-      answer: "Yes! We provide admin panels (using Supabase) for blogs and case studies, so you can manage content easily."
-    },
-    {
-      question: "Will my website be mobile-friendly and SEO-optimized?",
-      answer: "100%. All snugx websites are fully responsive and built with SEO best practices to perform well on search engines."
-    },
-    {
-      question: "Can you redesign my existing website?",
-      answer: "Yes, we love redesign projects! We can give your old website a modern, high-converting facelift."
-    },
-    {
-      question: "What tech stack do you use?",
-      answer: "We use modern technologies like React, Tailwind CSS, Supabase, Vite, and more to ensure fast, optimized websites."
-    },
-    {
-      question: "How do I get started?",
-      answer: (
-        <span>
-          Just head over to our{' '}
-          <Link to="/contact" className="text-neon-green hover:underline inline-flex items-center gap-1">
-            Contact Page <ExternalLink size={12} />
-          </Link>
-          {' '}and drop us a message — we'll schedule a free consultation!
-        </span>
-      )
-    }
-  ];
-
+  const faqs = [{
+    question: "What's included in the design process?",
+    answer: "We start with research and strategy, create wireframes and mockups, design the full website, and iterate based on your feedback."
+  }, {
+    question: "Do you provide ongoing support?",
+    answer: "Yes! All plans include support for bug fixes and minor updates. We also offer extended maintenance packages."
+  }, {
+    question: "Can I upgrade my plan later?",
+    answer: "Absolutely! You can upgrade your plan at any time, and we'll adjust the pricing accordingly."
+  }, {
+    question: "What if I'm not satisfied?",
+    answer: "We offer a 100% money-back guarantee within the first 14 days if you're not completely satisfied."
+  }];
   return <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
@@ -268,6 +206,9 @@ const Index = () => {
             <p className="text-gray-400 text-sm font-medium">30+ Happy agencies, startups, and consultants</p>
           </div>
         </div>
+        
+        {/* Half oval with shadow */}
+        
       </section>
 
       {/* Stats Section */}
@@ -289,7 +230,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services Section - Redesigned */}
+      {/* Services Section */}
       <section ref={servicesRef} className="py-20 px-4">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
@@ -301,63 +242,23 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className="group relative overflow-hidden bg-dark-bg border border-white/10 hover:border-neon-green/30 transition-all duration-500 backdrop-blur-sm">
-                {/* Green sphere hover effect */}
-                <div className="absolute bottom-0 left-0 w-0 h-0 bg-neon-green rounded-full transition-all duration-700 ease-out group-hover:w-[800px] group-hover:h-[800px] group-hover:-translate-x-1/2 group-hover:-translate-y-1/2 z-10"></div>
-                
-                <CardContent className="p-8 relative z-20">
-                  {/* Image */}
-                  <div className="mb-6 overflow-hidden rounded-lg">
-                    <img 
-                      src={service.image} 
-                      alt={service.title}
-                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {services.map((service, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm">
+                <CardContent className="p-10 text-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-neon-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative z-10">
+                  <service.icon size={48} className="text-neon-green mx-auto mb-8 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-xl font-semibold mb-6">{service.title}</h3>
+                  <p className="text-gray-300 mb-8 font-normal">{service.description}</p>
+                  <ul className="space-y-3">
+                    {service.features.map((feature, idx) => <li key={idx} className="flex items-center justify-center space-x-3 text-sm text-gray-400">
+                        <CheckCircle size={16} className="text-neon-green" />
+                        <span className="font-normal">{feature}</span>
+                      </li>)}
+                  </ul>
                   </div>
-                  
-                  {/* Icon and Title */}
-                  <div className="flex items-center mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mr-4 group-hover:bg-dark-bg/20 transition-colors duration-300">
-                      <service.icon size={24} className="text-neon-green group-hover:text-dark-bg transition-colors duration-300" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-white group-hover:text-dark-bg transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                  </div>
-                  
-                  {/* Description */}
-                  <p className="text-gray-300 mb-6 font-normal leading-relaxed group-hover:text-dark-bg/80 transition-colors duration-300">
-                    {service.description}
-                  </p>
-                  
-                  {/* Features */}
-                  <div className="space-y-3 mb-8">
-                    {service.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center space-x-3">
-                        <div className="w-2 h-2 rounded-full bg-neon-green group-hover:bg-dark-bg transition-colors duration-300" />
-                        <span className="text-sm text-gray-400 group-hover:text-dark-bg/70 transition-colors duration-300 font-medium">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* CTA Button */}
-                  <Button 
-                    size="sm" 
-                    className="w-full bg-white/5 hover:bg-white/10 border border-white/20 text-white group-hover:bg-dark-bg group-hover:border-dark-bg group-hover:text-neon-green transition-all duration-300"
-                    asChild
-                  >
-                    <Link to="/contact">
-                      Get Started
-                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -420,15 +321,15 @@ const Index = () => {
 
           <div className="testimonial-columns">
             {/* Column 1 - Moving Up */}
-            <div className="flex flex-col space-y-6 animate-scroll-up">
-              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => <Card key={`col1-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
+            <div className="flex flex-col space-y-6 animate-scroll-up text-left">
+              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => <Card key={`col1-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0 text-center">
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
                         <img src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png" alt={testimonial.name} className="w-12 h-12 rounded-full object-cover mr-4" />
-                        <div>
-                          <div className="font-semibold text-sm">{testimonial.name}</div>
+                        <div className="bg-[e5ff00] bg-[#e5ff00] text-left">
+                          <div className="font-semibold text-sm text-left">{testimonial.name}</div>
                           <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
                         </div>
                       </div>
@@ -506,9 +407,7 @@ const Index = () => {
                   <span className="text-lg font-semibold text-light-text">{faq.question}</span>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-6">
-                  <div className="text-gray-300 font-normal leading-relaxed text-left">
-                    {typeof faq.answer === 'string' ? faq.answer : faq.answer}
-                  </div>
+                  <p className="text-gray-300 font-normal leading-relaxed text-left">{faq.answer}</p>
                 </AccordionContent>
               </AccordionItem>)}
           </Accordion>
@@ -516,7 +415,7 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-dark-bg">
+      <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto text-center space-y-10 px-8">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Ready to <span className="text-neon-green">Transform ✦</span> Your Business?
@@ -539,5 +438,4 @@ const Index = () => {
       <Footer />
     </div>;
 };
-
 export default Index;
