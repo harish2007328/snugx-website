@@ -130,7 +130,7 @@ interface CaseStudy {
       features: []
     },
     {
-      icon: Zap, // Replace with appropriate SVG import
+      icon: Users, // Replace with appropriate SVG import
       title: "Admin Dashboard & CMS Integration",
       description: "Want to manage your own blogs or content? We integrate Supabase so you stay in control without touching code.",
       features: []
@@ -180,6 +180,7 @@ interface CaseStudy {
         <div className="comet comet-1"></div>
         <div className="comet comet-2"></div>
         <div className="comet comet-3"></div>
+        <div className="comet comet-4"></div>
         
         <div className="w-full mx-auto text-center space-y-12 relative z-10 max-w-none px-8">
           {/* Free Consultation Badge */}
@@ -263,16 +264,10 @@ interface CaseStudy {
                 <CardContent className="p-5 text-center relative overflow-hidden">
                   <div className="relative z-10">
                     <div className="relative z-10 flex flex-row items-center mb-4">
-                      <service.icon size={24} className="text-neon-green mx-2 my-2 mr-6 group-hover:scale-110 transition-transform" />
+                      <service.icon size={36} className="text-neon-green mx-2 my-2 mr-6 group-hover:scale-110 transition-transform" />
                       <h3 className="text-xl font-semibold text-left">{service.title}</h3>
                     </div>
-                  <p className="text-gray-300 mb-4 font-normal text-left">{service.description}</p>
-                  <ul className="space-y-3">
-                    {service.features.map((feature, idx) => <li key={idx} className="flex items-center justify-center space-x-3 text-sm text-gray-400">
-                        <CheckCircle size={16} className="text-neon-green" />
-                        <span className="font-normal">{feature}</span>
-                      </li>)}
-                  </ul>
+                  <p className="text-gray-300 mb-4 font-normal text-left text-sm">{service.description}</p>
                   </div>
                 </CardContent>
               </Card>)}
