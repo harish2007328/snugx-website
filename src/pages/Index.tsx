@@ -164,6 +164,21 @@ interface CaseStudy {
     company: "Creative Agency",
     text: "Professional, creative, and delivered on time. Our new website is exactly what we envisioned.",
     rating: 5
+  }, {
+    name: "Sarah Johnson",
+    company: "TechStartup Inc.",
+    text: "Snugx transformed our digital presence completely. Our conversion rate increased by 300% after the redesign.",
+    rating: 5
+  }, {
+    name: "Mike Chen",
+    company: "E-commerce Plus",
+    text: "The team's attention to detail and technical expertise exceeded our expectations. Highly recommended!",
+    rating: 5
+  }, {
+    name: "Emily Rodriguez",
+    company: "Creative Agency",
+    text: "Professional, creative, and delivered on time. Our new website is exactly what we envisioned.",
+    rating: 5
   }];
 
   // Sample avatar images
