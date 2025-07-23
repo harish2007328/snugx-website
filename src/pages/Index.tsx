@@ -99,28 +99,14 @@ const Index = () => {
 
   const services = [
     {
-      icon: Palette,
-      title: "Web Design & UI/UX",
-      description: "Creating visually stunning and user-centric designs that captivate your audience and drive conversions.",
-      features: ["Custom UI/UX Design", "Responsive Layouts", "Brand Integration", "User Experience Optimization"],
-      tags: ["Branding", "App Design", "Web Design", "UX Research", "Enterprise", "Prototype"],
-      image: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=400&h=300&fit=crop"
+      title: "Web Design",
+      description: "Creating visually stunning and user-centric designs that captivate your audience and drive conversions with modern aesthetics.",
+      features: ["Custom UI/UX Design", "Responsive Layouts", "Brand Integration", "User Experience Optimization", "Modern Aesthetics", "Mobile-First Design"]
     },
     {
-      icon: Code,
-      title: "Full-Stack Development",
-      description: "Modern web applications built with cutting-edge technologies for optimal performance and scalability.",
-      features: ["React & Next.js", "Node.js Backend", "Database Integration", "API Development"],
-      tags: ["Front-end", "Back-end", "Windows", "macOS", "Android", "iOS", "Linux"],
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop"
-    },
-    {
-      icon: Zap,
-      title: "Branding & Digital Solutions",
-      description: "Complete digital transformation with branding, optimization, and modern web solutions.",
-      features: ["Brand Identity", "SEO Optimization", "Performance Tuning", "Digital Strategy"],
-      tags: ["Social Media", "Business Strategy", "Sales", "Offline", "Online", "iOS", "Linux"],
-      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=300&fit=crop"
+      title: "Web Development",
+      description: "Modern web applications built with cutting-edge technologies for optimal performance, scalability, and seamless user experience.",
+      features: ["React & Next.js", "Node.js Backend", "Database Integration", "API Development", "Performance Optimization", "SEO Implementation"]
     }
   ];
 
@@ -304,52 +290,54 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
             {services.map((service, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:border-neon-green/30 transition-all duration-300 group">
-                {/* Service Image */}
-                <div className="mb-8 relative overflow-hidden rounded-2xl h-48">
-                  <img 
-                    src={service.image} 
-                    alt={service.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
+              <div key={index} className="glass-strong rounded-3xl p-10 hover:border-neon-green/50 transition-all duration-300 group relative overflow-hidden">
+                {/* Decorative gradient background */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-neon-green/20 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform duration-300" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-neon-green/10 to-transparent rounded-full translate-y-12 -translate-x-12" />
+                
+                <div className="relative z-10">
+                  {/* Service Number */}
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-neon-green/20 rounded-full mb-6 group-hover:bg-neon-green/30 transition-colors duration-300">
+                    <span className="text-neon-green font-bold text-lg">0{index + 1}</span>
+                  </div>
+                  
+                  {/* Service Title */}
+                  <h3 className="text-3xl font-bold text-white mb-6 tracking-tight group-hover:text-neon-green transition-colors duration-300">
+                    {service.title}
+                  </h3>
+                  
+                  {/* Service Description */}
+                  <p className="text-gray-300 mb-8 font-normal leading-relaxed text-lg">
+                    {service.description}
+                  </p>
+                  
+                  {/* Service Features */}
+                  <div className="space-y-3 mb-8">
+                    {service.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-neon-green rounded-full flex-shrink-0"></div>
+                        <span className="text-gray-300 text-sm font-medium">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* CTA Button */}
+                  <Button 
+                    className="w-full bg-transparent border-2 border-neon-green/30 text-neon-green hover:bg-neon-green hover:text-dark-bg rounded-full py-4 font-semibold transition-all duration-300 text-sm tracking-wide group-hover:border-neon-green"
+                    asChild
+                  >
+                    <Link to="/contact">
+                      START {service.title.toUpperCase()} PROJECT
+                    </Link>
+                  </Button>
                 </div>
-                
-                {/* Service Title */}
-                <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">
-                  {service.title.split(' & ')[0]}
-                </h3>
-                
-                {/* Service Description */}
-                <p className="text-gray-300 mb-8 font-normal leading-relaxed">
-                  {service.description}
-                </p>
-                
-                {/* Service Tags */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {service.tags.map((tag, tagIndex) => (
-                    <span 
-                      key={tagIndex}
-                      className="px-3 py-1 bg-white/10 text-gray-300 rounded-full text-sm font-medium hover:bg-neon-green/20 hover:text-neon-green transition-colors duration-200"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                
-                {/* CTA Button */}
-                <Button 
-                  className="w-full bg-dark-bg hover:bg-neon-green text-white hover:text-dark-bg border border-white/20 hover:border-neon-green rounded-full py-3 font-semibold transition-all duration-300 text-sm tracking-wide"
-                  asChild
-                >
-                  <Link to="/contact">
-                    START A {service.title.split(' & ')[0].toUpperCase()} PROJECT
-                  </Link>
-                </Button>
               </div>
             ))}
           </div>
+        </div>
+      </section>
         </div>
       </section>
 
