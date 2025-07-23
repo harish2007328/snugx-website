@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User } from 'lucide-react';
+import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User, Smartphone, ShoppingBag, Briefcase, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
@@ -98,22 +98,44 @@ interface CaseStudy {
       }
     }, stepDuration);
   };
-  const services = [{
-    icon: Palette,
-    title: "Web Design",
-    description: "Stunning, user-centric designs that captivate and convert your audience.",
-    features: ["UI/UX Design", "Responsive Design", "Brand Integration"]
-  }, {
-    icon: Code,
-    title: "Web Development",
-    description: "Custom websites and applications built with cutting-edge technology.",
-    features: ["React Development", "Full-Stack Solutions", "Performance Optimization"]
-  }, {
-    icon: Zap,
-    title: "Webflow & Framer",
-    description: "No-code solutions that deliver exceptional performance and flexibility.",
-    features: ["Webflow Development", "Framer Prototypes", "CMS Integration"]
-  }];
+  const services = [
+    {
+      icon: Code, // Using Code icon from already imported lucide-react icons
+      title: "Web Design & Development",
+      description: "Custom-built websites with stunning UI and smooth UX — from landing pages to full-scale platforms.",
+      features: []
+    },
+    {
+      icon: Smartphone, // Using Smartphone icon from lucide-react
+      title: "UI/UX Design",
+      description: "Intuitive interfaces crafted with user psychology in mind — for mobile, desktop, and beyond.",
+      features: []
+    },
+    {
+      icon: ShoppingBag, // Replace with appropriate SVG import
+      title: "Portfolio & Personal Websites",
+      description: "Stand out with a pixel-perfect personal site or creative portfolio — ideal for freelancers, students, and creators.",
+      features: []
+    },
+    {
+      icon: Briefcase, // Replace with appropriate SVG import
+      title: "Business Websites for Startups",
+      description: "One-page, multi-page, or full-service sites built to convert visitors into customers — fast.",
+      features: []
+    },
+    {
+      icon: Sparkles, // Replace with appropriate SVG import
+      title: "SEO & Performance Optimization",
+      description: "We make your website lightning-fast, search-friendly, and ready to rank with clean code and structured design.",
+      features: []
+    },
+    {
+      icon: Zap, // Replace with appropriate SVG import
+      title: "Admin Dashboard & CMS Integration",
+      description: "Want to manage your own blogs or content? We integrate Supabase so you stay in control without touching code.",
+      features: []
+    }
+  ];
   const stats = [{
     number: "150+",
     label: "Projects\nCompleted"
@@ -238,12 +260,13 @@ interface CaseStudy {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {services.map((service, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm">
-                <CardContent className="p-10 text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-neon-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <CardContent className="p-5 text-center relative overflow-hidden">
                   <div className="relative z-10">
-                  <service.icon size={48} className="text-neon-green mx-auto mb-8 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-semibold mb-6">{service.title}</h3>
-                  <p className="text-gray-300 mb-8 font-normal">{service.description}</p>
+                    <div className="relative z-10 flex flex-row items-center mb-4">
+                      <service.icon size={24} className="text-neon-green mx-2 my-2 mr-6 group-hover:scale-110 transition-transform" />
+                      <h3 className="text-xl font-semibold text-left">{service.title}</h3>
+                    </div>
+                  <p className="text-gray-300 mb-4 font-normal text-left">{service.description}</p>
                   <ul className="space-y-3">
                     {service.features.map((feature, idx) => <li key={idx} className="flex items-center justify-center space-x-3 text-sm text-gray-400">
                         <CheckCircle size={16} className="text-neon-green" />
