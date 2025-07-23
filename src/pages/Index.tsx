@@ -338,8 +338,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-        </div>
-      </section>
 
       {/* Featured Case Studies Preview */}
       <section className="py-20 px-4 bg-black/0">
