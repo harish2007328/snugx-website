@@ -67,24 +67,6 @@ const Pricing = () => {
     { name: "Maintenance (per month)", price: "$299" }
   ];
 
-  const faqs = [
-    {
-      question: "What's included in the design process?",
-      answer: "We start with research and strategy, create wireframes and mockups, design the full website, and iterate based on your feedback."
-    },
-    {
-      question: "Do you provide ongoing support?",
-      answer: "Yes! All plans include support for bug fixes and minor updates. We also offer extended maintenance packages."
-    },
-    {
-      question: "Can I upgrade my plan later?",
-      answer: "Absolutely! You can upgrade your plan at any time, and we'll adjust the pricing accordingly."
-    },
-    {
-      question: "What if I'm not satisfied?",
-      answer: "We offer a 100% money-back guarantee within the first 14 days if you're not completely satisfied."
-    }
-  ];
 
   return (
     <div className="min-h-screen pt-24">
@@ -189,28 +171,6 @@ const Pricing = () => {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto px-8">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Frequently Asked <span className="text-neon-green">Questions</span>
-          </h2>
-          
-          <div className="space-y-6">
-            {faqs.map((faq, index) => (
-              <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
-                <CardContent className="p-6 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
-                  <div className="relative z-10">
-                  <h3 className="text-lg font-semibold mb-3 text-neon-green">{faq.question}</h3>
-                  <p className="text-gray-300">{faq.answer}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="py-20 px-4 bg-secondary/20">
