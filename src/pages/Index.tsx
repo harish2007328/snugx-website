@@ -103,6 +103,7 @@ const Index = () => {
       title: "Web Design & UI/UX",
       description: "Creating visually stunning and user-centric designs that captivate your audience and drive conversions.",
       features: ["Custom UI/UX Design", "Responsive Layouts", "Brand Integration", "User Experience Optimization"],
+      tags: ["Branding", "App Design", "Web Design", "UX Research", "Enterprise", "Prototype"],
       image: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=400&h=300&fit=crop"
     },
     {
@@ -110,6 +111,7 @@ const Index = () => {
       title: "Full-Stack Development",
       description: "Modern web applications built with cutting-edge technologies for optimal performance and scalability.",
       features: ["React & Next.js", "Node.js Backend", "Database Integration", "API Development"],
+      tags: ["Front-end", "Back-end", "Windows", "macOS", "Android", "iOS", "Linux"],
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop"
     },
     {
@@ -117,6 +119,7 @@ const Index = () => {
       title: "Branding & Digital Solutions",
       description: "Complete digital transformation with branding, optimization, and modern web solutions.",
       features: ["Brand Identity", "SEO Optimization", "Performance Tuning", "Digital Strategy"],
+      tags: ["Social Media", "Business Strategy", "Sales", "Offline", "Online", "iOS", "Linux"],
       image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=300&fit=crop"
     }
   ];
@@ -289,74 +292,62 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services Section - Redesigned */}
-      <section ref={servicesRef} className="py-20 px-4">
+      {/* Services Section - Redesigned to match image layout */}
+      <section ref={servicesRef} className="py-20 px-4 bg-dark-bg">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
-              Our <span className="text-neon-green">Expertise ✦</span>
+              Services
             </h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto font-normal">
               We specialize in creating digital experiences that not only look amazing but drive real business results.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="group relative overflow-hidden bg-dark-bg border border-white/10 hover:border-neon-green/30 transition-all duration-500 backdrop-blur-sm">
-                {/* Green sphere hover effect */}
-                <div className="absolute bottom-0 left-0 w-0 h-0 bg-neon-green rounded-full transition-all duration-700 ease-out group-hover:w-[800px] group-hover:h-[800px] group-hover:-translate-x-1/2 group-hover:-translate-y-1/2 z-10"></div>
+              <div key={index} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:border-neon-green/30 transition-all duration-300 group">
+                {/* Service Image */}
+                <div className="mb-8 relative overflow-hidden rounded-2xl h-48">
+                  <img 
+                    src={service.image} 
+                    alt={service.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
                 
-                <CardContent className="p-8 relative z-20">
-                  {/* Image */}
-                  <div className="mb-6 overflow-hidden rounded-lg">
-                    <img 
-                      src={service.image} 
-                      alt={service.title}
-                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                  
-                  {/* Icon and Title */}
-                  <div className="flex items-center mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mr-4 group-hover:bg-dark-bg/20 transition-colors duration-300">
-                      <service.icon size={24} className="text-neon-green group-hover:text-dark-bg transition-colors duration-300" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-white group-hover:text-dark-bg transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                  </div>
-                  
-                  {/* Description */}
-                  <p className="text-gray-300 mb-6 font-normal leading-relaxed group-hover:text-dark-bg/80 transition-colors duration-300">
-                    {service.description}
-                  </p>
-                  
-                  {/* Features */}
-                  <div className="space-y-3 mb-8">
-                    {service.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center space-x-3">
-                        <div className="w-2 h-2 rounded-full bg-neon-green group-hover:bg-dark-bg transition-colors duration-300" />
-                        <span className="text-sm text-gray-400 group-hover:text-dark-bg/70 transition-colors duration-300 font-medium">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* CTA Button */}
-                  <Button 
-                    size="sm" 
-                    className="w-full bg-white/5 hover:bg-white/10 border border-white/20 text-white group-hover:bg-dark-bg group-hover:border-dark-bg group-hover:text-neon-green transition-all duration-300"
-                    asChild
-                  >
-                    <Link to="/contact">
-                      Get Started
-                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                {/* Service Title */}
+                <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">
+                  {service.title.split(' & ')[0]}
+                </h3>
+                
+                {/* Service Description */}
+                <p className="text-gray-300 mb-8 font-normal leading-relaxed">
+                  {service.description}
+                </p>
+                
+                {/* Service Tags */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {service.tags.map((tag, tagIndex) => (
+                    <span 
+                      key={tagIndex}
+                      className="px-3 py-1 bg-white/10 text-gray-300 rounded-full text-sm font-medium hover:bg-neon-green/20 hover:text-neon-green transition-colors duration-200"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                
+                {/* CTA Button */}
+                <Button 
+                  className="w-full bg-dark-bg hover:bg-neon-green text-white hover:text-dark-bg border border-white/20 hover:border-neon-green rounded-full py-3 font-semibold transition-all duration-300 text-sm tracking-wide"
+                  asChild
+                >
+                  <Link to="/contact">
+                    START A {service.title.split(' & ')[0].toUpperCase()} PROJECT
+                  </Link>
+                </Button>
+              </div>
             ))}
           </div>
         </div>
