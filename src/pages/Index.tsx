@@ -103,27 +103,21 @@ const Index = () => {
       title: "Web Design & UI/UX",
       description: "Creating visually stunning and user-centric designs that captivate your audience and drive conversions.",
       features: ["Custom UI/UX Design", "Responsive Layouts", "Brand Integration", "User Experience Optimization"],
-      gradient: "from-purple-500/20 to-pink-500/20",
-      iconColor: "text-purple-400",
-      borderColor: "border-purple-500/20"
+      image: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=400&h=300&fit=crop"
     },
     {
       icon: Code,
       title: "Full-Stack Development",
       description: "Modern web applications built with cutting-edge technologies for optimal performance and scalability.",
       features: ["React & Next.js", "Node.js Backend", "Database Integration", "API Development"],
-      gradient: "from-blue-500/20 to-cyan-500/20",
-      iconColor: "text-blue-400",
-      borderColor: "border-blue-500/20"
+      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop"
     },
     {
       icon: Zap,
       title: "Branding & Digital Solutions",
       description: "Complete digital transformation with branding, optimization, and modern web solutions.",
       features: ["Brand Identity", "SEO Optimization", "Performance Tuning", "Digital Strategy"],
-      gradient: "from-neon-green/20 to-emerald-500/20",
-      iconColor: "text-neon-green",
-      borderColor: "border-neon-green/20"
+      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=300&fit=crop"
     }
   ];
 
@@ -309,45 +303,58 @@ const Index = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className={`relative overflow-hidden bg-gradient-to-br from-dark-bg via-secondary/10 to-dark-bg border ${service.borderColor} hover:border-opacity-50 hover:shadow-2xl transition-all duration-500 group backdrop-blur-sm`}>
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                <CardContent className="p-8 relative z-10">
+              <Card key={index} className="group relative overflow-hidden bg-dark-bg border border-white/10 hover:border-neon-green/30 transition-all duration-500 backdrop-blur-sm">
+                {/* Green sphere hover effect */}
+                <div className="absolute bottom-0 left-0 w-0 h-0 bg-neon-green rounded-full transition-all duration-700 ease-out group-hover:w-[800px] group-hover:h-[800px] group-hover:-translate-x-1/2 group-hover:-translate-y-1/2 z-10"></div>
+                
+                <CardContent className="p-8 relative z-20">
+                  {/* Image */}
+                  <div className="mb-6 overflow-hidden rounded-lg">
+                    <img 
+                      src={service.image} 
+                      alt={service.title}
+                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  
+                  {/* Icon and Title */}
                   <div className="flex items-center mb-6">
-                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <service.icon size={28} className={service.iconColor} />
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mr-4 group-hover:bg-dark-bg/20 transition-colors duration-300">
+                      <service.icon size={24} className="text-neon-green group-hover:text-dark-bg transition-colors duration-300" />
                     </div>
-                    <h3 className="text-xl font-semibold text-white group-hover:text-white transition-colors duration-300">
+                    <h3 className="text-xl font-semibold text-white group-hover:text-dark-bg transition-colors duration-300">
                       {service.title}
                     </h3>
                   </div>
                   
-                  <p className="text-gray-300 mb-6 font-normal leading-relaxed group-hover:text-gray-200 transition-colors duration-300">
+                  {/* Description */}
+                  <p className="text-gray-300 mb-6 font-normal leading-relaxed group-hover:text-dark-bg/80 transition-colors duration-300">
                     {service.description}
                   </p>
                   
-                  <div className="space-y-3">
+                  {/* Features */}
+                  <div className="space-y-3 mb-8">
                     {service.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center space-x-3">
-                        <div className={`w-2 h-2 rounded-full ${service.iconColor.replace('text-', 'bg-')} group-hover:scale-125 transition-transform duration-300`} />
-                        <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300 font-medium">
+                        <div className="w-2 h-2 rounded-full bg-neon-green group-hover:bg-dark-bg transition-colors duration-300" />
+                        <span className="text-sm text-gray-400 group-hover:text-dark-bg/70 transition-colors duration-300 font-medium">
                           {feature}
                         </span>
                       </div>
                     ))}
                   </div>
                   
-                  <div className="mt-8 pt-6 border-t border-white/10">
-                    <Button 
-                      size="sm" 
-                      className={`w-full bg-white/5 hover:bg-gradient-to-r ${service.gradient} border ${service.borderColor} text-white transition-all duration-300 group-hover:scale-105`}
-                      asChild
-                    >
-                      <Link to="/contact">
-                        Get Started
-                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    </Button>
-                  </div>
+                  {/* CTA Button */}
+                  <Button 
+                    size="sm" 
+                    className="w-full bg-white/5 hover:bg-white/10 border border-white/20 text-white group-hover:bg-dark-bg group-hover:border-dark-bg group-hover:text-neon-green transition-all duration-300"
+                    asChild
+                  >
+                    <Link to="/contact">
+                      Get Started
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             ))}
