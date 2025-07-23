@@ -328,7 +328,7 @@ const Index = () => {
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
                         <img src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png" alt={testimonial.name} className="w-12 h-12 rounded-full object-cover mr-4" />
-                        <div className="bg-[e5ff00] bg-[#e5ff00]">
+                        <div className="bg-[e5ff00] bg-[#e5ff00]/[0.94]">
                           <div className="font-semibold text-sm text-left">{testimonial.name}</div>
                           <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
                         </div>
