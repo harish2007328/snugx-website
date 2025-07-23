@@ -282,59 +282,28 @@ const Index = () => {
       <section ref={servicesRef} className="py-20 px-4 bg-dark-bg">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
-              Services
+            <h2 className="text-5xl md:text-6xl font-bold mb-8 tracking-tight text-white">
+              What We Built
             </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto font-normal">
-              We specialize in creating digital experiences that not only look amazing but drive real business results.
+            <p className="text-xl text-gray-400 max-w-4xl mx-auto font-normal">
+              Our builds aren't just pretty — they perform, scroll, and sell.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {services.map((service, index) => (
-              <div key={index} className="glass-strong rounded-3xl p-10 hover:border-neon-green/50 transition-all duration-300 group relative overflow-hidden">
-                {/* Decorative gradient background */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-neon-green/20 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform duration-300" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-neon-green/10 to-transparent rounded-full translate-y-12 -translate-x-12" />
-                
-                <div className="relative z-10">
-                  {/* Service Number */}
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-neon-green/20 rounded-full mb-6 group-hover:bg-neon-green/30 transition-colors duration-300">
-                    <span className="text-neon-green font-bold text-lg">0{index + 1}</span>
-                  </div>
-                  
-                  {/* Service Title */}
-                  <h3 className="text-3xl font-bold text-white mb-6 tracking-tight group-hover:text-neon-green transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  
-                  {/* Service Description */}
-                  <p className="text-gray-300 mb-8 font-normal leading-relaxed text-lg">
-                    {service.description}
-                  </p>
-                  
-                  {/* Service Features */}
-                  <div className="space-y-3 mb-8">
-                    {service.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center space-x-3">
-                        <div className="w-2 h-2 bg-neon-green rounded-full flex-shrink-0"></div>
-                        <span className="text-gray-300 text-sm font-medium">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* CTA Button */}
-                  <Button 
-                    className="w-full bg-transparent border-2 border-neon-green/30 text-neon-green hover:bg-neon-green hover:text-dark-bg rounded-full py-4 font-semibold transition-all duration-300 text-sm tracking-wide group-hover:border-neon-green"
-                    asChild
-                  >
-                    <Link to="/contact">
-                      START {service.title.toUpperCase()} PROJECT
-                    </Link>
-                  </Button>
+          {/* Services Grid - 4x2 layout like the image */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Row 1 */}
+            <div className="bg-black/40 border border-gray-800 rounded-2xl p-8 hover:border-neon-green/30 transition-all duration-300 group">
+              <div className="mb-6">
+                <div className="w-12 h-12 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-neon-green" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
                 </div>
               </div>
-            ))}
+              <h3 className="text-xl font-bold text-white mb-4">Effortless Collab</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">Fast replies. Clear talk. No stress. We're easy to work with.</p>
+            </div>
           </div>
         </div>
       </section>
