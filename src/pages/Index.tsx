@@ -407,7 +407,7 @@ const Index = () => {
                   <span className="text-lg font-semibold text-light-text">{faq.question}</span>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-6">
-                  <p className="text-gray-300 font-normal leading-relaxed">{faq.answer}</p>
+                  <p className="text-gray-300 font-normal leading-relaxed text-left">{faq.answer}</p>
                 </AccordionContent>
               </AccordionItem>)}
           </Accordion>
