@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
@@ -250,73 +251,50 @@ All colors MUST be HSL.
   z-index: 5;
 }
 
-/* Testimonial Vertical Animations */
-@keyframes scroll-up {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
+/* Testimonial Smooth Scroll Animation */
+@keyframes testimonial-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-300px * 7))}
 }
 
-@keyframes scroll-down {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(100%);
-  }
+.testimonial-slider {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 600px;
 }
 
-@keyframes scroll-up-fast {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
+.testimonial-slider::before,
+.testimonial-slider::after {
+  background: linear-gradient(to right, rgba(3,3,3,1) 0%, rgba(3,3,3,0) 100%);
+  content: "";
+  height: 100%;
+  position: absolute;
+  width: 200px;
+  z-index: 2;
 }
 
-.animate-scroll-up {
-  animation: scroll-up 30s linear infinite;
+.testimonial-slider::after {
+  right: 0;
+  top: 0;
+  transform: rotateZ(180deg);
 }
 
-.animate-scroll-down {
-  animation: scroll-down 25s linear infinite;
+.testimonial-slider::before {
+  left: 0;
+  top: 0;
 }
 
-.animate-scroll-up-fast {
-  animation: scroll-up-fast 20s linear infinite;
+.testimonial-track {
+  animation: testimonial-scroll 40s linear infinite;
+  display: flex;
+  width: calc(300px * 14);
+  gap: 1.5rem;
 }
 
-/* Duplicate testimonial animations */
-@keyframes scroll-up-duplicate {
-  0% {
-    transform: translateY(50%);
-  }
-  100% {
-    transform: translateY(-50%);
-  }
-}
-
-@keyframes scroll-down-duplicate {
-  0% {
-    transform: translateY(-50%);
-  }
-  100% {
-    transform: translateY(50%);
-  }
-}
-
-.animate-scroll-up-duplicate {
-  animation: scroll-up-duplicate 30s linear infinite;
-  animation-fill-mode: both;
-}
-
-.animate-scroll-down-duplicate {
-  animation: scroll-down-duplicate 25s linear infinite;
-  animation-fill-mode: both;
+.testimonial-item {
+  width: 300px;
+  flex-shrink: 0;
 }
 
 /* Responsive testimonial columns */
