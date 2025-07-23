@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
 const Index = () => {
@@ -146,6 +147,25 @@ interface CaseStudy {
 
   // Sample avatar images
   const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
+
+  const faqs = [
+    {
+      question: "What's included in the design process?",
+      answer: "We start with research and strategy, create wireframes and mockups, design the full website, and iterate based on your feedback."
+    },
+    {
+      question: "Do you provide ongoing support?",
+      answer: "Yes! All plans include support for bug fixes and minor updates. We also offer extended maintenance packages."
+    },
+    {
+      question: "Can I upgrade my plan later?",
+      answer: "Absolutely! You can upgrade your plan at any time, and we'll adjust the pricing accordingly."
+    },
+    {
+      question: "What if I'm not satisfied?",
+      answer: "We offer a 100% money-back guarantee within the first 14 days if you're not completely satisfied."
+    }
+  ];
   return <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
@@ -410,6 +430,37 @@ interface CaseStudy {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
+              Frequently Asked <span className="text-neon-green">Questions ✦</span>
+            </h2>
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto font-normal">
+              Get answers to common questions about our design process and services.
+            </p>
+          </div>
+
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs.map((faq, index) => (
+              <AccordionItem 
+                key={index} 
+                value={`item-${index}`} 
+                className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 rounded-lg hover:border-neon-green/30 transition-all duration-300 backdrop-blur-sm"
+              >
+                <AccordionTrigger className="px-6 py-6 text-left hover:no-underline [&[data-state=open]>svg]:text-neon-green">
+                  <span className="text-lg font-semibold text-light-text">{faq.question}</span>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-6">
+                  <p className="text-gray-300 font-normal leading-relaxed">{faq.answer}</p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 
