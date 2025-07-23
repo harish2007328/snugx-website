@@ -7,14 +7,14 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
 const Index = () => {
-interface CaseStudy {
-  id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  category: string;
-  results: string[];
-}
+  interface CaseStudy {
+    id: string;
+    title: string;
+    description: string;
+    thumbnail: string;
+    category: string;
+    results: string[];
+  }
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
@@ -23,7 +23,6 @@ interface CaseStudy {
   const [featuredCaseStudies, setFeaturedCaseStudies] = useState<CaseStudy[]>([]);
   useEffect(() => {
     fetchFeaturedCaseStudies();
-    
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
@@ -32,7 +31,7 @@ interface CaseStudy {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate-fade-in');
-          
+
           // Trigger stats animation when stats section is visible
           if (entry.target === statsRef.current && !hasAnimated) {
             setHasAnimated(true);
@@ -46,33 +45,29 @@ interface CaseStudy {
     if (statsRef.current) observer.observe(statsRef.current);
     return () => observer.disconnect();
   }, []);
-
   const fetchFeaturedCaseStudies = async () => {
     try {
       // Get homepage project IDs from localStorage
       const homepageProjects = JSON.parse(localStorage.getItem('homepage_projects') || '[]');
-      
       if (homepageProjects.length === 0) {
         // Fallback to latest 3 if no homepage projects selected
-        const { data, error } = await supabase
-          .from('case_studies')
-          .select('*')
-          .limit(3)
-          .order('created_at', { ascending: false });
-
+        const {
+          data,
+          error
+        } = await supabase.from('case_studies').select('*').limit(3).order('created_at', {
+          ascending: false
+        });
         if (error) throw error;
         setFeaturedCaseStudies(data || []);
       } else {
         // Fetch specific homepage projects
-        const { data, error } = await supabase
-          .from('case_studies')
-          .select('*')
-          .in('id', homepageProjects);
-
+        const {
+          data,
+          error
+        } = await supabase.from('case_studies').select('*').in('id', homepageProjects);
         if (error) throw error;
         setFeaturedCaseStudies(data || []);
       }
-
     } catch (error) {
       console.error('Error fetching featured case studies:', error);
     }
@@ -82,17 +77,14 @@ interface CaseStudy {
     const duration = 2000; // 2 seconds
     const steps = 60;
     const stepDuration = duration / steps;
-    
     let currentStep = 0;
     const timer = setInterval(() => {
       currentStep++;
       const progress = currentStep / steps;
-      
       setAnimatedStats(targets.map(target => {
         const current = Math.round(target * progress);
         return current;
       }));
-      
       if (currentStep >= steps) {
         clearInterval(timer);
         setAnimatedStats(targets);
@@ -147,25 +139,19 @@ interface CaseStudy {
 
   // Sample avatar images
   const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
-
-  const faqs = [
-    {
-      question: "What's included in the design process?",
-      answer: "We start with research and strategy, create wireframes and mockups, design the full website, and iterate based on your feedback."
-    },
-    {
-      question: "Do you provide ongoing support?",
-      answer: "Yes! All plans include support for bug fixes and minor updates. We also offer extended maintenance packages."
-    },
-    {
-      question: "Can I upgrade my plan later?",
-      answer: "Absolutely! You can upgrade your plan at any time, and we'll adjust the pricing accordingly."
-    },
-    {
-      question: "What if I'm not satisfied?",
-      answer: "We offer a 100% money-back guarantee within the first 14 days if you're not completely satisfied."
-    }
-  ];
+  const faqs = [{
+    question: "What's included in the design process?",
+    answer: "We start with research and strategy, create wireframes and mockups, design the full website, and iterate based on your feedback."
+  }, {
+    question: "Do you provide ongoing support?",
+    answer: "Yes! All plans include support for bug fixes and minor updates. We also offer extended maintenance packages."
+  }, {
+    question: "Can I upgrade my plan later?",
+    answer: "Absolutely! You can upgrade your plan at any time, and we'll adjust the pricing accordingly."
+  }, {
+    question: "What if I'm not satisfied?",
+    answer: "We offer a 100% money-back guarantee within the first 14 days if you're not completely satisfied."
+  }];
   return <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
@@ -289,8 +275,7 @@ interface CaseStudy {
             </p>
           </div>
 
-          {featuredCaseStudies.length === 0 ? (
-            <div className="text-center py-20">
+          {featuredCaseStudies.length === 0 ? <div className="text-center py-20">
               <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
                 <Star className="w-12 h-12 text-gray-400" />
               </div>
@@ -298,32 +283,21 @@ interface CaseStudy {
               <p className="text-xl text-gray-400 mb-6">
                 Add your first case study from the admin panel to showcase your work.
               </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {featuredCaseStudies.map((caseStudy) => (
-                <Card key={caseStudy.id} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
+            </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {featuredCaseStudies.map(caseStudy => <Card key={caseStudy.id} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
                   <div className="aspect-video overflow-hidden">
-                    <img 
-                      src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
-                      alt={caseStudy.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    <img src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'} alt={caseStudy.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   </div>
                   <CardContent className="p-8 relative">
                     <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
                     <p className="text-gray-400 mb-6 font-normal">{caseStudy.description}</p>
-                    {caseStudy.results && caseStudy.results.length > 0 && (
-                      <p className="text-neon-green text-sm mb-4 font-medium">{caseStudy.results[0]}</p>
-                    )}
+                    {caseStudy.results && caseStudy.results.length > 0 && <p className="text-neon-green text-sm mb-4 font-medium">{caseStudy.results[0]}</p>}
                     <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm" asChild>
                       <Link to={`/case-studies/${caseStudy.id}`}>View Case Study</Link>
                     </Button>
                   </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+                </Card>)}
+            </div>}
 
           <div className="text-center">
             <Button size="lg" className="btn-primary px-10 py-4" asChild>
@@ -348,17 +322,12 @@ interface CaseStudy {
           <div className="testimonial-columns">
             {/* Column 1 - Moving Up */}
             <div className="flex flex-col space-y-6 animate-scroll-up">
-              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
-                <Card key={`col1-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
+              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => <Card key={`col1-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img 
-                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
-                          alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover mr-4"
-                        />
+                        <img src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png" alt={testimonial.name} className="w-12 h-12 rounded-full object-cover mr-4" />
                         <div>
                           <div className="font-semibold text-sm">{testimonial.name}</div>
                           <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
@@ -370,23 +339,17 @@ interface CaseStudy {
                       <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
 
             {/* Column 2 - Moving Down */}
             <div className="flex flex-col space-y-6 animate-scroll-down hidden lg:flex">
-              {[...testimonials.slice().reverse(), ...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => (
-                <Card key={`col2-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
+              {[...testimonials.slice().reverse(), ...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => <Card key={`col2-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 -translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img 
-                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
-                          alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover mr-4"
-                        />
+                        <img src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png" alt={testimonial.name} className="w-12 h-12 rounded-full object-cover mr-4" />
                         <div>
                           <div className="font-semibold text-sm">{testimonial.name}</div>
                           <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
@@ -398,23 +361,17 @@ interface CaseStudy {
                       <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
 
             {/* Column 3 - Moving Up Fast */}
             <div className="flex flex-col space-y-6 animate-scroll-up-fast hidden md:flex">
-              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
-                <Card key={`col3-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
+              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => <Card key={`col3-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img 
-                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
-                          alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover mr-4"
-                        />
+                        <img src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png" alt={testimonial.name} className="w-12 h-12 rounded-full object-cover mr-4" />
                         <div>
                           <div className="font-semibold text-sm">{testimonial.name}</div>
                           <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
@@ -426,8 +383,7 @@ interface CaseStudy {
                       <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </div>
@@ -446,20 +402,14 @@ interface CaseStudy {
           </div>
 
           <Accordion type="single" collapsible className="space-y-4">
-            {faqs.map((faq, index) => (
-              <AccordionItem 
-                key={index} 
-                value={`item-${index}`} 
-                className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 rounded-lg hover:border-neon-green/30 transition-all duration-300 backdrop-blur-sm"
-              >
-                <AccordionTrigger className="px-6 py-6 text-left hover:no-underline [&[data-state=open]>svg]:text-neon-green">
+            {faqs.map((faq, index) => <AccordionItem key={index} value={`item-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 rounded-lg hover:border-neon-green/30 transition-all duration-300 backdrop-blur-sm">
+                <AccordionTrigger className="text-left hover:no-underline [&[data-state=open]>svg]:text-neon-green py-[8px] px-[15px]">
                   <span className="text-lg font-semibold text-light-text">{faq.question}</span>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-6">
                   <p className="text-gray-300 font-normal leading-relaxed">{faq.answer}</p>
                 </AccordionContent>
-              </AccordionItem>
-            ))}
+              </AccordionItem>)}
           </Accordion>
         </div>
       </section>
