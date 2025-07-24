@@ -5,24 +5,21 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
-
 const Index = () => {
-  interface CaseStudy {
-    id: string;
-    title: string;
-    description: string;
-    thumbnail: string;
-    category: string;
-    results: string[];
-  }
-
+interface CaseStudy {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  category: string;
+  results: string[];
+}
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const [animatedStats, setAnimatedStats] = useState([0, 0, 0, 0]);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [featuredCaseStudies, setFeaturedCaseStudies] = useState<CaseStudy[]>([]);
-
   useEffect(() => {
     fetchFeaturedCaseStudies();
     
@@ -101,40 +98,44 @@ const Index = () => {
       }
     }, stepDuration);
   };
-
   const services = [
     {
-      icon: Code,
+      icon: Code, // Using Code icon from already imported lucide-react icons
       title: "Web Design & Development",
-      description: "Custom-built websites with stunning UI and smooth UX — from landing pages to full-scale platforms."
+      description: "Custom-built websites with stunning UI and smooth UX — from landing pages to full-scale platforms.",
+      features: []
     },
     {
-      icon: Smartphone,
+      icon: Smartphone, // Using Smartphone icon from lucide-react
       title: "UI/UX Design",
-      description: "Intuitive interfaces crafted with user psychology in mind — for mobile, desktop, and beyond."
+      description: "Intuitive interfaces crafted with user psychology in mind — for mobile, desktop, and beyond.",
+      features: []
     },
     {
-      icon: ShoppingBag,
+      icon: ShoppingBag, // Replace with appropriate SVG import
       title: "Portfolio & Personal Websites",
-      description: "Stand out with a pixel-perfect personal site or creative portfolio — ideal for freelancers, students, and creators."
+      description: "Stand out with a pixel-perfect personal site or creative portfolio — ideal for freelancers, students, and creators.",
+      features: []
     },
     {
-      icon: Briefcase,
+      icon: Briefcase, // Replace with appropriate SVG import
       title: "Business Websites for Startups",
-      description: "One-page, multi-page, or full-service sites built to convert visitors into customers — fast."
+      description: "One-page, multi-page, or full-service sites built to convert visitors into customers — fast.",
+      features: []
     },
     {
-      icon: Sparkles,
+      icon: Sparkles, // Replace with appropriate SVG import
       title: "SEO & Performance Optimization",
-      description: "We make your website lightning-fast, search-friendly, and ready to rank with clean code and structured design."
+      description: "We make your website lightning-fast, search-friendly, and ready to rank with clean code and structured design.",
+      features: []
     },
     {
-      icon: Users,
+      icon: Users, // Replace with appropriate SVG import
       title: "Admin Dashboard & CMS Integration",
-      description: "Want to manage your own blogs or content? We integrate Supabase so you stay in control without touching code."
+      description: "Want to manage your own blogs or content? We integrate Supabase so you stay in control without touching code.",
+      features: []
     }
   ];
-
   const stats = [{
     number: "150+",
     label: "Projects\nCompleted"
@@ -148,7 +149,6 @@ const Index = () => {
     number: "24/7",
     label: "Support\nAvailable"
   }];
-
   const testimonials = [{
     name: "Sarah Johnson",
     company: "TechStartup Inc.",
@@ -181,10 +181,9 @@ const Index = () => {
     rating: 5
   }];
 
+  // Sample avatar images
   const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
-
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
         {/* Blurred Circles */}
@@ -275,18 +274,18 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm rounded-2xl overflow-hidden">
-                <CardContent className="p-8 h-full">
-                  <div className="flex items-center justify-center w-16 h-16 bg-neon-green/10 rounded-2xl mb-6 group-hover:bg-neon-green/20 transition-colors">
-                    <service.icon size={32} className="text-neon-green" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {services.map((service, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm">
+                <CardContent className="p-5 text-center relative overflow-hidden">
+                  <div className="relative z-10">
+                    <div className="relative z-10 flex flex-row items-center mb-4">
+                      <service.icon size={36} className="text-neon-green mx-2 my-2 mr-6 group-hover:scale-110 transition-transform" />
+                      <h3 className="text-xl font-semibold text-left">{service.title}</h3>
+                    </div>
+                  <p className="text-gray-300 mb-4 font-normal text-left text-sm">{service.description}</p>
                   </div>
-                  <h3 className="text-xl font-semibold mb-4 leading-tight">{service.title}</h3>
-                  <p className="text-gray-300 font-normal text-sm leading-relaxed">{service.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -447,67 +446,28 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section - Redesigned */}
-      <section className="py-32 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-neon-green/5 via-transparent to-neon-green/5"></div>
-        
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-20 w-32 h-32 bg-neon-green/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-20 w-40 h-40 bg-neon-green/5 rounded-full blur-3xl"></div>
-        
-        <div className="max-w-5xl mx-auto text-center space-y-12 relative z-10">
-          {/* Badge */}
-          <div className="inline-flex items-center space-x-2 bg-neon-green/10 border border-neon-green/20 rounded-full px-6 py-3 text-sm font-medium">
-            <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></div>
-            <span className="text-neon-green">Free Consultation Available</span>
-          </div>
-
-          {/* Main heading */}
-          <h2 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight">
-            Ready to <span className="text-neon-green">Transform ✦</span><br />
-            Your Business?
+      {/* CTA Section */}
+      <section className="py-20 px-4 bg-secondary/20">
+        <div className="max-w-7xl mx-auto text-center space-y-10 px-8">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
+            Ready to <span className="text-neon-green">Transform ✦</span> Your Business?
           </h2>
-          
-          {/* Description */}
-          <p className="text-xl md:text-2xl text-gray-300 font-normal max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-gray-300 font-normal">
             Join hundreds of successful businesses that chose Snugx for their digital transformation.
           </p>
           
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
-            <Button size="lg" className="btn-primary px-12 py-6 text-lg font-semibold group shadow-lg shadow-neon-green/20 hover:shadow-xl hover:shadow-neon-green/30 transition-all duration-300" asChild>
-              <Link to="/contact">
-                Start Your Project Today
-                <ArrowRight className="ml-3 group-hover:translate-x-1 transition-transform w-5 h-5" />
-              </Link>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Button size="lg" className="btn-primary px-10 py-4" asChild>
+              <Link to="/contact">Start Your Project Today</Link>
             </Button>
-            <Button size="lg" className="btn-secondary px-12 py-6 text-lg font-semibold border-2 border-white/20 hover:border-neon-green/30 transition-all duration-300" asChild>
+            <Button size="lg" className="btn-secondary px-10 py-4" asChild>
               <Link to="/pricing">View Pricing</Link>
             </Button>
-          </div>
-
-          {/* Trust indicators */}
-          <div className="pt-12 flex flex-col sm:flex-row items-center justify-center gap-8 text-gray-400">
-            <div className="flex items-center space-x-2">
-              <CheckCircle size={16} className="text-neon-green" />
-              <span className="text-sm">No long-term contracts</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle size={16} className="text-neon-green" />
-              <span className="text-sm">Money-back guarantee</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle size={16} className="text-neon-green" />
-              <span className="text-sm">24/7 support included</span>
-            </div>
           </div>
         </div>
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
