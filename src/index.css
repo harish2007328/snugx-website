@@ -250,61 +250,54 @@ All colors MUST be HSL.
   z-index: 5;
 }
 
-/* Testimonial Smooth Scroll Animation */
-@keyframes testimonial-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-300px * 7))}
-}
-
-.testimonial-slider {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  height: 600px;
-}
-
-.testimonial-slider::before,
-.testimonial-slider::after {
-  background: linear-gradient(to right, rgba(3,3,3,1) 0%, rgba(3,3,3,0) 100%);
-  content: "";
-  height: 100%;
-  position: absolute;
-  width: 200px;
-  z-index: 2;
-}
-
-.testimonial-slider::after {
-  right: 0;
-  top: 0;
-  transform: rotateZ(180deg);
-}
-
-.testimonial-slider::before {
-  left: 0;
-  top: 0;
-}
-
-.testimonial-track {
-  animation: testimonial-scroll 40s linear infinite;
-  display: flex;
-  width: calc(300px * 14);
-  gap: 1.5rem;
-}
-
-.testimonial-item {
-  width: 300px;
-  flex-shrink: 0;
-}
-
-/* Responsive testimonial columns */
 .testimonial-columns {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 1.5rem; /* 24px */
+  --total-height: 500px; /* Adjust as needed */
+  height: var(--total-height);
   overflow: hidden;
-  height: 600px;
+  position: relative;
 }
 
+.testimonial-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* 24px */
+}
+
+.testimonial-column.animate-scroll-up:hover,
+.testimonial-column.animate-scroll-down:hover {
+  animation-play-state: paused;
+}
+
+.animate-scroll-up {
+  animation: scroll-up 40s linear infinite;
+}
+
+.animate-scroll-down {
+  animation: scroll-down 40s linear infinite;
+}
+
+@keyframes scroll-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-50% - 0.75rem));
+  }
+}
+
+@keyframes scroll-down {
+  from {
+    transform: translateY(calc(-50% - 0.75rem));
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Responsive testimonial columns */
 @media (max-width: 1024px) {
   .testimonial-columns {
     grid-template-columns: repeat(2, 1fr);
@@ -314,8 +307,14 @@ All colors MUST be HSL.
 @media (max-width: 768px) {
   .testimonial-columns {
     grid-template-columns: 1fr;
+    height: 600px;
+  }
+
+  .testimonial-column:nth-child(n+2) {
+    display: none;
   }
 }
+
 
 /* Glow Animation for Neon Elements */
 @keyframes glow-pulse {

@@ -360,27 +360,23 @@ interface CaseStudy {
 
           <div className="testimonial-columns">
             {/* Column 1 - Moving Up */}
-            <div className="flex flex-col space-y-6 animate-scroll-up">
-              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+            <div className="testimonial-column animate-scroll-up">
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
                 <Card key={`col1-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img 
-                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
+                        <img
+                          src={`/hero-images/c${(index % 5) + 1}.png`}
                           alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover mr-4"
+                          className="w-8 h-8 rounded-full object-cover mr-4"
                         />
                         <div>
-                          <div className="font-semibold text-sm">{testimonial.name}</div>
-                          <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
+                          <div className="font-semibold text-sm text-left">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs text-left">{testimonial.company}</div>
                         </div>
                       </div>
-                      <div className="flex mb-4">
-                        {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-neon-green fill-current" />)}
-                      </div>
-                      <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
+                      <p className="text-gray-300 italic font-normal text-sm text-left">"{testimonial.text}"</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -388,55 +384,48 @@ interface CaseStudy {
             </div>
 
             {/* Column 2 - Moving Down */}
-            <div className="flex flex-col space-y-6 animate-scroll-down hidden lg:flex">
-              {[...testimonials.slice().reverse(), ...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => (
+            <div className="testimonial-column animate-scroll-down">
+              {[...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => (
                 <Card key={`col2-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 -translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img 
-                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
+                        <img
+                          src={`/hero-images/c${((index + 2) % 5) + 1}.png`}
                           alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover mr-4"
+                          className="w-8 h-8 rounded-full object-cover mr-4"
                         />
                         <div>
-                          <div className="font-semibold text-sm">{testimonial.name}</div>
-                          <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
+                          <div className="font-semibold text-sm text-left">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs text-left">{testimonial.company}</div>
                         </div>
                       </div>
-                      <div className="flex mb-4">
-                        {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-neon-green fill-current" />)}
-                      </div>
-                      <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
+                      <p className="text-gray-300 italic font-normal text-sm text-left">"{testimonial.text}"</p>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
 
-            {/* Column 3 - Moving Up Fast */}
-            <div className="flex flex-col space-y-6 animate-scroll-up-fast hidden md:flex">
-              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+            {/* Column 3 - Moving Up */}
+            <div className="testimonial-column animate-scroll-up">
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
                 <Card key={`col3-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
                   <CardContent className="p-8 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-8 translate-x-8" />
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img 
-                          src="/lovable-uploads/6cd327ef-2a7c-4c5f-95e5-b3b6b4e7fad0.png"
+                        <img
+                          src={`/hero-images/c${((index + 4) % 5) + 1}.png`}
                           alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover mr-4"
+                          className="w-8 h-8 rounded-full object-cover mr-4"
                         />
                         <div>
-                          <div className="font-semibold text-sm">{testimonial.name}</div>
-                          <div className="text-neon-green font-medium text-xs">{testimonial.company}</div>
+                          <div className="font-semibold text-sm text-left">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs text-left">{testimonial.company}</div>
                         </div>
                       </div>
-                      <div className="flex mb-4">
-                        {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-neon-green fill-current" />)}
-                      </div>
-                      <p className="text-gray-300 italic font-normal text-sm">"{testimonial.text}"</p>
+
+                      <p className="text-gray-300 italic font-normal text-sm text-left">"{testimonial.text}"</p>
                     </div>
                   </CardContent>
                 </Card>
