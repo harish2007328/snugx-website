@@ -235,7 +235,6 @@ All colors MUST be HSL.
   margin-left: 0;
 }
 
-
 /* Half oval with shadow */
 .circle {
   position: absolute;
@@ -248,6 +247,12 @@ All colors MUST be HSL.
   border-radius: 100%;
   box-shadow: 0 -20px 250px #e5ff00;
   z-index: 5;
+}
+
+@media (max-width: 768px) {
+  .circle{
+    bottom: -280px;
+  }
 }
 
 .testimonial-columns {

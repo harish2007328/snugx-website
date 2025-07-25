@@ -185,7 +185,7 @@ interface CaseStudy {
   const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
   return <div className="min-h-screen">
       {/* Hero Section */}
-      <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden ">
+      <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-28 pb-40  bg-dark-bg hero-noise-effect overflow-hidden">
         {/* Blurred Circles */}
         <div className="hero-blur-circle-1"></div>
         <div className="hero-blur-circle-2"></div>
@@ -200,7 +200,7 @@ interface CaseStudy {
         {/* bottom or upper circle */}
         <div className="circle"></div>
         
-        <div className="w-full mx-auto text-center space-y-12 relative z-10 max-w-none px-8">
+        <div className="w-full mx-auto text-center space-y-8 md:space-y-12 relative z-10 max-w-none px-8">
           {/* Free Consultation Badge */}
           <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-2.5 py-1 text-sm font-medium">
             <div className="w-2 h-2 glow-dot"></div>
@@ -208,7 +208,7 @@ interface CaseStudy {
           </div>
 
           <div className="space-y-8">
-            <h1 className="text-6xl md:text-7xl font-bold leading-tight tracking-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight tracking-tight">
               We craft <span className="text-neon-green font-bold">bold ✦</span>
               <br />
               websites that just hit.
@@ -218,11 +218,10 @@ interface CaseStudy {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center ">
             <Button size="lg" className="btn-primary px-8 py-4 text-base group" asChild>
               <Link to="/contact">
-                <User className="mr-2 w-5 h-5" />
-                Book a call With Harish
+                Book a call
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
               </Link>
             </Button>
@@ -230,16 +229,7 @@ interface CaseStudy {
               <Link to="/case-studies">View Our Works</Link>
             </Button>
           </div>
-
-          {/* Avatar Stack and Text */}
-          <div className="mt-16 mb-16 flex flex-col sm:flex-row items-center justify-center gap-2 mx-0 my-[6px]">
-            <div className="avatar-stack">
-              {avatarImages.map((src, index) => <div key={index} className="avatar-item w-6 h-6">
-                  <img src={src} alt={`Happy client ${index + 1}`} className="w-full h-full object-cover rounded-full" loading="eager" />
-                </div>)}
-            </div>
-            <p className="text-gray-400 text-sm font-medium">30+ Happy agencies, startups, and consultants</p>
-          </div>
+          
         </div>
         
         {/* Half oval with shadow */}
