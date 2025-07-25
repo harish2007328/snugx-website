@@ -185,7 +185,7 @@ interface CaseStudy {
   const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
   return <div className="min-h-screen">
       {/* Hero Section */}
-      <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden">
+      <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-32 pb-16 bg-dark-bg hero-noise-effect overflow-hidden ">
         {/* Blurred Circles */}
         <div className="hero-blur-circle-1"></div>
         <div className="hero-blur-circle-2"></div>
@@ -196,17 +196,20 @@ interface CaseStudy {
         <div className="comet comet-2"></div>
         <div className="comet comet-3"></div>
         <div className="comet comet-4"></div>
+
+        {/* bottom or upper circle */}
+        <div className="circle"></div>
         
         <div className="w-full mx-auto text-center space-y-12 relative z-10 max-w-none px-8">
           {/* Free Consultation Badge */}
-          <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-4 py-2 text-sm font-medium">
+          <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-2.5 py-1 text-sm font-medium">
             <div className="w-2 h-2 glow-dot"></div>
             <span>Free Consultation</span>
           </div>
 
           <div className="space-y-8">
-            <h1 className="text-5xl md:text-7xl font-semibold leading-tight tracking-tight">
-              We craft <span className="text-neon-green font-semibold">bold ✦</span>
+            <h1 className="text-6xl md:text-7xl font-bold leading-tight tracking-tight">
+              We craft <span className="text-neon-green font-bold">bold ✦</span>
               <br />
               websites that just hit.
             </h1>
@@ -229,7 +232,7 @@ interface CaseStudy {
           </div>
 
           {/* Avatar Stack and Text */}
-          <div className="mt-16 mb-16 flex flex-col sm:flex-row items-center justify-center gap-6 mx-0 my-[6px]">
+          <div className="mt-16 mb-16 flex flex-col sm:flex-row items-center justify-center gap-2 mx-0 my-[6px]">
             <div className="avatar-stack">
               {avatarImages.map((src, index) => <div key={index} className="avatar-item w-6 h-6">
                   <img src={src} alt={`Happy client ${index + 1}`} className="w-full h-full object-cover rounded-full" loading="eager" />

@@ -237,13 +237,13 @@ All colors MUST be HSL.
 
 
 /* Half oval with shadow */
-.hero-oval {
+.circle {
   position: absolute;
-  bottom: -460px;
+  bottom: -300px;
   left: 50%;
   transform: translateX(-50%);
-  width: 3000px;
-  height: 520px;
+  width: 120vw;
+  height: 400px;
   background: #111111;
   border-radius: 100%;
   box-shadow: 0 -20px 250px #e5ff00;
