@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
+import Lottie from "lottie-react";
+import bento2Animation from "../../public/bento-files/graph.json";
+
 const Index = () => {
 interface CaseStudy {
   id: string;
@@ -273,6 +276,50 @@ interface CaseStudy {
                   <div className="text-gray-300 font-medium bg-black/0 whitespace-pre-line leading-tight">{stat.label}</div>
                 </CardContent>
               </Card>)}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-20 px-4 bg-dark-bg">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Why Brands Choose snugx.</h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">Small tweaks. Big impact. Here's what sets us apart.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-5 gap-8 min-h-[650px]">
+            <Card className="relative md:col-span-2 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-8 flex flex-col justify-between overflow-hidden min-h-[300px]">
+              <div className="text-left">
+                <h3 className="text-2xl font-semibold mb-2">Real-Time Updates</h3>
+                <p className="text-gray-400">Easy edits, no waiting.</p>
+              </div>
+              <div className="bento-lottie-container-1 mt-8 flex-grow">
+                <img src="/bento-files/1.svg" alt="Bento 1" className="bento-svg-1" />
+              </div>
+              <div className='bottom-gradient-1'></div>
+            </Card>
+            <Card className="relative md:col-span-4 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-8 flex flex-col justify-between overflow-hidden min-h-[300px]">
+              <div className="text-left">
+                <h3 className="text-2xl font-semibold mb-2">Design That Converts</h3>
+                <p className="text-gray-400">Built to look great — and work even better.</p>
+              </div>
+              <div className="bento-lottie-container-2 mt-8 flex-grow">
+                <Lottie animationData={bento2Animation} className="bento-lottie-2" />
+              </div>
+              <div className='bottom-gradient-2'></div>
+            </Card>
+            <Card className="md:col-span-4 md:row-span-2 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-8 flex flex-col justify-between overflow-hidden">
+              <div className="text-left">
+                <h3 className="text-2xl font-semibold mb-2">Lightning-Fast Delivery</h3>
+                <p className="text-gray-400">Fast launches without the stress.</p>
+              </div>
+            </Card>
+            <Card className="md:col-span-2 md:row-span-2 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-8 flex flex-col justify-between overflow-hidden">
+              <div className="text-left">
+                <h3 className="text-2xl font-semibold mb-2">Perfectly Placed Pixels</h3>
+                <p className="text-gray-400">Built to look great — and work even better.</p>
+              </div>
+            </Card>
           </div>
         </div>
       </section>

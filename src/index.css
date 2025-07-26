@@ -199,6 +199,85 @@ All colors MUST be HSL.
   }
 }
 
+.bento-lottie-container-1 {
+  position: absolute;
+  bottom: -150px;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bento-svg-1 {
+  animation: spin 8s linear infinite;
+  width: 350px;
+  height: 350px;
+}
+
+.bottom-gradient-1 {
+  position: absolute;
+  height:20rem;
+  bottom: -100px;
+  right: 0;
+  left: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229, 255, 0, 0.637) 0%, rgba(229, 255, 0, 0.325) 50%, rgba(229, 255, 0, 0) 100%);
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  filter: blur(50px);
+}
+
+.bottom-gradient-2 {
+  position: absolute;
+  height:30rem;
+  bottom: -400px;
+  right: 0;
+  left: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(229, 255, 0) 0%, rgba(229, 255, 0, 0.492) 50%, rgba(229, 255, 0, 0) 100%);
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  filter: blur(100px);
+}
+
+.bento-lottie-container-2 {
+  position: absolute;
+  bottom: -190px;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.bento-lottie-2 {
+  width: 50rem; 
+  height: 50rem; 
+}
+
+@media (max-width: 768px) {
+  .bento-lottie-container-2{
+    bottom: -280px;
+  }
+}
+
 /* Button styles */
 .btn-primary {
   @apply bg-neon-green text-dark-bg hover:bg-neon-green/90 font-bold rounded-full transition-all shadow-lg ;
