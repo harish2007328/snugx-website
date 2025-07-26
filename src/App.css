@@ -38,3 +38,12 @@
 .read-the-docs {
   color: #888;
 }
+
+.scroll-down-indicator {
+
+  transition: all 0.3s ease;
+}
+
+.scroll-down-indicator:hover {
+  transform: translateY(5px);
+}

@@ -246,7 +246,14 @@ All colors MUST be HSL.
   background: #111111;
   border-radius: 100%;
   box-shadow: 0 -20px 250px #e5ff00;
-  z-index: 5;
+  z-index: 3;
+}
+
+.Btm-text{
+  color: #e5ff00;
+  position: absolute;
+  bottom: 20px;
+  z-index: 4;
 }
 
 @media (max-width: 768px) {

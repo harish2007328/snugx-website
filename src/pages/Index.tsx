@@ -199,6 +199,28 @@ interface CaseStudy {
 
         {/* bottom or upper circle */}
         <div className="circle"></div>
+        <div
+          className='Btm-text scroll-down-indicator cursor-pointer'
+          onClick={() => statsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+          style={{ cursor: 'pointer' }}
+          >
+          Scroll Down
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='16'
+            height='16'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            className='ml-2 inline-block'
+          >
+            <line x1='12' y1='5' x2='12' y2='19'></line>
+            <polyline points='19 12 12 19 5 12'></polyline>
+          </svg>
+        </div>
         
         <div className="w-full mx-auto text-center space-y-8 md:space-y-12 relative z-10 max-w-none px-8">
           {/* Free Consultation Badge */}
