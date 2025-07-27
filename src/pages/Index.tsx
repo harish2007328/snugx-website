@@ -294,7 +294,7 @@ interface CaseStudy {
                 <p className="text-gray-400">Easy edits, no waiting.</p>
               </div>
               <div className="bento-lottie-container-1 mt-8 flex-grow">
-                <img src="/src/bento-files/real-time.svg" alt="Bento 1" className="bento-svg-1" />
+                <img src="/bento-files/real-time.svg" alt="Bento 1" className="bento-svg-1" />
               </div>
               <div className='bottom-gradient-1'></div>
             </Card>
