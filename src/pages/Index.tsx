@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
-import Lottie from "lottie-react";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const Index = () => {
 interface CaseStudy {
@@ -303,7 +303,12 @@ interface CaseStudy {
                 <p className="text-gray-400">Built to look great — and work even better.</p>
               </div>
               <div className="bento-lottie-container-2 mt-8 flex-grow">
-                <Lottie animationData={require("/bento-files/graph.json")} className="bento-lottie-2" />
+                <DotLottieReact
+                  src="/bento-files/graph.json"
+                  loop
+                  autoplay
+                  className="bento-lottie-2"
+                />
               </div>
               <div className='bottom-gradient-2'></div>
             </Card>
