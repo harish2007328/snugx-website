@@ -264,7 +264,7 @@ interface CaseStudy {
       <section ref={statsRef} className="py-20 px-4 bg-secondary/0">
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/30 to-dark-bg border border-white/10 text-center p-8 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+            {stats.map((stat, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/30 to-dark-bg border border-white/10 text-center p-5 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm w-full">
                 <CardContent className="p-0">
                   <div className="text-4xl font-bold text-neon-green mb-3">
                     {index === 0 && `${animatedStats[0]}+`}
@@ -287,7 +287,7 @@ interface CaseStudy {
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">Small tweaks. Big impact. Here's what sets us apart.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-5 gap-8 min-h-[650px]">
-            <Card className="relative md:col-span-2 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[250px]">
+            <Card className="relative md:col-span-2 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[300px]">
               <div className="text-left">
                 <h3 className="text-2xl font-semibold mb-2">Real-Time Updates</h3>
                 <p className="text-gray-400">Easy edits, no waiting.</p>
