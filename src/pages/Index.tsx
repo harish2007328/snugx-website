@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
 import Lottie from "lottie-react";
-import bento2Animation from "../../src/bento-files/graph.json";
+import bento2Animation from "../../public/bento-files/graph.json";
 
 const Index = () => {
 interface CaseStudy {
