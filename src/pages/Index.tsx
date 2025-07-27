@@ -283,7 +283,7 @@ interface CaseStudy {
       <section className="py-20 px-4 bg-dark-bg">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Why Brands Choose snugx.</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Why Brands Choose <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="snugx logo" className="inline-block h-10 align-center" /></h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">Small tweaks. Big impact. Here's what sets us apart.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-5 gap-8 min-h-[650px]">
