@@ -258,7 +258,7 @@ All colors MUST be HSL.
 
 .bento-lottie-container-2 {
   position: absolute;
-  bottom: -190px;
+  bottom: -150px;
   right: 0;
   left: 0;
   display: flex;
@@ -270,11 +270,59 @@ All colors MUST be HSL.
 .bento-lottie-2 {
   width: 50rem; 
   height: 50rem; 
+  aspect-ratio: 1/1;
 }
 
 @media (max-width: 768px) {
   .bento-lottie-container-2{
-    bottom: -280px;
+    bottom: -200px;
+  }
+}
+
+.bento-lottie-container-3 {
+  position: absolute;
+  bottom: -120px;
+  right: -30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
+
+.bento-lottie-3 {
+  height: 400px; 
+  width: 400px;
+}
+
+.bottom-gradient-3{
+  position: absolute;
+  height:20rem;
+  width: 60rem;
+  bottom: -100px;
+  right: -300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229, 255, 0, 0.637) 0%, rgba(229, 255, 0, 0.325) 50%, rgba(229, 255, 0, 0) 100%);
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  filter: blur(50px);
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .bento-lottie-3{
+    height: 300px;
+    width: 300px;
+  }
+  .bento-lottie-container-3{
+    bottom: -100px;
+    right: -70px;
+  }
+  .bottom-gradient-3{
+    height: 20rem;
+    width: 20rem;
+    right: -100px;
   }
 }
 

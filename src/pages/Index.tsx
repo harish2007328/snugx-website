@@ -287,7 +287,7 @@ interface CaseStudy {
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">Small tweaks. Big impact. Here's what sets us apart.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-5 gap-8 min-h-[650px]">
-            <Card className="relative md:col-span-2 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[300px]">
+            <Card className="relative md:col-span-2 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[300px] max-h-[370px]">
               <div className="text-left">
                 <h3 className="text-2xl font-semibold mb-2">Real-Time Updates</h3>
                 <p className="text-gray-400">Easy edits, no waiting.</p>
@@ -297,10 +297,10 @@ interface CaseStudy {
               </div>
               <div className='bottom-gradient-1'></div>
             </Card>
-            <Card className="relative md:col-span-4 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[250px]">
+            <Card className="relative md:col-span-4 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[250px] max-h-[370px]">
               <div className="text-left">
                 <h3 className="text-2xl font-semibold mb-2">Design That Converts</h3>
-                <p className="text-gray-400">Built to look great — and work even better.</p>
+                <p className="text-gray-400">Built to work better.</p>
               </div>
               <div className="bento-lottie-container-2 mt-8 flex-grow">
                 <DotLottieReact
@@ -312,16 +312,25 @@ interface CaseStudy {
               </div>
               <div className='bottom-gradient-2'></div>
             </Card>
-            <Card className="relative md:col-span-4 md:row-span-2 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[250px]">
-              <div className="text-left">
+            <Card className="relative md:col-span-4 md:row-span-2 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-8 flex flex-col justify-between overflow-hidden min-h-[240px]">
+              <div className="text-left z-[1]">
                 <h3 className="text-2xl font-semibold mb-2">Lightning-Fast Delivery</h3>
-                <p className="text-gray-400">Fast launches without the stress.</p>
+                <p className="text-gray-400">No stress!!.</p>
               </div>
+              <div className="bento-lottie-container-3 mt-8 flex-grow self-end">
+                <DotLottieReact
+                  src="/bento-files/thunder.json"
+                  loop
+                  autoplay
+                  className="bento-lottie-3"
+                />
+              </div>
+              <div className='bottom-gradient-3'></div>
             </Card>
-            <Card className="relative md:col-span-2 md:row-span-2 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[250px]">
+            <Card className="relative md:col-span-2 md:row-span-2 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-8 flex flex-col justify-between overflow-hidden min-h-[240px]">
               <div className="text-left">
                 <h3 className="text-2xl font-semibold mb-2">Perfectly Placed Pixels</h3>
-                <p className="text-gray-400">Built to look great — and work even better.</p>
+                <p className="text-gray-400">Built to look great.</p>
               </div>
               <div className="bento-lottie-container-4 mt-8 flex-grow">
                 <DotLottieReact
