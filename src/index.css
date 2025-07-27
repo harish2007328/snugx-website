@@ -278,6 +278,37 @@ All colors MUST be HSL.
   }
 }
 
+.bento-lottie-container-4 {
+  position: absolute;
+  bottom: 0px;
+  right: 60px;
+  left: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.bento-lottie-4 {
+  height: auto; 
+}
+
+.bottom-gradient-4 {
+  position: absolute;
+  height:20rem;
+  bottom: -100px;
+  right: 0;
+  left: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229, 255, 0, 0.637) 0%, rgba(229, 255, 0, 0.325) 50%, rgba(229, 255, 0, 0) 100%);
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  filter: blur(50px);
+  opacity: 0.5;
+}
+
 /* Button styles */
 .btn-primary {
   @apply bg-neon-green text-dark-bg hover:bg-neon-green/90 font-bold rounded-full transition-all shadow-lg ;
