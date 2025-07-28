@@ -244,7 +244,7 @@ All colors MUST be HSL.
 .bottom-gradient-2 {
   position: absolute;
   height:30rem;
-  bottom: -400px;
+  top: -400px;
   right: 0;
   left: 0;
   border-radius: 50%;
@@ -254,11 +254,12 @@ All colors MUST be HSL.
   justify-content: center;
   display: flex;
   filter: blur(100px);
+  opacity: 0.3;
 }
 
 .bento-lottie-container-2 {
   position: absolute;
-  bottom: -150px;
+  bottom: -350px;
   right: 0;
   left: 0;
   display: flex;
@@ -275,7 +276,9 @@ All colors MUST be HSL.
 
 @media (max-width: 768px) {
   .bento-lottie-container-2{
-    bottom: -200px;
+    bottom: -430px;
+    right: -20px;
+    left: auto;
   }
 }
 
