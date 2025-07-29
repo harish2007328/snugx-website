@@ -280,7 +280,7 @@ interface CaseStudy {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-20 px-4 bg-dark-bg">
+      <section className="relative py-20 px-4 bg-dark-bg z-10">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Why Brands Choose <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="snugx logo" className="inline-block h-10 align-center" /></h2>
@@ -342,6 +342,51 @@ interface CaseStudy {
               </div>
               <div className='bottom-gradient-4'></div>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative py-20 px-4 bg-secondary/0 overflow-hidden">
+      <div className="process-gradient"></div>
+        <div className="relative max-w-7xl mx-auto px-8 ">
+          <div className="relative text-center mb-[160px] z-2">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Our <span className="text-neon-green">Process ✦</span></h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">A clear, transparent approach to delivering <br /> exceptional digital experiences.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            <div className="process-card">
+              <div className="absolute top-[-20px] right-[-20px] bg-neon-green text-dark-bg rounded-full w-16 h-16 flex items-center justify-center font-bold text-3xl">1</div>
+              <h3 className="text-2xl font-semibold mb-4">Client Meeting</h3>
+              <p className="text-gray-300">Collaborating to understand your vision and define project goals.</p>
+            </div>
+            <div className="process-card">
+              <div className="absolute top-[-20px] right-[-20px] bg-neon-green text-dark-bg rounded-full w-16 h-16 flex items-center justify-center font-bold text-3xl">2</div>
+              <h3 className="text-2xl font-semibold mb-4">Design & Prototyping</h3>
+              <p className="text-gray-300">Crafting intuitive interfaces and interactive prototypes for approval.</p>
+            </div>
+            <div className="process-card">
+              <div className="absolute top-[-20px] right-[-20px] bg-neon-green text-dark-bg rounded-full w-16 h-16 flex items-center justify-center font-bold text-3xl">3</div>
+              <h3 className="text-2xl font-semibold mb-4">Development</h3>
+              <p className="text-gray-300">Building a robust, scalable, and secure application from the ground up.</p>
+            </div>
+            <div className="process-card">
+              <div className="absolute top-[-20px] right-[-20px] bg-neon-green text-dark-bg rounded-full w-16 h-16 flex items-center justify-center font-bold text-3xl">4</div>
+              <h3 className="text-2xl font-semibold mb-4">Deployment</h3>
+              <p className="text-gray-300">Launching the application and ensuring a seamless transition to production.</p>
+            </div>
+
+            {/* Animated Connectors */}
+            <div className="hidden md:flex absolute top-1/2 left-0 w-full h-full justify-around items-center -z-10">
+              <div className="w-1/4 h-0.5 bg-neon-green/30 relative">
+                <div className="absolute top-0 left-0 h-full bg-neon-green animate-draw-line" style={{ animationDelay: '0.5s' }}></div>
+              </div>
+              <div className="w-1/4 h-0.5 bg-neon-green/30 relative">
+                <div className="absolute top-0 left-0 h-full bg-neon-green animate-draw-line" style={{ animationDelay: '1s' }}></div>
+              </div>
+              <div className="w-1/4 h-0.5 bg-neon-green/30 relative">
+                <div className="absolute top-0 left-0 h-full bg-neon-green animate-draw-line" style={{ animationDelay: '1.5s' }}></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -520,7 +565,7 @@ interface CaseStudy {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-secondary/20">
+      <section className="py-20 px-4 bg-secondary/20 max-w-7xl mx-auto">
         <div className="max-w-7xl mx-auto text-center space-y-10 px-8">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
             Ready to <span className="text-neon-green">Transform ✦</span> Your Business?
