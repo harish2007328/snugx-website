@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User, Smartphone, ShoppingBag, Briefcase, Sparkles } from 'lucide-react';
+import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User, Smartphone, ShoppingBag, Briefcase, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,6 +22,9 @@ interface CaseStudy {
   const [animatedStats, setAnimatedStats] = useState([0, 0, 0, 0]);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [featuredCaseStudies, setFeaturedCaseStudies] = useState<CaseStudy[]>([]);
+  const [currentServicePage, setCurrentServicePage] = useState(0);
+  const servicesPerPage = window.innerWidth < 768 ? 1 : 3;
+
   useEffect(() => {
     fetchFeaturedCaseStudies();
     
@@ -403,24 +406,58 @@ interface CaseStudy {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map((service, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm">
-                <CardContent className="p-5 text-center relative overflow-hidden">
-                  <div className="relative z-10">
-                    <div className="relative z-10 flex flex-row items-center mb-4">
-                      <service.icon size={36} className="text-neon-green mx-2 my-2 mr-6 group-hover:scale-110 transition-transform" />
-                      <h3 className="text-xl font-semibold text-left">{service.title}</h3>
-                    </div>
-                  <p className="text-gray-300 mb-4 font-normal text-left text-sm">{service.description}</p>
+          <div className="relative">
+            <div className="overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentServicePage * 100}%)` }}
+              >
+                {Array.from({ length: Math.ceil(services.length / servicesPerPage) }).map((_, pageIndex) => (
+                  <div key={pageIndex} className="w-full flex-shrink-0 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {services
+                      .slice(pageIndex * servicesPerPage, (pageIndex + 1) * servicesPerPage)
+                      .map((service, index) => (
+                        <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm">
+                          <CardContent className="p-5 text-center relative overflow-hidden">
+                            <div className="relative z-10">
+                              <div className="relative z-10 flex flex-row items-center mb-4">
+                                <service.icon size={36} className="text-neon-green mx-2 my-2 mr-6 group-hover:scale-110 transition-transform" />
+                                <h3 className="text-xl font-semibold text-left">{service.title}</h3>
+                              </div>
+                              <p className="text-gray-300 mb-4 font-normal text-left text-sm">{service.description}</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                   </div>
-                </CardContent>
-              </Card>)}
+                ))}
+              </div>
+            </div>
+            <div className="absolute bottom-[-50px] right-0 flex space-x-2">
+              <Button 
+                onClick={() => {
+                  if (currentServicePage > 0) {
+                    setCurrentServicePage(currentServicePage - 1);
+                  }
+                }} 
+                className="bg-[#e5ff00] hover:bg-white/70 px-3 rounded-full" 
+                style={{ color: '#111111' }}>
+                <ChevronLeft className="h-6 w-5" />
+              </Button>
+              <Button onClick={() => 
+                  setCurrentServicePage(prev => Math.min(prev + 1, Math.ceil(services.length / servicesPerPage) - 1))
+                } 
+                className="bg-[#e5ff00] hover:bg-white/70 px-3 rounded-full" 
+                style={{ color: '#111111' }}>
+                <ChevronRight className="h-6 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Case Studies Preview */}
-      <section className="py-20 px-4 bg-black/0">
+      {/* Case Studies Section */}
+      <section className="py-20 px-4 bg-dark-bg">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
