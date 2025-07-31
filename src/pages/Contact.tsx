@@ -66,9 +66,7 @@ const Contact = () => {
 
   const benefits = [
     "Free consultation call",
-    "Custom proposal within 24 hours",
-    "Dedicated project manager",
-    "14-day money-back guarantee"
+    "Custom proposal within 24 hours"
   ];
 
   return (
@@ -83,7 +81,7 @@ const Contact = () => {
             Ready to transform your digital presence? Let's discuss your project and make it happen.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
             {benefits.map((benefit, index) => (
               <div key={index} className="flex items-center justify-center space-x-2 text-sm text-gray-400">
                 <CheckCircle size={16} className="text-neon-green" />
@@ -180,8 +178,8 @@ const Contact = () => {
                         <Mail className="w-6 h-6 text-neon-green" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">Email Us</h3>
-                        <p className="text-gray-400">hello@snugx.agency</p>
+                        <h3 className="font-semibold text-left">Email Us</h3>
+                        <p className="text-gray-400">hello@snugx.in</p>
                       </div>
                     </div>
                   </CardContent>
@@ -194,8 +192,8 @@ const Contact = () => {
                         <Phone className="w-6 h-6 text-neon-green" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">Call Us</h3>
-                        <p className="text-gray-400">+1 (555) 123-4567</p>
+                        <h3 className="font-semibold text-left">Call Us</h3>
+                        <p className="text-gray-400">+91 81223 43394</p>
                       </div>
                     </div>
                   </CardContent>
@@ -208,54 +206,14 @@ const Contact = () => {
                         <MapPin className="w-6 h-6 text-neon-green" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">Visit Us</h3>
-                        <p className="text-gray-400">San Francisco, CA</p>
+                        <h3 className="font-semibold text-left">Visit Us</h3>
+                        <p className="text-gray-400">Tamil Nadu, India</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </div>
             </div>
-
-            {/* Process Overview */}
-            <Card className="glass">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold mb-6 text-neon-green">Our Process</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-neon-green text-dark-bg rounded-full flex items-center justify-center font-bold text-sm">1</div>
-                    <div>
-                      <h4 className="font-semibold">Discovery Call</h4>
-                      <p className="text-sm text-gray-400">We discuss your goals and requirements</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-neon-green text-dark-bg rounded-full flex items-center justify-center font-bold text-sm">2</div>
-                    <div>
-                      <h4 className="font-semibold">Proposal</h4>
-                      <p className="text-sm text-gray-400">Custom proposal with timeline and pricing</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-neon-green text-dark-bg rounded-full flex items-center justify-center font-bold text-sm">3</div>
-                    <div>
-                      <h4 className="font-semibold">Design & Build</h4>
-                      <p className="text-sm text-gray-400">We create your amazing digital experience</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-neon-green text-dark-bg rounded-full flex items-center justify-center font-bold text-sm">4</div>
-                    <div>
-                      <h4 className="font-semibold">Launch</h4>
-                      <p className="text-sm text-gray-400">Go live and start growing your business</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>
