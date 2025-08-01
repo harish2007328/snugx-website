@@ -126,57 +126,31 @@ const CaseStudies = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredStudies.map((study) => (
-                <Card key={study.id} className="glass hover:glass-strong transition-all duration-300 group overflow-hidden">
-                  <div className="aspect-video overflow-hidden">
-                    <img 
-                      src={study.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
-                      alt={study.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <Badge variant="secondary" className="bg-neon-green/20 text-neon-green">
-                        {study.category}
-                      </Badge>
-                      {study.live_url && (
-                        <a 
-                          href={study.live_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-gray-400 hover:text-neon-green transition-colors"
-                        >
-                          <ExternalLink size={18} />
-                        </a>
-                      )}
-                    </div>
-                    
-                    <h3 className="text-xl font-bold mb-3 group-hover:text-neon-green transition-colors">
-                      {study.title}
-                    </h3>
-                    
-                    <p className="text-gray-300 text-sm mb-4 line-clamp-3">
-                      {study.description}
+                <Card key={study.id} className="relative group overflow-hidden rounded-xl shadow-lg hover:shadow-2xl hover:shadow-neon-green/20 transition-all duration-500 ease-in-out aspect-[1/1.3] bg-dark-bg">
+                  <img 
+                    src={study.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
+                    alt={study.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/100 via-black/70 to-transparent" />
+                  <CardContent className="relative z-10 flex flex-col justify-end h-full p-6 text-white">
+                    <h3 className="text-2xl font-bold mb-2 text-left">{study.title}</h3>
+                    <p className="text-gray-300 mb-4 text-sm text-left">
+                      {study.description && (study.description.length > 70 
+                          ? `${study.description.substring(0, 70)}...` 
+                          : study.description)}
                     </p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {study.tags?.slice(0, 3).map((tag, index) => (
-                        <Badge key={index} variant="outline" className="text-xs border-white/20 text-gray-400">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    
+                    <p className="text-neon-green text-xs font-semibold uppercase tracking-wider text-left">
+                      {study.category}
+                    </p>
                     <Button 
                       variant="outline" 
-                      size="sm" 
-                      className="w-full btn-secondary group"
+                      className="absolute top-4 right-4 w-10 h-10 rounded-full border-neon-green bg-neon-green text-dark-bg transition-all duration-300 p-0 flex items-center justify-center" 
+                      size="icon" 
                       asChild
                     >
                       <Link to={`/case-studies/${study.id}`}>
-                        View Details
-                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="w-5 h-5 rotate-[-45deg]" />
                       </Link>
                     </Button>
                   </CardContent>

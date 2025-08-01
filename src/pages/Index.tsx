@@ -306,24 +306,38 @@ interface CaseStudy {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
               {featuredCaseStudies.map((caseStudy) => (
-                <Card key={caseStudy.id} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
-                  <div className="aspect-video overflow-hidden">
-                    <img 
-                      src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
-                      alt={caseStudy.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <CardContent className="p-8 relative">
-                    <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
-                    <p className="text-gray-400 mb-6 font-normal">{caseStudy.description}</p>
+                <Card key={caseStudy.id} className="relative group overflow-hidden rounded-xl shadow-lg hover:shadow-2xl hover:shadow-neon-green/20 transition-all duration-500 ease-in-out aspect-[1/1.3] bg-dark-bg">
+                  <img 
+                    src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
+                    alt={caseStudy.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/100 via-black/70 to-transparent" />
+                  <CardContent className="relative z-10 flex flex-col justify-end h-full p-6 text-white">
+                    <h3 className="text-2xl font-bold mb-2 text-left">{caseStudy.title}</h3>
+                    <p className="text-gray-300 mb-4 text-sm text-left">
+                      {caseStudy.description && (caseStudy.description.length > 70 
+                          ? `${caseStudy.description.substring(0, 70)}...` 
+                          : caseStudy.description)}
+                    </p>
                     {caseStudy.results && caseStudy.results.length > 0 && (
-                      <p className="text-neon-green text-sm mb-4 font-medium">{caseStudy.results[0]}</p>
+                      <p className="text-neon-green text-xs font-semibold uppercase tracking-wider text-left">
+                        {caseStudy.results[0].length > 30
+                          ? `${caseStudy.results[0].substring(0, 30)}...` 
+                          : caseStudy.results[0]}
+                      </p>
                     )}
-                    <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm" asChild>
-                      <Link to={`/case-studies/${caseStudy.id}`}>View Case Study</Link>
+                    <Button 
+                      variant="outline" 
+                      className="absolute top-4 right-4 w-10 h-10 rounded-full border-neon-green bg-neon-green text-dark-bg transition-all duration-300 p-0 flex items-center justify-center" 
+                      size="icon" 
+                      asChild
+                    >
+                      <Link to={`/case-studies/${caseStudy.id}`}>
+                        <ArrowRight className="w-5 h-5 rotate-[-45deg]" />
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -578,20 +592,20 @@ interface CaseStudy {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-secondary/20 max-w-7xl mx-auto">
-        <div className="max-w-7xl mx-auto text-center space-y-10 px-8">
-          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-            Ready to <span className="text-neon-green">Transform ✦</span> Your Business?
+      <section className="py-20 px-4 mx-auto">
+        <div className="max-w-7xl mx-auto text-center space-y-10 py-20 px-6 bg-[#e5ff00] max-w-7xl mx-auto rounded-[10px]">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-[#111111] leading-relaxed">
+            Ready to <span className="bg-[#1a1a1a] text-[#f5f5f5] text-[#1a1a1a] font-bold px-4 py-1 rounded-md">Transform ✦</span> Your Business?
           </h2>
-          <p className="text-lg text-gray-300 font-normal">
+          <p className="text-lg text-[#111111]/80 font-normal">
             Join hundreds of successful businesses that chose Snugx for their digital transformation.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button size="lg" className="btn-primary px-10 py-4" asChild>
+            <Button size="lg" className="bg-[#111111] text-[#f5f5f5] border-2 border-[#111111]/50 hover:bg-[#f5f5f5]/90 hover:text-[#111111] transition-colors duration-300 px-10 py-4 rounded-full" asChild>
               <Link to="/contact">Start Your Project Today</Link>
             </Button>
-            <Button size="lg" className="btn-secondary px-10 py-4" asChild>
+            <Button size="lg" className="bg-transparent border-2 border-[#111111]/50 text-[#111111] hover:bg-[#f5f5f5]/90 hover:text-[#111111] transition-colors duration-300 px-10 py-4 rounded-full" asChild>
               <Link to="/pricing">View Pricing</Link>
             </Button>
           </div>
