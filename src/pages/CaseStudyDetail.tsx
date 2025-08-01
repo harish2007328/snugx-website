@@ -30,11 +30,14 @@ const CaseStudyDetail = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchCaseStudy();
+    if (id) {
+      fetchCaseStudy();
+    }
   }, [id]);
 
   const fetchCaseStudy = async () => {
     if (!id) {
+      console.log('No ID provided');
       setError('No case study ID provided');
       setLoading(false);
       return;
@@ -43,23 +46,28 @@ const CaseStudyDetail = () => {
     try {
       console.log('Fetching case study with ID:', id);
       
-      const { data, error } = await supabase
+      const { data, error: supabaseError } = await supabase
         .from('case_studies')
         .select('*')
         .eq('id', id)
-        .maybeSingle();
+        .single();
 
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
+      console.log('Supabase response:', { data, error: supabaseError });
 
-      if (!data) {
-        console.log('No case study found with ID:', id);
-        setError('Case study not found');
-      } else {
+      if (supabaseError) {
+        console.error('Supabase error:', supabaseError);
+        if (supabaseError.code === 'PGRST116') {
+          setError('Case study not found');
+        } else {
+          setError('Failed to fetch case study');
+        }
+      } else if (data) {
         console.log('Case study found:', data);
         setCaseStudy(data);
+        setError(null);
+      } else {
+        console.log('No data returned');
+        setError('Case study not found');
       }
     } catch (error) {
       console.error('Error fetching case study:', error);
@@ -70,6 +78,7 @@ const CaseStudyDetail = () => {
   };
 
   if (!id) {
+    console.log('No ID in URL params, redirecting to case studies');
     return <Navigate to="/case-studies" replace />;
   }
 
@@ -85,6 +94,7 @@ const CaseStudyDetail = () => {
   }
 
   if (error || !caseStudy) {
+    console.log('Error state or no case study:', { error, caseStudy });
     return (
       <div className="min-h-screen pt-24 flex items-center justify-center">
         <div className="text-center">
