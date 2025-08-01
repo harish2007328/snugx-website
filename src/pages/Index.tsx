@@ -282,6 +282,67 @@ interface CaseStudy {
         </div>
       </section>
 
+      
+      {/* Featured Case Studies Section */}
+      <section className="py-20 px-4 bg-dark-bg">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
+              Success <span className="text-neon-green">Stories ✦</span>
+            </h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto font-normal">
+              See how we've helped businesses like yours achieve extraordinary digital growth.
+            </p>
+          </div>
+
+          {featuredCaseStudies.length === 0 ? (
+            <div className="text-center py-20">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                <Star className="w-12 h-12 text-gray-400" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2">No Case Studies Yet</h3>
+              <p className="text-xl text-gray-400 mb-6">
+                Add your first case study from the admin panel to showcase your work.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {featuredCaseStudies.map((caseStudy) => (
+                <Card key={caseStudy.id} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
+                      alt={caseStudy.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <CardContent className="p-8 relative">
+                    <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
+                    <p className="text-gray-400 mb-6 font-normal">{caseStudy.description}</p>
+                    {caseStudy.results && caseStudy.results.length > 0 && (
+                      <p className="text-neon-green text-sm mb-4 font-medium">{caseStudy.results[0]}</p>
+                    )}
+                    <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm" asChild>
+                      <Link to={`/case-studies/${caseStudy.id}`}>View Case Study</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          <div className="text-center">
+            <Button size="lg" className="btn-primary px-10 py-4" asChild>
+              <Link to="/case-studies">
+                View All Case Studies
+                <ArrowRight className="ml-3" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+
       {/* Why Choose Us Section */}
       <section className="relative py-20 px-4 bg-dark-bg z-10">
         <div className="max-w-7xl mx-auto px-8">
@@ -426,65 +487,6 @@ interface CaseStudy {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Case Studies Section */}
-      <section className="py-20 px-4 bg-dark-bg">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
-              Success <span className="text-neon-green">Stories ✦</span>
-            </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto font-normal">
-              See how we've helped businesses like yours achieve extraordinary digital growth.
-            </p>
-          </div>
-
-          {featuredCaseStudies.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
-                <Star className="w-12 h-12 text-gray-400" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2">No Case Studies Yet</h3>
-              <p className="text-xl text-gray-400 mb-6">
-                Add your first case study from the admin panel to showcase your work.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {featuredCaseStudies.map((caseStudy) => (
-                <Card key={caseStudy.id} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
-                  <div className="aspect-video overflow-hidden">
-                    <img 
-                      src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
-                      alt={caseStudy.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <CardContent className="p-8 relative">
-                    <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
-                    <p className="text-gray-400 mb-6 font-normal">{caseStudy.description}</p>
-                    {caseStudy.results && caseStudy.results.length > 0 && (
-                      <p className="text-neon-green text-sm mb-4 font-medium">{caseStudy.results[0]}</p>
-                    )}
-                    <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm" asChild>
-                      <Link to={`/case-studies/${caseStudy.id}`}>View Case Study</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-
-          <div className="text-center">
-            <Button size="lg" className="btn-primary px-10 py-4" asChild>
-              <Link to="/case-studies">
-                View All Case Studies
-                <ArrowRight className="ml-3" />
-              </Link>
-            </Button>
           </div>
         </div>
       </section>
