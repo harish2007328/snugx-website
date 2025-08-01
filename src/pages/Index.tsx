@@ -460,7 +460,7 @@ interface CaseStudy {
             ].map((tool, index) => (
               <div key={index} className="flex items-center gap-4 text-white hover:text-neon-green transition-colors">
                 <div className="text-3xl">{tool.icon}</div>
-                <span className="text-xs font-medium">{tool.name}</span>
+                <span className="text-xs text-left font-medium">{tool.name}</span>
               </div>
             ))}
           </div>
