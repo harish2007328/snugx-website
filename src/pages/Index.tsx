@@ -1,406 +1,604 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, ExternalLink, User, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { supabase } from "@/integrations/supabase/client";
-import Footer from "@/components/Footer";
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Star, Zap, Palette, Code, Rocket, Users, Award, CheckCircle, User, Smartphone, ShoppingBag, Briefcase, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
+import Footer from '@/components/Footer';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
+const Index = () => {
 interface CaseStudy {
   id: string;
   title: string;
   description: string;
   thumbnail: string;
   category: string;
-  live_url: string;
-  tags: string[];
-  client: string;
-  duration: string;
+  results: string[];
 }
-
-const Index = () => {
-  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const [animatedStats, setAnimatedStats] = useState([0, 0, 0, 0]);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [featuredCaseStudies, setFeaturedCaseStudies] = useState<CaseStudy[]>([]);
+  const [currentServicePage, setCurrentServicePage] = useState(0);
+  const servicesPerPage = window.innerWidth < 768 ? 1 : 3;
 
   useEffect(() => {
-    fetchCaseStudies();
+    fetchFeaturedCaseStudies();
+    
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in');
+          
+          // Trigger stats animation when stats section is visible
+          if (entry.target === statsRef.current && !hasAnimated) {
+            setHasAnimated(true);
+            animateStats();
+          }
+        }
+      });
+    }, observerOptions);
+    if (heroRef.current) observer.observe(heroRef.current);
+    if (servicesRef.current) observer.observe(servicesRef.current);
+    if (statsRef.current) observer.observe(statsRef.current);
+    return () => observer.disconnect();
   }, []);
 
-  const fetchCaseStudies = async () => {
+  const fetchFeaturedCaseStudies = async () => {
     try {
-      const { data, error } = await supabase
-        .from("case_studies")
-        .select("*")
-        .order("created_at", { ascending: false });
+      // Get homepage project IDs from localStorage
+      const homepageProjects = JSON.parse(localStorage.getItem('homepage_projects') || '[]');
+      
+      if (homepageProjects.length === 0) {
+        // Fallback to latest 3 if no homepage projects selected
+        const { data, error } = await supabase
+          .from('case_studies')
+          .select('*')
+          .limit(3)
+          .order('created_at', { ascending: false });
 
-      if (error) throw error;
+        if (error) throw error;
+        setFeaturedCaseStudies(data || []);
+      } else {
+        // Fetch specific homepage projects
+        const { data, error } = await supabase
+          .from('case_studies')
+          .select('*')
+          .in('id', homepageProjects);
 
-      setCaseStudies(data || []);
+        if (error) throw error;
+        setFeaturedCaseStudies(data || []);
+      }
+
     } catch (error) {
-      console.error("Error fetching case studies:", error);
-      setCaseStudies([]);
+      console.error('Error fetching featured case studies:', error);
     }
   };
-
-  const faqs = [
+  const animateStats = () => {
+    const targets = [150, 98, 2.5, 24];
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const timer = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      
+      setAnimatedStats(targets.map(target => {
+        const current = Math.round(target * progress);
+        return current;
+      }));
+      
+      if (currentStep >= steps) {
+        clearInterval(timer);
+        setAnimatedStats(targets);
+      }
+    }, stepDuration);
+  };
+  const services = [
     {
-      question: "What types of projects do you specialize in?",
-      answer:
-        "We specialize in a wide range of digital solutions, including web development, mobile app development, e-commerce platforms, and custom software solutions. Our expertise spans across various industries, ensuring tailored solutions for each client.",
+      icon: Code, // Using Code icon from already imported lucide-react icons
+      title: "Web Design & Development",
+      description: "Custom-built websites with stunning UI and smooth UX — from landing pages to full-scale platforms.",
+      features: []
     },
     {
-      question: "How does your pricing structure work?",
-      answer:
-        "Our pricing is customized based on the scope and complexity of each project. We offer flexible pricing models, including fixed-price, hourly rates, and value-based pricing. We ensure transparency and work closely with our clients to align our pricing with their budget and objectives.",
+      icon: Smartphone, // Using Smartphone icon from lucide-react
+      title: "UI/UX Design",
+      description: "Intuitive interfaces crafted with user psychology in mind — for mobile, desktop, and beyond.",
+      features: []
     },
     {
-      question: "What is your approach to project management?",
-      answer:
-        "We follow an agile project management approach, emphasizing collaboration, flexibility, and continuous improvement. Our dedicated project managers ensure clear communication, manage timelines effectively, and adapt to evolving requirements to deliver successful outcomes.",
+      icon: ShoppingBag, // Replace with appropriate SVG import
+      title: "Portfolio & Personal Websites",
+      description: "Stand out with a pixel-perfect personal site or creative portfolio — ideal for freelancers, students, and creators.",
+      features: []
     },
     {
-      question: "How do you ensure the quality of your work?",
-      answer:
-        "Quality is at the core of our processes. We employ rigorous testing methodologies, conduct thorough code reviews, and adhere to industry best practices. Our commitment to quality ensures that our solutions are reliable, scalable, and meet the highest standards.",
+      icon: Briefcase, // Replace with appropriate SVG import
+      title: "Business Websites for Startups",
+      description: "One-page, multi-page, or full-service sites built to convert visitors into customers — fast.",
+      features: []
     },
     {
-      question: "What kind of support do you offer after project completion?",
-      answer:
-        "We provide comprehensive post-launch support, including maintenance, updates, and technical assistance. Our support packages are designed to ensure the long-term success of our solutions, with options for ongoing enhancements and dedicated support teams.",
+      icon: Sparkles, // Replace with appropriate SVG import
+      title: "SEO & Performance Optimization",
+      description: "We make your website lightning-fast, search-friendly, and ready to rank with clean code and structured design.",
+      features: []
     },
+    {
+      icon: Users, // Replace with appropriate SVG import
+      title: "Admin Dashboard & CMS Integration",
+      description: "Want to manage your own blogs or content? We integrate Supabase so you stay in control without touching code.",
+      features: []
+    }
   ];
+  const stats = [{
+    number: "150+",
+    label: "Projects\nCompleted"
+  }, {
+    number: "98%",
+    label: "Client\nSatisfaction"
+  }, {
+    number: "2.5x",
+    label: "Average ROI\nIncrease"
+  }, {
+    number: "24/7",
+    label: "Support\nAvailable"
+  }];
+  const testimonials = [{
+    name: "Sarah Johnson",
+    company: "TechStartup Inc.",
+    text: "Snugx transformed our digital presence completely. Our conversion rate increased by 300% after the redesign.",
+    rating: 5
+  }, {
+    name: "Mike Chen",
+    company: "E-commerce Plus",
+    text: "The team's attention to detail and technical expertise exceeded our expectations. Highly recommended!",
+    rating: 5
+  }, {
+    name: "Emily Rodriguez",
+    company: "Creative Agency",
+    text: "Professional, creative, and delivered on time. Our new website is exactly what we envisioned.",
+    rating: 5
+  }, {
+    name: "Sarah Johnson",
+    company: "TechStartup Inc.",
+    text: "Snugx transformed our digital presence completely. Our conversion rate increased by 300% after the redesign.",
+    rating: 5
+  }, {
+    name: "Mike Chen",
+    company: "E-commerce Plus",
+    text: "The team's attention to detail and technical expertise exceeded our expectations. Highly recommended!",
+    rating: 5
+  }, {
+    name: "Emily Rodriguez",
+    company: "Creative Agency",
+    text: "Professional, creative, and delivered on time. Our new website is exactly what we envisioned.",
+    rating: 5
+  }];
 
-  return (
-    <div className="min-h-screen bg-dark-bg text-light-text">
+  // Sample avatar images
+  const avatarImages = ["/hero-images/c1.png", "/hero-images/c2.png", "/hero-images/c3.png", "/hero-images/c4.png", "/hero-images/c5.png"];
+  return <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-40 px-4 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-neon-green/10 via-blue-500/5 to-purple-500/10 z-0"></div>
-        <div className="max-w-5xl mx-auto relative z-10">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-white to-neon-green bg-clip-text text-transparent">
-            Crafting Digital Experiences
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
-            We transform ideas into innovative digital solutions. Elevate your
-            business with our expert web development, cutting-edge design, and
-            strategic digital marketing services.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button
-              size="lg"
-              className="bg-neon-green text-dark-bg hover:bg-neon-green/90 px-8 py-4 text-lg font-semibold shadow-lg shadow-neon-green/25"
-              asChild
-            >
-              <Link to="/contact">Start Your Project</Link>
+      <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-28 pb-40  bg-dark-bg hero-noise-effect overflow-hidden">
+        {/* Blurred Circles */}
+        <div className="hero-blur-circle-1"></div>
+        <div className="hero-blur-circle-2"></div>
+        <div className="hero-blur-circle-3"></div>
+        
+        {/* Comet Animations */}
+        <div className="comet comet-1"></div>
+        <div className="comet comet-2"></div>
+        <div className="comet comet-3"></div>
+        <div className="comet comet-4"></div>
+
+        {/* bottom or upper circle */}
+        <div className="circle"></div>
+        <div
+          className='Btm-text scroll-down-indicator cursor-pointer'
+          onClick={() => statsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+          style={{ cursor: 'pointer' }}
+          >
+          Scroll Down
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='16'
+            height='16'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            className='ml-2 inline-block'
+          >
+            <line x1='12' y1='5' x2='12' y2='19'></line>
+            <polyline points='19 12 12 19 5 12'></polyline>
+          </svg>
+        </div>
+        
+        <div className="w-full mx-auto text-center space-y-8 md:space-y-12 relative z-10 max-w-none px-8">
+          {/* Free Consultation Badge */}
+          <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-2.5 py-1 text-sm font-medium">
+            <div className="w-2 h-2 glow-dot"></div>
+            <span>Free Consultation</span>
+          </div>
+
+          <div className="space-y-8">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight tracking-tight">
+              We craft <span className="text-neon-green font-bold">bold ✦</span>
+              <br />
+              websites that just hit.
+            </h1>
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-normal">
+              From scroll to click, we design sites that vibe, move, and convert — built for brands that get it.
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center ">
+            <Button size="lg" className="btn-primary px-8 py-4 text-base group" asChild>
+              <Link to="/contact">
+                Book a call
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform w-4 h-4" />
+              </Link>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white/20 text-gray-300 hover:border-neon-green hover:text-neon-green px-8 py-4 text-lg"
-              asChild
-            >
-              <Link to="/about">Learn More</Link>
+            <Button size="lg" className="btn-secondary px-8 py-4 text-base" asChild>
+              <Link to="/case-studies">View Our Works</Link>
             </Button>
+          </div>
+          
+        </div>
+        
+        {/* Half oval with shadow */}
+        
+      </section>
+
+      {/* Stats Section */}
+      <section ref={statsRef} className="py-20 px-4 bg-secondary/0">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/30 to-dark-bg border border-white/10 text-center p-5 hover:border-neon-green/30 hover:shadow-lg hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm w-full">
+                <CardContent className="p-0">
+                  <div className="text-4xl font-bold text-neon-green mb-3">
+                    {index === 0 && `${animatedStats[0]}+`}
+                    {index === 1 && `${animatedStats[1]}%`}
+                    {index === 2 && `${animatedStats[2]}x`}
+                    {index === 3 && `${Math.floor(animatedStats[3])}/7`}
+                  </div>
+                  <div className="text-gray-300 font-medium bg-black/0 whitespace-pre-line leading-tight">{stat.label}</div>
+                </CardContent>
+              </Card>)}
           </div>
         </div>
       </section>
 
-      {/* Case Studies Section - Updated Design */}
-      <section className="py-32 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-neon-green/5 via-transparent to-blue-500/5"></div>
-        <div className="max-w-7xl mx-auto relative z-10">
+      
+      {/* Featured Case Studies Section */}
+      <section className="py-20 px-4 bg-dark-bg">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm mb-8">
-              <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></div>
-              <span className="text-sm font-semibold text-gray-300 tracking-wide">
-                OUR PORTFOLIO
-              </span>
-            </div>
-
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-white to-neon-green bg-clip-text text-transparent">
-              Success Stories
+            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
+              Success <span className="text-neon-green">Stories ✦</span>
             </h2>
-
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Discover how we transform ambitious ideas into digital
-              masterpieces that drive growth and captivate audiences worldwide
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto font-normal">
+              See how we've helped businesses like yours achieve extraordinary digital growth.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            {caseStudies.slice(0, 3).map((study, index) => (
-              <div key={study.id} className="group relative">
-                {/* Card Container */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-neon-green/30 transition-all duration-500 hover:shadow-2xl hover:shadow-neon-green/10">
-                  {/* Project Image */}
-                  <div className="relative aspect-video overflow-hidden">
-                    <img
-                      src={
-                        study.thumbnail ||
-                        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop"
-                      }
-                      alt={study.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-
-                    {/* Category Badge */}
-                    <Badge className="absolute top-4 left-4 bg-neon-green/90 text-dark-bg backdrop-blur-sm border-0 font-bold text-xs tracking-wide">
-                      {study.category}
-                    </Badge>
-
-                    {/* Project Number */}
-                    <div className="absolute top-4 right-4 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white font-bold text-sm">
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6">
-                    {/* Project Meta */}
-                    <div className="flex items-center justify-between mb-4 text-xs text-gray-400">
-                      <div className="flex items-center gap-4">
-                        {study.client && (
-                          <span className="flex items-center gap-1">
-                            <User size={12} />
-                            {study.client}
-                          </span>
-                        )}
-                        {study.duration && (
-                          <span className="flex items-center gap-1">
-                            <Clock size={12} />
-                            {study.duration}
-                          </span>
-                        )}
-                      </div>
-                      {study.live_url && (
-                        <a
-                          href={study.live_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-6 h-6 bg-white/10 rounded-full flex items-center justify-center hover:bg-neon-green hover:text-dark-bg transition-all duration-300"
-                        >
-                          <ExternalLink size={12} />
-                        </a>
-                      )}
-                    </div>
-
-                    {/* Project Title */}
-                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-neon-green transition-colors duration-300 line-clamp-2">
-                      {study.title}
-                    </h3>
-
-                    {/* Project Description */}
-                    <p className="text-gray-300 text-sm mb-6 line-clamp-3 leading-relaxed">
-                      {study.description}
-                    </p>
-
-                    {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {study.tags?.slice(0, 3).map((tag, tagIndex) => (
-                        <Badge
-                          key={tagIndex}
-                          variant="outline"
-                          className="text-xs border-white/20 text-gray-400 bg-white/5 hover:border-neon-green/50 hover:text-neon-green transition-all duration-300"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                      {study.tags && study.tags.length > 3 && (
-                        <Badge
-                          variant="outline"
-                          className="text-xs border-white/20 text-gray-400 bg-white/5"
-                        >
-                          +{study.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-
-                    {/* View Project Button */}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full border-white/20 text-gray-300 hover:border-neon-green hover:text-neon-green hover:bg-neon-green/10 group/btn transition-all duration-300 font-medium"
-                      asChild
-                    >
-                      <Link to={`/case-studies/${study.id}`}>
-                        <span className="mr-2">Explore Project</span>
-                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
-                      </Link>
-                    </Button>
-                  </div>
-
-                  {/* Hover Effect Glow */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-neon-green/0 via-neon-green/0 to-neon-green/0 group-hover:from-neon-green/5 group-hover:via-transparent group-hover:to-blue-500/5 transition-all duration-500 pointer-events-none"></div>
-                </div>
-
-                {/* Floating Decorative Elements */}
-                <div className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-neon-green/10 to-blue-500/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
-                <div className="absolute -bottom-2 -left-2 w-20 h-20 bg-gradient-to-br from-purple-500/10 to-neon-green/10 rounded-full blur-xl group-hover:scale-125 transition-transform duration-700"></div>
+          {featuredCaseStudies.length === 0 ? (
+            <div className="text-center py-20">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                <Star className="w-12 h-12 text-gray-400" />
               </div>
-            ))}
-          </div>
+              <h3 className="text-2xl font-bold mb-2">No Case Studies Yet</h3>
+              <p className="text-xl text-gray-400 mb-6">
+                Add your first case study from the admin panel to showcase your work.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {featuredCaseStudies.map((caseStudy) => (
+                <Card key={caseStudy.id} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group overflow-hidden backdrop-blur-sm">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
+                      alt={caseStudy.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <CardContent className="p-8 relative">
+                    <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
+                    <p className="text-gray-400 mb-6 font-normal">{caseStudy.description}</p>
+                    {caseStudy.results && caseStudy.results.length > 0 && (
+                      <p className="text-neon-green text-sm mb-4 font-medium">{caseStudy.results[0]}</p>
+                    )}
+                    <Button className="bg-white/5 border border-white/20 text-light-text hover:bg-neon-green/10 hover:border-neon-green/30 transition-all duration-300" size="sm" asChild>
+                      <Link to={`/case-studies/${caseStudy.id}`}>View Case Study</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
-          {/* View All Projects Button */}
           <div className="text-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-neon-green to-neon-green/90 text-dark-bg hover:from-neon-green/90 hover:to-neon-green px-8 py-4 text-lg font-bold shadow-lg shadow-neon-green/25 hover:shadow-neon-green/40 transition-all duration-300 hover:scale-105"
-              asChild
-            >
-              <Link to="/case-studies" className="flex items-center gap-2">
-                <span>View Full Portfolio</span>
-                <ArrowRight className="w-5 h-5" />
+            <Button size="lg" className="btn-primary px-10 py-4" asChild>
+              <Link to="/case-studies">
+                View All Case Studies
+                <ArrowRight className="ml-3" />
               </Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-32 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-5xl font-bold mb-8 bg-gradient-to-r from-white via-white to-neon-green bg-clip-text text-transparent">
-            Our Expertise
-          </h2>
-          <p className="text-xl text-gray-300 mb-16 leading-relaxed">
-            Empowering businesses with cutting-edge digital solutions. From
-            bespoke web development to strategic digital marketing, we drive
-            growth and create lasting impact.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Web Development */}
-            <Card className="bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-6">
-                <div className="text-4xl font-semibold text-neon-green mb-4">
-                  Web Development
-                </div>
-                <p className="text-gray-300 leading-relaxed">
-                  Crafting responsive, scalable, and user-friendly websites
-                  tailored to your unique business needs.
-                </p>
-              </CardContent>
-            </Card>
 
-            {/* UI/UX Design */}
-            <Card className="bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-6">
-                <div className="text-4xl font-semibold text-neon-green mb-4">
-                  UI/UX Design
-                </div>
-                <p className="text-gray-300 leading-relaxed">
-                  Creating intuitive and visually stunning interfaces that
-                  enhance user engagement and drive conversions.
-                </p>
-              </CardContent>
+      {/* Why Choose Us Section */}
+      <section className="relative py-20 px-4 bg-dark-bg z-10">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Why Brands Choose <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="snugx logo" className="inline-block h-10 align-center" /></h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">Small tweaks. Big impact. Here's what sets us apart.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-5 gap-8 min-h-[650px]">
+            <Card className="relative md:col-span-2 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[300px] max-h-[370px]">
+              <div className="text-left">
+                <h3 className="text-2xl font-semibold mb-2">Real-Time Updates</h3>
+                <p className="text-gray-400">Easy edits, no waiting.</p>
+              </div>
+              <div className="bento-lottie-container-1 mt-8 flex-grow">
+                <img src="/bento-files/real-time.svg" alt="Bento 1" className="bento-svg-1" />
+              </div>
+              <div className='bottom-gradient-1'></div>
             </Card>
-
-            {/* Digital Marketing */}
-            <Card className="bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-6">
-                <div className="text-4xl font-semibold text-neon-green mb-4">
-                  Digital Marketing
-                </div>
-                <p className="text-gray-300 leading-relaxed">
-                  Implementing data-driven strategies to boost your online
-                  presence, attract targeted traffic, and maximize ROI.
-                </p>
-              </CardContent>
+            <Card className="relative md:col-span-4 md:row-span-3 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-5 flex flex-col justify-between overflow-hidden min-h-[250px] max-h-[370px]">
+              <div className="text-left">
+                <h3 className="text-2xl font-semibold mb-2">Design That Converts</h3>
+                <p className="text-gray-400">Built to work better.</p>
+              </div>
+              <div className="bento-lottie-container-2 mt-8 flex-grow">
+                <DotLottieReact
+                  src="/bento-files/graph.json"
+                  loop
+                  autoplay
+                  className="bento-lottie-2"
+                />
+              </div>
+              <div className='bottom-gradient-2'></div>
+            </Card>
+            <Card className="relative md:col-span-4 md:row-span-2 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-8 flex flex-col justify-between overflow-hidden min-h-[240px]">
+              <div className="text-left z-[1]">
+                <h3 className="text-2xl font-semibold mb-2">Lightning-Fast Delivery</h3>
+                <p className="text-gray-400">No stress!!.</p>
+              </div>
+              <div className="bento-lottie-container-3 mt-8 flex-grow self-end">
+                <DotLottieReact
+                  src="/bento-files/thunder.json"
+                  loop
+                  autoplay
+                  className="bento-lottie-3"
+                />
+              </div>
+              <div className='bottom-gradient-3'></div>
+            </Card>
+            <Card className="relative md:col-span-2 md:row-span-2 bg-gradient-to-br from-secondary/20 to-dark-bg border border-white/10 p-8 flex flex-col justify-between overflow-hidden min-h-[240px]">
+              <div className="text-left">
+                <h3 className="text-2xl font-semibold mb-2">Perfectly Placed Pixels</h3>
+                <p className="text-gray-400">Built to look great.</p>
+              </div>
+              <div className="bento-lottie-container-4 mt-8 flex-grow">
+                <DotLottieReact
+                  src="/bento-files/pixel.json"
+                  loop
+                  autoplay
+                  className="bento-lottie-4"
+                />
+              </div>
+              <div className='bottom-gradient-4'></div>
             </Card>
           </div>
         </div>
       </section>
 
-      {/* FAQs Section */}
-      <section className="py-32 px-4 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-neon-green/5">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-white to-neon-green bg-clip-text text-transparent">
-            Frequently Asked Questions
-          </h2>
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="border-b border-white/10"
-              >
-                <AccordionTrigger className="py-4 font-medium text-gray-300 hover:text-neon-green data-[state=open]:text-neon-green transition-colors duration-300">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="pb-4 text-gray-400 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+      <section className="relative py-20 px-4 bg-secondary/0 overflow-hidden">
+      <div className="process-gradient"></div>
+        <div className="relative max-w-7xl mx-auto px-8 ">
+          <div className="relative text-center mb-[160px] z-2">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Our <span className="text-neon-green">Process ✦</span></h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">A clear, transparent approach to delivering <br /> exceptional digital experiences.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            <div className="process-card">
+              <div className="absolute top-[-20px] right-[-20px] bg-neon-green text-dark-bg rounded-full w-16 h-16 flex items-center justify-center font-bold text-3xl">1</div>
+              <h3 className="text-2xl font-semibold mb-4">Client Meeting</h3>
+              <p className="text-gray-300">Collaborating to understand your vision and define project goals.</p>
+            </div>
+            <div className="process-card">
+              <div className="absolute top-[-20px] right-[-20px] bg-neon-green text-dark-bg rounded-full w-16 h-16 flex items-center justify-center font-bold text-3xl">2</div>
+              <h3 className="text-2xl font-semibold mb-4">Design & Prototyping</h3>
+              <p className="text-gray-300">Crafting intuitive interfaces and interactive prototypes for approval.</p>
+            </div>
+            <div className="process-card">
+              <div className="absolute top-[-20px] right-[-20px] bg-neon-green text-dark-bg rounded-full w-16 h-16 flex items-center justify-center font-bold text-3xl">3</div>
+              <h3 className="text-2xl font-semibold mb-4">Development</h3>
+              <p className="text-gray-300">Building a robust, scalable, and secure application from the ground up.</p>
+            </div>
+            <div className="process-card">
+              <div className="absolute top-[-20px] right-[-20px] bg-neon-green text-dark-bg rounded-full w-16 h-16 flex items-center justify-center font-bold text-3xl">4</div>
+              <h3 className="text-2xl font-semibold mb-4">Deployment</h3>
+              <p className="text-gray-300">Launching the application and ensuring a seamless transition to production.</p>
+            </div>
+
+            {/* Animated Connectors */}
+            <div className="hidden md:flex absolute top-1/2 left-0 w-full h-full justify-around items-center -z-10">
+              <div className="w-1/4 h-0.5 bg-neon-green/30 relative">
+                <div className="absolute top-0 left-0 h-full bg-neon-green animate-draw-line" style={{ animationDelay: '0.5s' }}></div>
+              </div>
+              <div className="w-1/4 h-0.5 bg-neon-green/30 relative">
+                <div className="absolute top-0 left-0 h-full bg-neon-green animate-draw-line" style={{ animationDelay: '1s' }}></div>
+              </div>
+              <div className="w-1/4 h-0.5 bg-neon-green/30 relative">
+                <div className="absolute top-0 left-0 h-full bg-neon-green animate-draw-line" style={{ animationDelay: '1.5s' }}></div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-32 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-12 bg-gradient-to-r from-white via-white to-neon-green bg-clip-text text-transparent">
-            What Our Clients Say
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Testimonial 1 */}
-            <Card className="bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-6">
-                <p className="text-gray-300 italic mb-4 leading-relaxed">
-                  "Working with this team was a game-changer for our business.
-                  Their innovative solutions and dedication to excellence
-                  exceeded our expectations."
-                </p>
-                <div className="text-sm text-gray-400">— John Smith, CEO</div>
-              </CardContent>
-            </Card>
+      {/* Services Section */}
+      <section ref={servicesRef} className="py-20 px-4">
+        <div className="max-w-7xl mx-auto px-8 md:grid md:grid-cols-2 md:gap-16 items-start">
+          <div className="md:sticky md:top-40 text-center md:text-left mb-12 md:mb-0">
+            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
+              Our <span className="text-neon-green">Expertise ✦</span>
+            </h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto md:mx-0 font-normal">
+              We specialize in creating digital experiences that not only look amazing but drive real business results.
+            </p>
+          </div>
 
-            {/* Testimonial 2 */}
-            <Card className="bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-6">
-                <p className="text-gray-300 italic mb-4 leading-relaxed">
-                  "The level of expertise and creativity this team brought to
-                  our project was outstanding. They truly understood our vision
-                  and delivered exceptional results."
-                </p>
-                <div className="text-sm text-gray-400">— Emily Johnson, Marketing Director</div>
-              </CardContent>
-            </Card>
+          <div className="relative grid grid-cols-1 gap-12">
+            {services.map((service, index) => (
+              <Card key={index} className="relative bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm overflow-hidden">
+                <div className="absolute bottom-[-300px] right-[-300px] h-[600px] w-[600px] bg-gradient-to-tl from-[#e5ff00] to-transparent opacity-20 group-hover:opacity-40 transition-opacity duration-300 pointer-events-none rounded-[50%] blur-[32px]"></div>
+                <CardContent className="p-6 text-left relative">
+                  <div className="flex items-start flex-col">
+                    <div className="flex-grow mb-8">
+                      <div className="mb-6">
+                        <service.icon size={60} className="text-neon-green group-hover:scale-110 transition-transform duration-300" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
+                      <p className="text-gray-400 font-normal text-sm leading-relaxed">{service.description}</p>
+                    </div>
+                    <Button size="lg" className="btn-secondary px-8 py-4 text-base w-fit" asChild>
+                      <Link to="/case-studies">View Our Works</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Vertical Carousel */}
+      <section className="py-20 px-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-semibold mb-8 tracking-tight">
+              What Our <span className="text-neon-green">Clients Say ✦</span>
+            </h2>
+          </div>
+
+          <div className="relative testimonial-columns z-1 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
+            {/* Column 1 - Moving Up */}
+            <div className="testimonial-column animate-scroll-up">
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
+                <Card key={`col1-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
+                  <CardContent className="p-8 relative overflow-hidden">
+                    <div className="relative z-10">
+                      <div className="flex items-center mb-6">
+                        <img
+                          src={`/hero-images/c${(index % 5) + 1}.png`}
+                          alt={testimonial.name}
+                          className="w-8 h-8 rounded-full object-cover mr-4"
+                        />
+                        <div>
+                          <div className="font-semibold text-sm text-left">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs text-left">{testimonial.company}</div>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 italic font-normal text-sm text-left">"{testimonial.text}"</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Column 2 - Moving Down */}
+            <div className="testimonial-column animate-scroll-down">
+              {[...testimonials.slice().reverse(), ...testimonials.slice().reverse()].map((testimonial, index) => (
+                <Card key={`col2-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
+                  <CardContent className="p-8 relative overflow-hidden">
+                    <div className="relative z-10">
+                      <div className="flex items-center mb-6">
+                        <img
+                          src={`/hero-images/c${((index + 2) % 5) + 1}.png`}
+                          alt={testimonial.name}
+                          className="w-8 h-8 rounded-full object-cover mr-4"
+                        />
+                        <div>
+                          <div className="font-semibold text-sm text-left">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs text-left">{testimonial.company}</div>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 italic font-normal text-sm text-left">"{testimonial.text}"</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Column 3 - Moving Up */}
+            <div className="testimonial-column animate-scroll-up">
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
+                <Card key={`col3-${index}`} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm flex-shrink-0">
+                  <CardContent className="p-8 relative overflow-hidden">
+                    <div className="relative z-10">
+                      <div className="flex items-center mb-6">
+                        <img
+                          src={`/hero-images/c${((index + 4) % 5) + 1}.png`}
+                          alt={testimonial.name}
+                          className="w-8 h-8 rounded-full object-cover mr-4"
+                        />
+                        <div>
+                          <div className="font-semibold text-sm text-left">{testimonial.name}</div>
+                          <div className="text-neon-green font-medium text-xs text-left">{testimonial.company}</div>
+                        </div>
+                      </div>
+
+                      <p className="text-gray-300 italic font-normal text-sm text-left">"{testimonial.text}"</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-white via-white to-neon-green bg-clip-text text-transparent">
-            Ready to Elevate Your Digital Presence?
+      <section className="py-20 px-4 bg-secondary/20 max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto text-center space-y-10 px-8">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
+            Ready to <span className="text-neon-green">Transform ✦</span> Your Business?
           </h2>
-          <p className="text-xl text-gray-300 mb-12 leading-relaxed">
-            Let's collaborate to transform your ideas into impactful digital
-            solutions. Contact us today to discuss your project and explore the
-            possibilities.
+          <p className="text-lg text-gray-300 font-normal">
+            Join hundreds of successful businesses that chose Snugx for their digital transformation.
           </p>
-          <Button
-            size="lg"
-            className="bg-neon-green text-dark-bg hover:bg-neon-green/90 px-8 py-4 text-lg font-semibold shadow-lg shadow-neon-green/25"
-            asChild
-          >
-            <Link to="/contact">Get Started</Link>
-          </Button>
+          
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Button size="lg" className="btn-primary px-10 py-4" asChild>
+              <Link to="/contact">Start Your Project Today</Link>
+            </Button>
+            <Button size="lg" className="btn-secondary px-10 py-4" asChild>
+              <Link to="/pricing">View Pricing</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
