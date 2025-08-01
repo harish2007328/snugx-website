@@ -1,47 +1,48 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X, Eye, EyeOff, LogOut, Mail, Phone, Calendar } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Plus, Edit, Trash2, Mail, Calendar, User, ExternalLink, Eye, Image } from 'lucide-react';
 
 interface CaseStudy {
-  id?: string;
+  id: string;
   title: string;
   description: string;
-  thumbnail?: string;
+  thumbnail: string;
+  original_image?: string;
   category: string;
-  live_url?: string;
+  live_url: string;
   tags: string[];
-  content?: string;
-  client?: string;
-  duration?: string;
+  content: string;
+  client: string;
+  duration: string;
   results: string[];
+  created_at: string;
 }
 
 interface BlogPost {
-  id?: string;
+  id: string;
   title: string;
-  excerpt?: string;
+  excerpt: string;
   content: string;
   author: string;
   tags: string[];
-  featured_image?: string;
+  featured_image: string;
   published: boolean;
+  created_at: string;
 }
 
 interface ContactSubmission {
   id: string;
   name: string;
   email: string;
-  budget?: string;
+  budget: string;
   message: string;
   created_at: string;
 }
@@ -51,64 +52,39 @@ const Admin = () => {
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [contactSubmissions, setContactSubmissions] = useState<ContactSubmission[]>([]);
-  const [editingCase, setEditingCase] = useState<CaseStudy | null>(null);
-  const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
-  const [showCaseForm, setShowCaseForm] = useState(false);
-  const [showBlogForm, setShowBlogForm] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [homepageProjects, setHomepageProjects] = useState<string[]>([]);
-  const { toast } = useToast();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isBlogDialogOpen, setIsBlogDialogOpen] = useState(false);
+  const [editingCaseStudy, setEditingCaseStudy] = useState<CaseStudy | null>(null);
+  const [editingBlogPost, setEditingBlogPost] = useState<BlogPost | null>(null);
 
-  const emptyCaseStudy: CaseStudy = {
+  const [formData, setFormData] = useState({
     title: '',
     description: '',
     thumbnail: '',
-    category: 'E-commerce',
+    original_image: '',
+    category: '',
     live_url: '',
-    tags: [],
+    tags: '',
     content: '',
     client: '',
     duration: '',
-    results: []
-  };
+    results: ''
+  });
 
-  const emptyBlogPost: BlogPost = {
+  const [blogFormData, setBlogFormData] = useState({
     title: '',
     excerpt: '',
     content: '',
-    author: user?.email || '',
-    tags: [],
+    author: '',
+    tags: '',
     featured_image: '',
     published: false
-  };
-
-  const categories = ['E-commerce', 'SaaS', 'Corporate', 'Portfolio', 'Startup'];
+  });
 
   useEffect(() => {
     fetchCaseStudies();
     fetchBlogPosts();
-    fetchHomepageProjects();
     fetchContactSubmissions();
-    
-    // Set up real-time subscription for contact submissions
-    const channel = supabase
-      .channel('contact-submissions')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'contact_submissions'
-        },
-        () => {
-          fetchContactSubmissions();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
   }, []);
 
   const fetchCaseStudies = async () => {
@@ -119,16 +95,11 @@ const Admin = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+
       setCaseStudies(data || []);
     } catch (error) {
       console.error('Error fetching case studies:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch case studies. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
+      setCaseStudies([]);
     }
   };
 
@@ -140,14 +111,11 @@ const Admin = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+
       setBlogPosts(data || []);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch blog posts. Please try again.",
-        variant: "destructive"
-      });
+      setBlogPosts([]);
     }
   };
 
@@ -159,930 +127,654 @@ const Admin = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+
       setContactSubmissions(data || []);
     } catch (error) {
       console.error('Error fetching contact submissions:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch contact submissions. Please try again.",
-        variant: "destructive"
-      });
+      setContactSubmissions([]);
     }
   };
 
-  const saveCaseStudy = async (caseStudy: CaseStudy) => {
-    try {
-      const caseStudyData = {
-        title: caseStudy.title,
-        description: caseStudy.description,
-        thumbnail: caseStudy.thumbnail || null,
-        category: caseStudy.category,
-        live_url: caseStudy.live_url || null,
-        tags: caseStudy.tags,
-        content: caseStudy.content || null,
-        client: caseStudy.client || null,
-        duration: caseStudy.duration || null,
-        results: caseStudy.results
-      };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const caseStudyData = {
+      ...formData,
+      tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
+      results: formData.results.split('\n').map(result => result.trim()).filter(result => result)
+    };
 
-      if (caseStudy.id) {
-        const { error } = await supabase
-          .from('case_studies')
-          .update(caseStudyData)
-          .eq('id', caseStudy.id);
-
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from('case_studies')
-          .insert([caseStudyData]);
-
-        if (error) throw error;
+    if (editingCaseStudy) {
+      const { error } = await supabase
+        .from('case_studies')
+        .update(caseStudyData)
+        .eq('id', editingCaseStudy.id);
+      
+      if (!error) {
+        fetchCaseStudies();
+        resetForm();
+        setIsDialogOpen(false);
       }
-
-      toast({
-        title: "Success",
-        description: `Case study ${caseStudy.id ? 'updated' : 'created'} successfully!`,
-      });
-
-      fetchCaseStudies();
-      setEditingCase(null);
-      setShowCaseForm(false);
-    } catch (error) {
-      console.error('Error saving case study:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save case study. Please try again.",
-        variant: "destructive"
-      });
+    } else {
+      const { error } = await supabase
+        .from('case_studies')
+        .insert([caseStudyData]);
+      
+      if (!error) {
+        fetchCaseStudies();
+        resetForm();
+        setIsDialogOpen(false);
+      }
     }
   };
 
-  const saveBlogPost = async (blogPost: BlogPost) => {
-    try {
-      const blogPostData = {
-        title: blogPost.title,
-        excerpt: blogPost.excerpt || null,
-        content: blogPost.content,
-        author: blogPost.author,
-        tags: blogPost.tags,
-        featured_image: blogPost.featured_image || null,
-        published: blogPost.published
-      };
+  const handleBlogSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-      if (blogPost.id) {
-        const { error } = await supabase
-          .from('blog_posts')
-          .update(blogPostData)
-          .eq('id', blogPost.id);
+    const blogPostData = {
+      ...blogFormData,
+      tags: blogFormData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
+    };
 
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from('blog_posts')
-          .insert([blogPostData]);
+    if (editingBlogPost) {
+      const { error } = await supabase
+        .from('blog_posts')
+        .update(blogPostData)
+        .eq('id', editingBlogPost.id);
 
-        if (error) throw error;
+      if (!error) {
+        fetchBlogPosts();
+        resetBlogForm();
+        setIsBlogDialogOpen(false);
       }
+    } else {
+      const { error } = await supabase
+        .from('blog_posts')
+        .insert([blogPostData]);
 
-      toast({
-        title: "Success",
-        description: `Blog post ${blogPost.id ? 'updated' : 'created'} successfully!`,
-      });
-
-      fetchBlogPosts();
-      setEditingBlog(null);
-      setShowBlogForm(false);
-    } catch (error) {
-      console.error('Error saving blog post:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save blog post. Please try again.",
-        variant: "destructive"
-      });
+      if (!error) {
+        fetchBlogPosts();
+        resetBlogForm();
+        setIsBlogDialogOpen(false);
+      }
     }
   };
 
   const deleteCaseStudy = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this case study?')) return;
-    
-    try {
+    const confirmDelete = window.confirm('Are you sure you want to delete this case study?');
+    if (confirmDelete) {
       const { error } = await supabase
         .from('case_studies')
         .delete()
         .eq('id', id);
 
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Case study deleted successfully!",
-      });
-
-      fetchCaseStudies();
-    } catch (error) {
-      console.error('Error deleting case study:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete case study. Please try again.",
-        variant: "destructive"
-      });
+      if (!error) {
+        fetchCaseStudies();
+      }
     }
   };
 
   const deleteBlogPost = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this blog post?')) return;
-    
-    try {
+    const confirmDelete = window.confirm('Are you sure you want to delete this blog post?');
+    if (confirmDelete) {
       const { error } = await supabase
         .from('blog_posts')
         .delete()
         .eq('id', id);
 
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Blog post deleted successfully!",
-      });
-
-      fetchBlogPosts();
-    } catch (error) {
-      console.error('Error deleting blog post:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete blog post. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const fetchHomepageProjects = async () => {
-    try {
-      const stored = localStorage.getItem('homepage_projects');
-      if (stored) {
-        setHomepageProjects(JSON.parse(stored));
+      if (!error) {
+        fetchBlogPosts();
       }
-    } catch (error) {
-      console.error('Error fetching homepage projects:', error);
     }
   };
 
-  const toggleHomepageProject = (projectId: string) => {
-    const updated = homepageProjects.includes(projectId)
-      ? homepageProjects.filter(id => id !== projectId)
-      : [...homepageProjects, projectId].slice(0, 3);
-    
-    setHomepageProjects(updated);
-    localStorage.setItem('homepage_projects', JSON.stringify(updated));
-    
-    toast({
-      title: "Success",
-      description: "Homepage projects updated successfully!"
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      description: '',
+      thumbnail: '',
+      original_image: '',
+      category: '',
+      live_url: '',
+      tags: '',
+      content: '',
+      client: '',
+      duration: '',
+      results: ''
     });
+    setEditingCaseStudy(null);
   };
 
-  const handleCaseFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (editingCase) {
-      saveCaseStudy(editingCase);
-    }
-  };
-
-  const handleBlogFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (editingBlog) {
-      saveBlogPost(editingBlog);
-    }
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      toast({
-        title: "Success",
-        description: "Signed out successfully!"
-      });
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+  const resetBlogForm = () => {
+    setBlogFormData({
+      title: '',
+      excerpt: '',
+      content: '',
+      author: '',
+      tags: '',
+      featured_image: '',
+      published: false
     });
+    setEditingBlogPost(null);
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen pt-24 flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-2 border-neon-green border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading admin panel...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen pt-16 sm:pt-24 px-2 sm:px-4">
-      <div className="max-w-7xl mx-auto py-4 sm:py-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
-          <div className="text-center sm:text-left w-full sm:w-auto">
-            <h1 className="text-2xl sm:text-4xl font-bold mb-2">
-              Admin <span className="text-neon-green">Dashboard</span>
-            </h1>
-            <p className="text-gray-400 text-sm sm:text-base break-all sm:break-normal">Welcome back, {user?.email}</p>
+    <div className="min-h-screen pt-24 pb-12 px-4 md:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">Admin Dashboard</h1>
+            <p className="text-gray-400">Welcome back, {user?.email}</p>
           </div>
-          <Button 
-            onClick={handleSignOut}
-            variant="outline"
-            className="btn-secondary w-full sm:w-auto"
-            size="sm"
-          >
-            <LogOut className="mr-2 w-4 h-4" />
+          <Button onClick={signOut} variant="outline" className="border-white/20 text-gray-300 hover:bg-white/10">
             Sign Out
           </Button>
         </div>
 
-        <Tabs defaultValue="case-studies" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white/5 mb-6 sm:mb-8 h-auto">
-            <TabsTrigger value="case-studies" className="text-white text-xs sm:text-sm py-2 px-1">
-              Projects ({caseStudies.length})
+        <Tabs defaultValue="case-studies" className="space-y-6">
+          <TabsList className="grid w-full md:w-auto grid-cols-3 bg-white/5 backdrop-blur-sm">
+            <TabsTrigger value="case-studies" className="data-[state=active]:bg-neon-green data-[state=active]:text-dark-bg">
+              Case Studies
             </TabsTrigger>
-            <TabsTrigger value="homepage" className="text-white text-xs sm:text-sm py-2 px-1">
-              Homepage
+            <TabsTrigger value="blog" className="data-[state=active]:bg-neon-green data-[state=active]:text-dark-bg">
+              Blog Posts
             </TabsTrigger>
-            <TabsTrigger value="blog-posts" className="text-white text-xs sm:text-sm py-2 px-1">
-              Blog ({blogPosts.length})
-            </TabsTrigger>
-            <TabsTrigger value="contact-submissions" className="text-white text-xs sm:text-sm py-2 px-1">
-              Contact ({contactSubmissions.length})
+            <TabsTrigger value="contacts" className="data-[state=active]:bg-neon-green data-[state=active]:text-dark-bg">
+              Contact Submissions
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="case-studies" className="space-y-4 sm:space-y-6">
+          {/* Case Studies Tab */}
+          <TabsContent value="case-studies" className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 className="text-lg sm:text-2xl font-bold">Project Portfolio</h2>
-              <Button 
-                onClick={() => {
-                  setEditingCase(emptyCaseStudy);
-                  setShowCaseForm(true);
-                }}
-                className="btn-primary w-full sm:w-auto text-sm"
-                size="sm"
-              >
-                <Plus className="mr-2 w-4 h-4" />
-                Add New Project
-              </Button>
-            </div>
-
-            {showCaseForm && editingCase && (
-              <Card className="glass">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center justify-between text-sm sm:text-base">
-                    {editingCase.id ? 'Edit Project' : 'Add New Project'}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        setEditingCase(null);
-                        setShowCaseForm(false);
-                      }}
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <form onSubmit={handleCaseFormSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <h2 className="text-2xl font-bold">Case Studies</h2>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-neon-green text-dark-bg hover:bg-neon-green/90">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Case Study
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-dark-bg border border-white/20">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">
+                      {editingCaseStudy ? 'Edit Case Study' : 'Add New Case Study'}
+                    </DialogTitle>
+                  </DialogHeader>
+                  
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="title" className="text-sm">Project Title *</Label>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Title</label>
                         <Input
-                          id="title"
-                          value={editingCase.title}
-                          onChange={(e) => setEditingCase({...editingCase, title: e.target.value})}
-                          className="bg-white/5 border-white/10 text-sm"
-                          placeholder="Enter project title"
+                          value={formData.title}
+                          onChange={(e) => setFormData({...formData, title: e.target.value})}
+                          className="bg-white/5 border-white/20 text-white"
                           required
                         />
                       </div>
                       <div>
-                        <Label htmlFor="category" className="text-sm">Category *</Label>
-                        <select
-                          id="category"
-                          value={editingCase.category}
-                          onChange={(e) => setEditingCase({...editingCase, category: e.target.value})}
-                          className="w-full bg-white/5 border border-white/10 rounded-md px-3 py-2 text-white text-sm"
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Category</label>
+                        <Input
+                          value={formData.category}
+                          onChange={(e) => setFormData({...formData, category: e.target.value})}
+                          className="bg-white/5 border-white/20 text-white"
+                          placeholder="e.g., E-commerce, SaaS"
                           required
-                        >
-                          {categories.map(cat => (
-                            <option key={cat} value={cat} className="bg-gray-800">{cat}</option>
-                          ))}
-                        </select>
+                        />
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="description" className="text-sm">Description *</Label>
+                      <label className="text-sm font-medium text-gray-300 mb-2 block">Description</label>
                       <Textarea
-                        id="description"
-                        value={editingCase.description}
-                        onChange={(e) => setEditingCase({...editingCase, description: e.target.value})}
-                        className="bg-white/5 border-white/10 text-sm min-h-[80px]"
-                        placeholder="Brief project description"
+                        value={formData.description}
+                        onChange={(e) => setFormData({...formData, description: e.target.value})}
+                        className="bg-white/5 border-white/20 text-white min-h-[100px]"
                         required
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="client" className="text-sm">Client Name</Label>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block flex items-center gap-2">
+                          <Image className="w-4 h-4" />
+                          Thumbnail Image URL
+                        </label>
                         <Input
-                          id="client"
-                          value={editingCase.client || ''}
-                          onChange={(e) => setEditingCase({...editingCase, client: e.target.value})}
-                          className="bg-white/5 border-white/10 text-sm"
-                          placeholder="Client or company name"
+                          value={formData.thumbnail}
+                          onChange={(e) => setFormData({...formData, thumbnail: e.target.value})}
+                          className="bg-white/5 border-white/20 text-white"
+                          placeholder="https://example.com/image.jpg"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="duration" className="text-sm">Project Duration</Label>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block flex items-center gap-2">
+                          <Image className="w-4 h-4" />
+                          Original Project Image URL
+                        </label>
                         <Input
-                          id="duration"
-                          value={editingCase.duration || ''}
-                          onChange={(e) => setEditingCase({...editingCase, duration: e.target.value})}
-                          className="bg-white/5 border-white/10 text-sm"
+                          value={formData.original_image}
+                          onChange={(e) => setFormData({...formData, original_image: e.target.value})}
+                          className="bg-white/5 border-white/20 text-white"
+                          placeholder="https://example.com/original-project.jpg"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Client</label>
+                        <Input
+                          value={formData.client}
+                          onChange={(e) => setFormData({...formData, client: e.target.value})}
+                          className="bg-white/5 border-white/20 text-white"
+                          placeholder="Client Name"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Duration</label>
+                        <Input
+                          value={formData.duration}
+                          onChange={(e) => setFormData({...formData, duration: e.target.value})}
+                          className="bg-white/5 border-white/20 text-white"
                           placeholder="e.g., 3 months"
                         />
                       </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Live URL</label>
+                        <Input
+                          value={formData.live_url}
+                          onChange={(e) => setFormData({...formData, live_url: e.target.value})}
+                          className="bg-white/5 border-white/20 text-white"
+                          placeholder="https://example.com"
+                        />
+                      </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="thumbnail" className="text-sm">Thumbnail Image URL</Label>
+                      <label className="text-sm font-medium text-gray-300 mb-2 block">Tags (comma-separated)</label>
                       <Input
-                        id="thumbnail"
-                        value={editingCase.thumbnail || ''}
-                        onChange={(e) => setEditingCase({...editingCase, thumbnail: e.target.value})}
-                        className="bg-white/5 border-white/10 text-sm"
-                        placeholder="https://example.com/image.jpg"
+                        value={formData.tags}
+                        onChange={(e) => setFormData({...formData, tags: e.target.value})}
+                        className="bg-white/5 border-white/20 text-white"
+                        placeholder="React, TypeScript, Tailwind CSS"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="live_url" className="text-sm">Live Project URL</Label>
-                      <Input
-                        id="live_url"
-                        value={editingCase.live_url || ''}
-                        onChange={(e) => setEditingCase({...editingCase, live_url: e.target.value})}
-                        className="bg-white/5 border-white/10 text-sm"
-                        placeholder="https://project-url.com"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="tags" className="text-sm">Tags (comma-separated)</Label>
-                      <Input
-                        id="tags"
-                        value={editingCase.tags.join(', ')}
-                        onChange={(e) => setEditingCase({...editingCase, tags: e.target.value.split(', ').filter(tag => tag.trim())})}
-                        className="bg-white/5 border-white/10 text-sm"
-                        placeholder="React, TypeScript, Design"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="results" className="text-sm">Key Results (comma-separated)</Label>
-                      <Input
-                        id="results"
-                        value={editingCase.results.join(', ')}
-                        onChange={(e) => setEditingCase({...editingCase, results: e.target.value.split(', ').filter(result => result.trim())})}
-                        className="bg-white/5 border-white/10 text-sm"
-                        placeholder="300% increase in conversions, 50% faster load times"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="content" className="text-sm">Detailed Content (HTML)</Label>
+                      <label className="text-sm font-medium text-gray-300 mb-2 block">Content (HTML)</label>
                       <Textarea
-                        id="content"
-                        value={editingCase.content || ''}
-                        onChange={(e) => setEditingCase({...editingCase, content: e.target.value})}
-                        className="bg-white/5 border-white/10 min-h-[150px] text-sm"
-                        placeholder="Detailed project description with HTML formatting"
+                        value={formData.content}
+                        onChange={(e) => setFormData({...formData, content: e.target.value})}
+                        className="bg-white/5 border-white/20 text-white min-h-[150px]"
+                        placeholder="Detailed project description in HTML..."
                       />
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2 pt-4">
-                      <Button type="submit" className="btn-primary text-sm" size="sm">
-                        <Save className="mr-2 w-4 h-4" />
-                        {editingCase.id ? 'Update Project' : 'Create Project'}
+                    <div>
+                      <label className="text-sm font-medium text-gray-300 mb-2 block">Results (one per line)</label>
+                      <Textarea
+                        value={formData.results}
+                        onChange={(e) => setFormData({...formData, results: e.target.value})}
+                        className="bg-white/5 border-white/20 text-white min-h-[100px]"
+                        placeholder="50% increase in conversions&#10;200% growth in traffic&#10;Enhanced user experience"
+                      />
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                      <Button type="submit" className="bg-neon-green text-dark-bg hover:bg-neon-green/90">
+                        {editingCaseStudy ? 'Update Case Study' : 'Create Case Study'}
                       </Button>
                       <Button 
-                        type="button"
-                        variant="outline"
+                        type="button" 
+                        variant="outline" 
                         onClick={() => {
-                          setEditingCase(null);
-                          setShowCaseForm(false);
+                          resetForm();
+                          setIsDialogOpen(false);
                         }}
-                        className="btn-secondary text-sm"
-                        size="sm"
+                        className="border-white/20 text-gray-300 hover:bg-white/10"
                       >
                         Cancel
                       </Button>
                     </div>
                   </form>
-                </CardContent>
-              </Card>
-            )}
+                </DialogContent>
+              </Dialog>
+            </div>
 
-            {caseStudies.length === 0 ? (
-              <Card className="glass">
-                <CardContent className="text-center py-8 sm:py-12 px-4">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
-                    <Plus className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
-                  </div>
-                  <h3 className="text-base sm:text-xl font-bold mb-2">No Projects Yet</h3>
-                  <p className="text-gray-400 mb-4 text-sm sm:text-base">Start by creating your first case study to showcase your work.</p>
-                  <Button 
-                    onClick={() => {
-                      setEditingCase(emptyCaseStudy);
-                      setShowCaseForm(true);
-                    }}
-                    className="btn-primary text-sm"
-                    size="sm"
-                  >
-                    Create Your First Project
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {caseStudies.map((caseStudy) => (
-                  <Card key={caseStudy.id} className="glass hover:glass-strong transition-all duration-300">
-                    <div className="aspect-video overflow-hidden rounded-t-lg">
-                      <img 
-                        src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop'}
-                        alt={caseStudy.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <CardContent className="p-3 sm:p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary" className="bg-neon-green/20 text-neon-green text-xs">
-                          {caseStudy.category}
-                        </Badge>
-                        {caseStudy.live_url && (
-                          <a 
-                            href={caseStudy.live_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-400 hover:text-neon-green transition-colors"
-                          >
-                            <Eye size={14} />
-                          </a>
-                        )}
-                      </div>
-                      
-                      <h3 className="font-bold mb-2 line-clamp-2 text-sm">{caseStudy.title}</h3>
-                      <p className="text-xs text-gray-400 mb-3 line-clamp-2">{caseStudy.description}</p>
-                      
-                      {caseStudy.tags && caseStudy.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {caseStudy.tags.slice(0, 2).map((tag, index) => (
-                            <Badge key={index} variant="outline" className="text-xs border-white/20 text-gray-400 px-1 py-0">
-                              {tag}
-                            </Badge>
-                          ))}
-                          {caseStudy.tags.length > 2 && (
-                            <Badge variant="outline" className="text-xs border-white/20 text-gray-400 px-1 py-0">
-                              +{caseStudy.tags.length - 2}
-                            </Badge>
-                          )}
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {caseStudies.map((study) => (
+                <Card key={study.id} className="bg-white/5 border-white/20 backdrop-blur-sm hover:bg-white/10 transition-all">
+                  <CardHeader className="p-4">
+                    <div className="aspect-video mb-3 rounded-lg overflow-hidden bg-white/5">
+                      {(study.original_image || study.thumbnail) ? (
+                        <img 
+                          src={study.original_image || study.thumbnail} 
+                          alt={study.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Image className="w-8 h-8 text-gray-400" />
                         </div>
                       )}
-                      
-                      <div className="flex gap-1 sm:gap-2">
-                        <Button 
-                          size="sm"
-                          onClick={() => {
-                            setEditingCase(caseStudy);
-                            setShowCaseForm(true);
-                          }}
-                          className="btn-secondary flex-1 text-xs px-2 py-1"
-                        >
-                          <Edit className="w-3 h-3 mr-1" />
-                          Edit
-                        </Button>
-                        <Button 
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => caseStudy.id && deleteCaseStudy(caseStudy.id)}
-                          className="px-2 py-1"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="homepage" className="space-y-4 sm:space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 className="text-lg sm:text-2xl font-bold">Homepage Featured Projects</h2>
-              <div className="text-xs sm:text-sm text-gray-400">
-                Select up to 3 projects to feature on the homepage
-              </div>
-            </div>
-
-            {caseStudies.length === 0 ? (
-              <Card className="glass">
-                <CardContent className="text-center py-8 sm:py-12 px-4">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
-                    <Plus className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
-                  </div>
-                  <h3 className="text-base sm:text-xl font-bold mb-2">No Projects Available</h3>
-                  <p className="text-gray-400 mb-4 text-sm sm:text-base">Create some case studies first to feature them on the homepage.</p>
-                  <Button 
-                    onClick={() => {
-                      setEditingCase(emptyCaseStudy);
-                      setShowCaseForm(true);
-                    }}
-                    className="btn-primary text-sm"
-                    size="sm"
-                  >
-                    Create Your First Project
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {caseStudies.map((caseStudy) => (
-                  <Card 
-                    key={caseStudy.id} 
-                    className={`glass hover:glass-strong transition-all duration-300 cursor-pointer ${
-                      homepageProjects.includes(caseStudy.id!) ? 'ring-2 ring-neon-green' : ''
-                    }`}
-                    onClick={() => caseStudy.id && toggleHomepageProject(caseStudy.id)}
-                  >
-                    <div className="aspect-video overflow-hidden rounded-t-lg">
-                      <img 
-                        src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop'}
-                        alt={caseStudy.title}
-                        className="w-full h-full object-cover"
-                      />
                     </div>
-                    <CardContent className="p-3 sm:p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary" className="bg-neon-green/20 text-neon-green text-xs">
-                          {caseStudy.category}
+                    <div className="flex items-start justify-between gap-2">
+                      <CardTitle className="text-white text-lg line-clamp-2">{study.title}</CardTitle>
+                      <Badge variant="secondary" className="bg-neon-green/20 text-neon-green whitespace-nowrap text-xs">
+                        {study.category}
+                      </Badge>
+                    </div>
+                    <p className="text-gray-400 text-sm line-clamp-3">{study.description}</p>
+                  </CardHeader>
+                  
+                  <CardContent className="p-4 pt-0">
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {study.tags?.slice(0, 3).map((tag, index) => (
+                        <Badge key={index} variant="outline" className="text-xs border-white/20 text-gray-400">
+                          {tag}
                         </Badge>
-                        {homepageProjects.includes(caseStudy.id!) && (
-                          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-neon-green rounded-full flex items-center justify-center">
-                            <span className="text-dark-bg text-xs font-bold">✓</span>
-                          </div>
-                        )}
-                      </div>
+                      ))}
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setEditingCaseStudy(study);
+                          setFormData({
+                            title: study.title,
+                            description: study.description,
+                            thumbnail: study.thumbnail,
+                            original_image: study.original_image || '',
+                            category: study.category,
+                            live_url: study.live_url,
+                            tags: study.tags?.join(', ') || '',
+                            content: study.content,
+                            client: study.client || '',
+                            duration: study.duration || '',
+                            results: study.results?.join('\n') || ''
+                          });
+                          setIsDialogOpen(true);
+                        }}
+                        className="border-white/20 text-gray-300 hover:bg-white/10 text-xs flex-1"
+                      >
+                        <Edit className="w-3 h-3 mr-1" />
+                        Edit
+                      </Button>
                       
-                      <h3 className="font-bold mb-2 line-clamp-2 text-sm">{caseStudy.title}</h3>
-                      <p className="text-xs text-gray-400 mb-3 line-clamp-2">{caseStudy.description}</p>
+                      {study.live_url && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          asChild
+                          className="border-white/20 text-gray-300 hover:bg-white/10 text-xs"
+                        >
+                          <a href={study.live_url} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="w-3 h-3 mr-1" />
+                            View
+                          </a>
+                        </Button>
+                      )}
                       
-                      <div className="text-xs text-center">
-                        {homepageProjects.includes(caseStudy.id!) ? (
-                          <span className="text-neon-green font-medium">Featured on Homepage</span>
-                        ) : (
-                          <span className="text-gray-500">Click to feature on homepage</span>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-
-            <div className="bg-white/5 rounded-lg p-3 sm:p-6 border border-white/10">
-              <h3 className="text-sm sm:text-lg font-semibold mb-3 text-neon-green">How it works:</h3>
-              <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
-                <li>• Click on any project card to toggle its homepage feature status</li>
-                <li>• You can select up to 3 projects to be featured on the homepage</li>
-                <li>• Featured projects will appear in the "Success Stories" section</li>
-                <li>• Changes are saved automatically and will reflect on the homepage immediately</li>
-              </ul>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => deleteCaseStudy(study.id)}
+                        className="border-red-500/20 text-red-400 hover:bg-red-500/10 text-xs"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </TabsContent>
 
-          <TabsContent value="blog-posts" className="space-y-4 sm:space-y-6">
+          {/* Blog Posts Tab */}
+          <TabsContent value="blog" className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 className="text-lg sm:text-2xl font-bold">Blog Management</h2>
-              <Button 
-                onClick={() => {
-                  setEditingBlog(emptyBlogPost);
-                  setShowBlogForm(true);
-                }}
-                className="btn-primary w-full sm:w-auto text-sm"
-                size="sm"
-              >
-                <Plus className="mr-2 w-4 h-4" />
-                Add New Post
-              </Button>
-            </div>
+              <h2 className="text-2xl font-bold">Blog Posts</h2>
+              <Dialog open={isBlogDialogOpen} onOpenChange={setIsBlogDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-neon-green text-dark-bg hover:bg-neon-green/90">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Blog Post
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-dark-bg border border-white/20">
+                  <DialogHeader>
+                    <DialogTitle className="text-white">
+                      {editingBlogPost ? 'Edit Blog Post' : 'Add New Blog Post'}
+                    </DialogTitle>
+                  </DialogHeader>
 
-            {showBlogForm && editingBlog && (
-              <Card className="glass">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center justify-between text-sm sm:text-base">
-                    {editingBlog.id ? 'Edit Blog Post' : 'Add New Blog Post'}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        setEditingBlog(null);
-                        setShowBlogForm(false);
-                      }}
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <form onSubmit={handleBlogFormSubmit} className="space-y-4">
-                    <div>
-                      <Label htmlFor="blog-title" className="text-sm">Post Title *</Label>
-                      <Input
-                        id="blog-title"
-                        value={editingBlog.title}
-                        onChange={(e) => setEditingBlog({...editingBlog, title: e.target.value})}
-                        className="bg-white/5 border-white/10 text-sm"
-                        placeholder="Enter blog post title"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="blog-excerpt" className="text-sm">Excerpt</Label>
-                      <Textarea
-                        id="blog-excerpt"
-                        value={editingBlog.excerpt || ''}
-                        onChange={(e) => setEditingBlog({...editingBlog, excerpt: e.target.value})}
-                        className="bg-white/5 border-white/10 text-sm"
-                        placeholder="Brief description of the post"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <form onSubmit={handleBlogSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="blog-author" className="text-sm">Author *</Label>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Title</label>
                         <Input
-                          id="blog-author"
-                          value={editingBlog.author}
-                          onChange={(e) => setEditingBlog({...editingBlog, author: e.target.value})}
-                          className="bg-white/5 border-white/10 text-sm"
-                          placeholder="Author name"
+                          value={blogFormData.title}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, title: e.target.value })}
+                          className="bg-white/5 border-white/20 text-white"
                           required
                         />
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Switch
-                          checked={editingBlog.published}
-                          onCheckedChange={(checked) => setEditingBlog({...editingBlog, published: checked})}
+                      <div>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Author</label>
+                        <Input
+                          value={blogFormData.author}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, author: e.target.value })}
+                          className="bg-white/5 border-white/20 text-white"
+                          required
                         />
-                        <Label className="flex items-center gap-2 text-sm">
-                          {editingBlog.published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                          {editingBlog.published ? 'Published' : 'Draft'}
-                        </Label>
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="blog-image" className="text-sm">Featured Image URL</Label>
-                      <Input
-                        id="blog-image"
-                        value={editingBlog.featured_image || ''}
-                        onChange={(e) => setEditingBlog({...editingBlog, featured_image: e.target.value})}
-                        className="bg-white/5 border-white/10 text-sm"
-                        placeholder="https://example.com/image.jpg"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="blog-tags" className="text-sm">Tags (comma-separated)</Label>
-                      <Input
-                        id="blog-tags"
-                        value={editingBlog.tags.join(', ')}
-                        onChange={(e) => setEditingBlog({...editingBlog, tags: e.target.value.split(', ').filter(tag => tag.trim())})}
-                        className="bg-white/5 border-white/10 text-sm"
-                        placeholder="web development, design, tutorial"
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="blog-content" className="text-sm">Content (HTML) *</Label>
+                      <label className="text-sm font-medium text-gray-300 mb-2 block">Excerpt</label>
                       <Textarea
-                        id="blog-content"
-                        value={editingBlog.content}
-                        onChange={(e) => setEditingBlog({...editingBlog, content: e.target.value})}
-                        className="bg-white/5 border-white/10 min-h-[200px] sm:min-h-[300px] text-sm"
-                        placeholder="Write your blog post content here..."
+                        value={blogFormData.excerpt}
+                        onChange={(e) => setBlogFormData({ ...blogFormData, excerpt: e.target.value })}
+                        className="bg-white/5 border-white/20 text-white min-h-[80px]"
                         required
                       />
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2 pt-4">
-                      <Button type="submit" className="btn-primary text-sm" size="sm">
-                        <Save className="mr-2 w-4 h-4" />
-                        {editingBlog.id ? 'Update Post' : 'Create Post'}
+                    <div>
+                      <label className="text-sm font-medium text-gray-300 mb-2 block">Content (HTML)</label>
+                      <Textarea
+                        value={blogFormData.content}
+                        onChange={(e) => setBlogFormData({ ...blogFormData, content: e.target.value })}
+                        className="bg-white/5 border-white/20 text-white min-h-[150px]"
+                        required
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Featured Image URL</label>
+                        <Input
+                          value={blogFormData.featured_image}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, featured_image: e.target.value })}
+                          className="bg-white/5 border-white/20 text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">Tags (comma-separated)</label>
+                        <Input
+                          value={blogFormData.tags}
+                          onChange={(e) => setBlogFormData({ ...blogFormData, tags: e.target.value })}
+                          className="bg-white/5 border-white/20 text-white"
+                          placeholder="React, JavaScript, Web Development"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <label htmlFor="published" className="text-sm font-medium text-gray-300">Published</label>
+                      <Input
+                        type="checkbox"
+                        id="published"
+                        checked={blogFormData.published}
+                        onChange={(e) => setBlogFormData({ ...blogFormData, published: e.target.checked })}
+                        className="bg-white/5 border-white/20 text-white h-5 w-5"
+                      />
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                      <Button type="submit" className="bg-neon-green text-dark-bg hover:bg-neon-green/90">
+                        {editingBlogPost ? 'Update Blog Post' : 'Create Blog Post'}
                       </Button>
-                      <Button 
+                      <Button
                         type="button"
                         variant="outline"
                         onClick={() => {
-                          setEditingBlog(null);
-                          setShowBlogForm(false);
+                          resetBlogForm();
+                          setIsBlogDialogOpen(false);
                         }}
-                        className="btn-secondary text-sm"
-                        size="sm"
+                        className="border-white/20 text-gray-300 hover:bg-white/10"
                       >
                         Cancel
                       </Button>
                     </div>
                   </form>
-                </CardContent>
-              </Card>
-            )}
+                </DialogContent>
+              </Dialog>
+            </div>
 
-            {blogPosts.length === 0 ? (
-              <Card className="glass">
-                <CardContent className="text-center py-8 sm:py-12 px-4">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
-                    <Plus className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
-                  </div>
-                  <h3 className="text-base sm:text-xl font-bold mb-2">No Blog Posts Yet</h3>
-                  <p className="text-gray-400 mb-4 text-sm sm:text-base">Start sharing your thoughts and expertise with your first blog post.</p>
-                  <Button 
-                    onClick={() => {
-                      setEditingBlog(emptyBlogPost);
-                      setShowBlogForm(true);
-                    }}
-                    className="btn-primary text-sm"
-                    size="sm"
-                  >
-                    Write Your First Post
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {blogPosts.map((post) => (
-                  <Card key={post.id} className="glass hover:glass-strong transition-all duration-300">
-                    <div className="aspect-video overflow-hidden rounded-t-lg">
-                      <img 
-                        src={post.featured_image || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=200&fit=crop'}
-                        alt={post.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <CardContent className="p-3 sm:p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant={post.published ? "default" : "secondary"} className={post.published ? "bg-green-600 text-xs" : "bg-gray-600 text-xs"}>
-                          {post.published ? "Published" : "Draft"}
-                        </Badge>
-                        <span className="text-xs text-gray-400">By {post.author}</span>
-                      </div>
-                      
-                      <h3 className="font-bold mb-2 line-clamp-2 text-sm">{post.title}</h3>
-                      <p className="text-xs sm:text-sm text-gray-400 mb-3 line-clamp-2">{post.excerpt}</p>
-                      
-                      {post.tags && post.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {post.tags.slice(0, 2).map((tag, index) => (
-                            <Badge key={index} variant="outline" className="text-xs border-white/20 text-gray-400 px-1 py-0">
-                              {tag}
-                            </Badge>
-                          ))}
-                          {post.tags.length > 2 && (
-                            <Badge variant="outline" className="text-xs border-white/20 text-gray-400 px-1 py-0">
-                              +{post.tags.length - 2}
-                            </Badge>
-                          )}
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {blogPosts.map((post) => (
+                <Card key={post.id} className="bg-white/5 border-white/20 backdrop-blur-sm hover:bg-white/10 transition-all">
+                  <CardHeader className="p-4">
+                    <div className="aspect-video mb-3 rounded-lg overflow-hidden bg-white/5">
+                      {post.featured_image ? (
+                        <img
+                          src={post.featured_image}
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Image className="w-8 h-8 text-gray-400" />
                         </div>
                       )}
-                      
-                      <div className="flex gap-1 sm:gap-2">
-                        <Button 
-                          size="sm"
-                          onClick={() => {
-                            setEditingBlog(post);
-                            setShowBlogForm(true);
-                          }}
-                          className="btn-secondary flex-1 text-xs px-2 py-1"
-                        >
-                          <Edit className="w-3 h-3 mr-1" />
-                          Edit
-                        </Button>
-                        <Button 
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => post.id && deleteBlogPost(post.id)}
-                          className="px-2 py-1"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+                    </div>
+                    <div className="flex items-start justify-between gap-2">
+                      <CardTitle className="text-white text-lg line-clamp-2">{post.title}</CardTitle>
+                      {post.published ? (
+                        <Badge variant="secondary" className="bg-neon-green/20 text-neon-green whitespace-nowrap text-xs">
+                          Published
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="border-white/20 text-gray-300 whitespace-nowrap text-xs">
+                          Draft
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-gray-400 text-sm line-clamp-3">{post.excerpt}</p>
+                  </CardHeader>
+
+                  <CardContent className="p-4 pt-0">
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {post.tags?.slice(0, 3).map((tag, index) => (
+                        <Badge key={index} variant="outline" className="text-xs border-white/20 text-gray-400">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setEditingBlogPost(post);
+                          setBlogFormData({
+                            title: post.title,
+                            excerpt: post.excerpt,
+                            content: post.content,
+                            author: post.author,
+                            tags: post.tags?.join(', ') || '',
+                            featured_image: post.featured_image,
+                            published: post.published
+                          });
+                          setIsBlogDialogOpen(true);
+                        }}
+                        className="border-white/20 text-gray-300 hover:bg-white/10 text-xs flex-1"
+                      >
+                        <Edit className="w-3 h-3 mr-1" />
+                        Edit
+                      </Button>
+
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => deleteBlogPost(post.id)}
+                        className="border-red-500/20 text-red-400 hover:bg-red-500/10 text-xs"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </TabsContent>
 
-          <TabsContent value="contact-submissions" className="space-y-4 sm:space-y-6">
+          {/* Contact Submissions Tab */}
+          <TabsContent value="contacts" className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 className="text-lg sm:text-2xl font-bold">Contact Submissions</h2>
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
-                <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></div>
-                Real-time updates
-              </div>
+              <h2 className="text-2xl font-bold">Contact Submissions</h2>
+              <Badge variant="secondary" className="bg-neon-green/20 text-neon-green">
+                {contactSubmissions.length} Total Submissions
+              </Badge>
             </div>
 
             {contactSubmissions.length === 0 ? (
-              <Card className="glass">
-                <CardContent className="text-center py-8 sm:py-12 px-4">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
-                    <Mail className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
-                  </div>
-                  <h3 className="text-base sm:text-xl font-bold mb-2">No Contact Submissions Yet</h3>
-                  <p className="text-gray-400 mb-4 text-sm sm:text-base">Contact form submissions will appear here in real-time.</p>
+              <Card className="bg-white/5 border-white/20 backdrop-blur-sm">
+                <CardContent className="p-12 text-center">
+                  <Mail className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-300 mb-2">No Submissions Yet</h3>
+                  <p className="text-gray-400">Contact form submissions will appear here when received.</p>
                 </CardContent>
               </Card>
             ) : (
-              <div className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {contactSubmissions.map((submission) => (
-                  <Card key={submission.id} className="glass hover:glass-strong transition-all duration-300">
-                    <CardContent className="p-3 sm:p-6">
-                      <div className="flex flex-col gap-3 sm:gap-4">
-                        <div className="flex-1">
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3">
-                            <h3 className="font-bold text-sm sm:text-lg">{submission.name}</h3>
-                            {submission.budget && (
-                              <Badge variant="secondary" className="bg-neon-green/20 text-neon-green text-xs w-fit">
-                                {submission.budget}
-                              </Badge>
-                            )}
-                          </div>
-                          
-                          <div className="flex flex-col gap-2 mb-3 text-xs sm:text-sm text-gray-400">
-                            <div className="flex items-center gap-2">
-                              <Mail className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                              <a 
-                                href={`mailto:${submission.email}`} 
-                                className="hover:text-neon-green transition-colors break-all"
-                              >
-                                {submission.email}
-                              </a>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                              <span>{formatDate(submission.created_at)}</span>
-                            </div>
-                          </div>
-                          
-                          <div className="bg-white/5 rounded-lg p-2 sm:p-4">
-                            <h4 className="font-medium mb-2 text-xs sm:text-sm">Message:</h4>
-                            <p className="text-gray-300 text-xs sm:text-sm leading-relaxed break-words">{submission.message}</p>
-                          </div>
+                  <Card key={submission.id} className="bg-white/5 border-white/20 backdrop-blur-sm hover:bg-white/10 transition-all">
+                    <CardHeader className="p-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <CardTitle className="text-white text-lg flex items-center gap-2">
+                            <User className="w-4 h-4 text-neon-green" />
+                            {submission.name}
+                          </CardTitle>
+                          <p className="text-gray-400 text-sm mt-1">{submission.email}</p>
                         </div>
-                        
-                        <div className="flex gap-2">
-                          <Button 
-                            size="sm"
-                            asChild
-                            className="btn-primary text-xs flex-1"
-                          >
-                            <a href={`mailto:${submission.email}?subject=Re: Your Project Inquiry`}>
-                              <Mail className="mr-1 w-3 h-3" />
-                              Reply
-                            </a>
-                          </Button>
-                          <Button 
-                            size="sm"
-                            asChild
-                            variant="outline"
-                            className="btn-secondary text-xs px-2"
-                          >
-                            <a href={`tel:${submission.email}`}>
-                              <Phone className="w-3 h-3" />
-                            </a>
-                          </Button>
+                        <div className="text-right text-xs text-gray-400 flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(submission.created_at).toLocaleDateString()}
                         </div>
+                      </div>
+                    </CardHeader>
+                    
+                    <CardContent className="p-4 pt-0">
+                      {submission.budget && (
+                        <div className="mb-3">
+                          <Badge variant="outline" className="border-white/20 text-gray-300 text-xs">
+                            Budget: {submission.budget}
+                          </Badge>
+                        </div>
+                      )}
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <p className="text-gray-300 text-sm leading-relaxed">
+                          {submission.message}
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
