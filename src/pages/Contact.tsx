@@ -218,25 +218,6 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to Transform Your Business?
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Join hundreds of successful businesses that chose Snugx for their digital transformation.
-          </p>
-          <Button 
-            size="lg" 
-           className="btn-primary px-8 py-4"
-            onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            Get Your Free Quote Now
-          </Button>
-        </div>
-      </section>
-
       <Footer />
     </div>
   );

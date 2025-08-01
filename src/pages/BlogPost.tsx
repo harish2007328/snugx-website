@@ -215,22 +215,23 @@ const BlogPost = () => {
         </section>
 
         {/* CTA */}
-        <section className="py-20 px-4 bg-secondary/20">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">
-              Ready to Transform Your <span className="text-neon-green">Business?</span>
+        <section className="py-20 px-4 mx-auto">
+          <div className="max-w-7xl mx-auto text-center space-y-10 py-20 px-6 bg-[#e5ff00] max-w-7xl mx-auto rounded-[10px]">
+            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-[#111111] leading-relaxed">
+              Ready to <span className="bg-[#1a1a1a] text-[#f5f5f5] text-[#1a1a1a] font-bold px-4 py-1 rounded-md">Transform ✦</span> Your Business?
             </h2>
-            <p className="text-xl text-gray-300 mb-8">
-              Let's discuss how we can help you achieve your digital goals with custom web solutions.
+            <p className="text-lg text-[#111111]/80 font-normal">
+              Join hundreds of successful businesses that chose Snugx for their digital transformation.
             </p>
             
-            <Button 
-              size="lg" 
-              className="btn-primary px-8 py-4"
-              asChild
-            >
-              <Link to="/contact">Get Started</Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button size="lg" className="bg-[#111111] text-[#f5f5f5] border-2 border-[#111111]/50 hover:bg-[#f5f5f5]/90 hover:text-[#111111] transition-colors duration-300 px-10 py-4 rounded-full" asChild>
+                <Link to="/contact">Start Your Project Today</Link>
+              </Button>
+              <Button size="lg" className="bg-transparent border-2 border-[#111111]/50 text-[#111111] hover:bg-[#f5f5f5]/90 hover:text-[#111111] transition-colors duration-300 px-10 py-4 rounded-full" asChild>
+                <Link to="/pricing">View Pricing</Link>
+              </Button>
+            </div>
           </div>
         </section>
 
