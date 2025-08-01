@@ -63,6 +63,7 @@ export type Database = {
           duration: string | null
           id: string
           live_url: string | null
+          original_image: string | null
           results: string[] | null
           tags: string[] | null
           thumbnail: string | null
@@ -78,6 +79,7 @@ export type Database = {
           duration?: string | null
           id?: string
           live_url?: string | null
+          original_image?: string | null
           results?: string[] | null
           tags?: string[] | null
           thumbnail?: string | null
@@ -93,6 +95,7 @@ export type Database = {
           duration?: string | null
           id?: string
           live_url?: string | null
+          original_image?: string | null
           results?: string[] | null
           tags?: string[] | null
           thumbnail?: string | null
