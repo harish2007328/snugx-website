@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X, Eye, EyeOff, LogOut } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Eye, EyeOff, LogOut, Mail, Phone, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -38,10 +37,20 @@ interface BlogPost {
   published: boolean;
 }
 
+interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  budget?: string;
+  message: string;
+  created_at: string;
+}
+
 const Admin = () => {
   const { user, signOut } = useAuth();
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [contactSubmissions, setContactSubmissions] = useState<ContactSubmission[]>([]);
   const [editingCase, setEditingCase] = useState<CaseStudy | null>(null);
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
   const [showCaseForm, setShowCaseForm] = useState(false);
@@ -79,6 +88,27 @@ const Admin = () => {
     fetchCaseStudies();
     fetchBlogPosts();
     fetchHomepageProjects();
+    fetchContactSubmissions();
+    
+    // Set up real-time subscription for contact submissions
+    const channel = supabase
+      .channel('contact-submissions')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'contact_submissions'
+        },
+        () => {
+          fetchContactSubmissions();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchCaseStudies = async () => {
@@ -116,6 +146,25 @@ const Admin = () => {
       toast({
         title: "Error",
         description: "Failed to fetch blog posts. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const fetchContactSubmissions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('contact_submissions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setContactSubmissions(data || []);
+    } catch (error) {
+      console.error('Error fetching contact submissions:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch contact submissions. Please try again.",
         variant: "destructive"
       });
     }
@@ -270,8 +319,6 @@ const Admin = () => {
 
   const fetchHomepageProjects = async () => {
     try {
-      // For now, we'll store homepage project IDs in localStorage
-      // In a real app, you'd store this in a separate table
       const stored = localStorage.getItem('homepage_projects');
       if (stored) {
         setHomepageProjects(JSON.parse(stored));
@@ -284,7 +331,7 @@ const Admin = () => {
   const toggleHomepageProject = (projectId: string) => {
     const updated = homepageProjects.includes(projectId)
       ? homepageProjects.filter(id => id !== projectId)
-      : [...homepageProjects, projectId].slice(0, 3); // Max 3 projects
+      : [...homepageProjects, projectId].slice(0, 3);
     
     setHomepageProjects(updated);
     localStorage.setItem('homepage_projects', JSON.stringify(updated));
@@ -321,6 +368,16 @@ const Admin = () => {
     }
   };
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen pt-24 flex items-center justify-center">
@@ -335,17 +392,17 @@ const Admin = () => {
   return (
     <div className="min-h-screen pt-24 px-4">
       <div className="max-w-7xl mx-auto py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <div className="text-center sm:text-left">
+            <h1 className="text-2xl sm:text-4xl font-bold mb-2">
               Admin <span className="text-neon-green">Dashboard</span>
             </h1>
-            <p className="text-gray-400">Welcome back, {user?.email}</p>
+            <p className="text-gray-400 text-sm sm:text-base">Welcome back, {user?.email}</p>
           </div>
           <Button 
             onClick={handleSignOut}
             variant="outline"
-            className="btn-secondary"
+            className="btn-secondary w-full sm:w-auto"
           >
             <LogOut className="mr-2 w-4 h-4" />
             Sign Out
@@ -353,27 +410,30 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="case-studies" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-white/5 mb-8">
-            <TabsTrigger value="case-studies" className="text-white">
-              Case Studies ({caseStudies.length})
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white/5 mb-8">
+            <TabsTrigger value="case-studies" className="text-white text-xs sm:text-sm">
+              Projects ({caseStudies.length})
             </TabsTrigger>
-            <TabsTrigger value="homepage" className="text-white">
-              Homepage Projects
+            <TabsTrigger value="homepage" className="text-white text-xs sm:text-sm">
+              Homepage
             </TabsTrigger>
-            <TabsTrigger value="blog-posts" className="text-white">
-              Blog Posts ({blogPosts.length})
+            <TabsTrigger value="blog-posts" className="text-white text-xs sm:text-sm">
+              Blog ({blogPosts.length})
+            </TabsTrigger>
+            <TabsTrigger value="contact-submissions" className="text-white text-xs sm:text-sm">
+              Contact ({contactSubmissions.length})
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="case-studies" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Project Portfolio</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold">Project Portfolio</h2>
               <Button 
                 onClick={() => {
                   setEditingCase(emptyCaseStudy);
                   setShowCaseForm(true);
                 }}
-                className="btn-primary"
+                className="btn-primary w-full sm:w-auto"
               >
                 <Plus className="mr-2 w-4 h-4" />
                 Add New Project
@@ -383,7 +443,7 @@ const Admin = () => {
             {showCaseForm && editingCase && (
               <Card className="glass">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
+                  <CardTitle className="flex items-center justify-between text-sm sm:text-base">
                     {editingCase.id ? 'Edit Project' : 'Add New Project'}
                     <Button
                       variant="ghost"
@@ -399,7 +459,7 @@ const Admin = () => {
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleCaseFormSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="title">Project Title *</Label>
                         <Input
@@ -439,7 +499,7 @@ const Admin = () => {
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="client">Client Name</Label>
                         <Input
@@ -517,7 +577,7 @@ const Admin = () => {
                       />
                     </div>
 
-                    <div className="flex gap-2 pt-4">
+                    <div className="flex flex-col sm:flex-row gap-2 pt-4">
                       <Button type="submit" className="btn-primary">
                         <Save className="mr-2 w-4 h-4" />
                         {editingCase.id ? 'Update Project' : 'Create Project'}
@@ -545,8 +605,8 @@ const Admin = () => {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
                     <Plus className="w-8 h-8 text-gray-400" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">No Projects Yet</h3>
-                  <p className="text-gray-400 mb-4">Start by creating your first case study to showcase your work.</p>
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">No Projects Yet</h3>
+                  <p className="text-gray-400 mb-4 text-sm sm:text-base">Start by creating your first case study to showcase your work.</p>
                   <Button 
                     onClick={() => {
                       setEditingCase(emptyCaseStudy);
@@ -559,7 +619,7 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {caseStudies.map((caseStudy) => (
                   <Card key={caseStudy.id} className="glass hover:glass-strong transition-all duration-300">
                     <div className="aspect-video overflow-hidden rounded-t-lg">
@@ -571,7 +631,7 @@ const Admin = () => {
                     </div>
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary" className="bg-neon-green/20 text-neon-green">
+                        <Badge variant="secondary" className="bg-neon-green/20 text-neon-green text-xs">
                           {caseStudy.category}
                         </Badge>
                         {caseStudy.live_url && (
@@ -586,8 +646,8 @@ const Admin = () => {
                         )}
                       </div>
                       
-                      <h3 className="font-bold mb-2 line-clamp-2">{caseStudy.title}</h3>
-                      <p className="text-sm text-gray-400 mb-4 line-clamp-2">{caseStudy.description}</p>
+                      <h3 className="font-bold mb-2 line-clamp-2 text-sm sm:text-base">{caseStudy.title}</h3>
+                      <p className="text-xs sm:text-sm text-gray-400 mb-4 line-clamp-2">{caseStudy.description}</p>
                       
                       {caseStudy.tags && caseStudy.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1 mb-4">
@@ -611,7 +671,7 @@ const Admin = () => {
                             setEditingCase(caseStudy);
                             setShowCaseForm(true);
                           }}
-                          className="btn-secondary flex-1"
+                          className="btn-secondary flex-1 text-xs"
                         >
                           <Edit className="w-4 h-4 mr-1" />
                           Edit
@@ -633,9 +693,9 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="homepage" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Homepage Featured Projects</h2>
-              <div className="text-sm text-gray-400">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold">Homepage Featured Projects</h2>
+              <div className="text-xs sm:text-sm text-gray-400">
                 Select up to 3 projects to feature on the homepage
               </div>
             </div>
@@ -646,8 +706,8 @@ const Admin = () => {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
                     <Plus className="w-8 h-8 text-gray-400" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">No Projects Available</h3>
-                  <p className="text-gray-400 mb-4">Create some case studies first to feature them on the homepage.</p>
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">No Projects Available</h3>
+                  <p className="text-gray-400 mb-4 text-sm sm:text-base">Create some case studies first to feature them on the homepage.</p>
                   <Button 
                     onClick={() => {
                       setEditingCase(emptyCaseStudy);
@@ -660,7 +720,7 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {caseStudies.map((caseStudy) => (
                   <Card 
                     key={caseStudy.id} 
@@ -678,7 +738,7 @@ const Admin = () => {
                     </div>
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary" className="bg-neon-green/20 text-neon-green">
+                        <Badge variant="secondary" className="bg-neon-green/20 text-neon-green text-xs">
                           {caseStudy.category}
                         </Badge>
                         {homepageProjects.includes(caseStudy.id!) && (
@@ -688,8 +748,8 @@ const Admin = () => {
                         )}
                       </div>
                       
-                      <h3 className="font-bold mb-2 line-clamp-2">{caseStudy.title}</h3>
-                      <p className="text-sm text-gray-400 mb-4 line-clamp-2">{caseStudy.description}</p>
+                      <h3 className="font-bold mb-2 line-clamp-2 text-sm sm:text-base">{caseStudy.title}</h3>
+                      <p className="text-xs sm:text-sm text-gray-400 mb-4 line-clamp-2">{caseStudy.description}</p>
                       
                       <div className="text-xs text-center">
                         {homepageProjects.includes(caseStudy.id!) ? (
@@ -704,9 +764,9 @@ const Admin = () => {
               </div>
             )}
 
-            <div className="bg-white/5 rounded-lg p-6 border border-white/10">
-              <h3 className="text-lg font-semibold mb-3 text-neon-green">How it works:</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+            <div className="bg-white/5 rounded-lg p-4 sm:p-6 border border-white/10">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 text-neon-green">How it works:</h3>
+              <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
                 <li>• Click on any project card to toggle its homepage feature status</li>
                 <li>• You can select up to 3 projects to be featured on the homepage</li>
                 <li>• Featured projects will appear in the "Success Stories" section</li>
@@ -716,14 +776,14 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="blog-posts" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Blog Management</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold">Blog Management</h2>
               <Button 
                 onClick={() => {
                   setEditingBlog(emptyBlogPost);
                   setShowBlogForm(true);
                 }}
-                className="btn-primary"
+                className="btn-primary w-full sm:w-auto"
               >
                 <Plus className="mr-2 w-4 h-4" />
                 Add New Post
@@ -733,7 +793,7 @@ const Admin = () => {
             {showBlogForm && editingBlog && (
               <Card className="glass">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
+                  <CardTitle className="flex items-center justify-between text-sm sm:text-base">
                     {editingBlog.id ? 'Edit Blog Post' : 'Add New Blog Post'}
                     <Button
                       variant="ghost"
@@ -772,7 +832,7 @@ const Admin = () => {
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="blog-author">Author *</Label>
                         <Input
@@ -830,7 +890,7 @@ const Admin = () => {
                       />
                     </div>
 
-                    <div className="flex gap-2 pt-4">
+                    <div className="flex flex-col sm:flex-row gap-2 pt-4">
                       <Button type="submit" className="btn-primary">
                         <Save className="mr-2 w-4 h-4" />
                         {editingBlog.id ? 'Update Post' : 'Create Post'}
@@ -858,8 +918,8 @@ const Admin = () => {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
                     <Plus className="w-8 h-8 text-gray-400" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">No Blog Posts Yet</h3>
-                  <p className="text-gray-400 mb-4">Start sharing your thoughts and expertise with your first blog post.</p>
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">No Blog Posts Yet</h3>
+                  <p className="text-gray-400 mb-4 text-sm sm:text-base">Start sharing your thoughts and expertise with your first blog post.</p>
                   <Button 
                     onClick={() => {
                       setEditingBlog(emptyBlogPost);
@@ -872,7 +932,7 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {blogPosts.map((post) => (
                   <Card key={post.id} className="glass hover:glass-strong transition-all duration-300">
                     <div className="aspect-video overflow-hidden rounded-t-lg">
@@ -884,14 +944,14 @@ const Admin = () => {
                     </div>
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <Badge variant={post.published ? "default" : "secondary"} className={post.published ? "bg-green-600" : "bg-gray-600"}>
+                        <Badge variant={post.published ? "default" : "secondary"} className={post.published ? "bg-green-600 text-xs" : "bg-gray-600 text-xs"}>
                           {post.published ? "Published" : "Draft"}
                         </Badge>
                         <span className="text-xs text-gray-400">By {post.author}</span>
                       </div>
                       
-                      <h3 className="font-bold mb-2 line-clamp-2">{post.title}</h3>
-                      <p className="text-sm text-gray-400 mb-4 line-clamp-2">{post.excerpt}</p>
+                      <h3 className="font-bold mb-2 line-clamp-2 text-sm sm:text-base">{post.title}</h3>
+                      <p className="text-xs sm:text-sm text-gray-400 mb-4 line-clamp-2">{post.excerpt}</p>
                       
                       {post.tags && post.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1 mb-4">
@@ -915,7 +975,7 @@ const Admin = () => {
                             setEditingBlog(post);
                             setShowBlogForm(true);
                           }}
-                          className="btn-secondary flex-1"
+                          className="btn-secondary flex-1 text-xs"
                         >
                           <Edit className="w-4 h-4 mr-1" />
                           Edit
@@ -928,6 +988,89 @@ const Admin = () => {
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="contact-submissions" className="space-y-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold">Contact Submissions</h2>
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></div>
+                Real-time updates
+              </div>
+            </div>
+
+            {contactSubmissions.length === 0 ? (
+              <Card className="glass">
+                <CardContent className="text-center py-12">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+                    <Mail className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">No Contact Submissions Yet</h3>
+                  <p className="text-gray-400 mb-4 text-sm sm:text-base">Contact form submissions will appear here in real-time.</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                {contactSubmissions.map((submission) => (
+                  <Card key={submission.id} className="glass hover:glass-strong transition-all duration-300">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                        <div className="flex-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3">
+                            <h3 className="font-bold text-base sm:text-lg">{submission.name}</h3>
+                            {submission.budget && (
+                              <Badge variant="secondary" className="bg-neon-green/20 text-neon-green text-xs w-fit">
+                                {submission.budget}
+                              </Badge>
+                            )}
+                          </div>
+                          
+                          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-3 text-sm text-gray-400">
+                            <div className="flex items-center gap-2">
+                              <Mail className="w-4 h-4" />
+                              <a href={`mailto:${submission.email}`} className="hover:text-neon-green transition-colors">
+                                {submission.email}
+                              </a>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Calendar className="w-4 h-4" />
+                              <span>{formatDate(submission.created_at)}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-white/5 rounded-lg p-3 sm:p-4">
+                            <h4 className="font-medium mb-2 text-sm">Message:</h4>
+                            <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">{submission.message}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex sm:flex-col gap-2">
+                          <Button 
+                            size="sm"
+                            asChild
+                            className="btn-primary text-xs"
+                          >
+                            <a href={`mailto:${submission.email}?subject=Re: Your Project Inquiry`}>
+                              Reply
+                            </a>
+                          </Button>
+                          <Button 
+                            size="sm"
+                            asChild
+                            variant="outline"
+                            className="btn-secondary text-xs"
+                          >
+                            <a href={`tel:${submission.email}`}>
+                              <Phone className="w-3 h-3" />
+                            </a>
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>

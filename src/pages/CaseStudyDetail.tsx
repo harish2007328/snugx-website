@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Calendar, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -24,33 +24,54 @@ interface CaseStudy {
 }
 
 const CaseStudyDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchCaseStudy();
   }, [id]);
 
   const fetchCaseStudy = async () => {
-    if (!id) return;
+    if (!id) {
+      setError('No case study ID provided');
+      setLoading(false);
+      return;
+    }
 
     try {
+      console.log('Fetching case study with ID:', id);
+      
       const { data, error } = await supabase
         .from('case_studies')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
-      setCaseStudy(data);
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      if (!data) {
+        console.log('No case study found with ID:', id);
+        setError('Case study not found');
+      } else {
+        console.log('Case study found:', data);
+        setCaseStudy(data);
+      }
     } catch (error) {
       console.error('Error fetching case study:', error);
-      setCaseStudy(null);
+      setError('Failed to fetch case study');
     } finally {
       setLoading(false);
     }
   };
+
+  if (!id) {
+    return <Navigate to="/case-studies" replace />;
+  }
 
   if (loading) {
     return (
@@ -63,12 +84,12 @@ const CaseStudyDetail = () => {
     );
   }
 
-  if (!caseStudy) {
+  if (error || !caseStudy) {
     return (
       <div className="min-h-screen pt-24 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Case Study Not Found</h1>
-          <p className="text-gray-400 mb-6">The case study you're looking for doesn't exist.</p>
+          <p className="text-gray-400 mb-6">{error || 'The case study you\'re looking for doesn\'t exist.'}</p>
           <Link to="/case-studies">
             <Button className="bg-neon-green text-dark-bg">
               <ArrowLeft className="mr-2 w-4 h-4" />
