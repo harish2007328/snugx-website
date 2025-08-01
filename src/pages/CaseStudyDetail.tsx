@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Calendar, Tag, User, Clock, Target, Award, Globe } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Calendar, Tag, User, Clock, Target, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
