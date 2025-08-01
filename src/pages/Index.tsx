@@ -437,26 +437,33 @@ interface CaseStudy {
             <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Stack & <span className="text-neon-green">Tools We Use ✦</span></h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">We use the best tools to build the best products.</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-9 gap-y-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-7 gap-y-6">
             {[
+              // Development
               { icon: <FaReact/>, name: 'React' },
               { icon: <SiTypescript/>, name: 'TypeScript' },
               { icon: <SiVite/>, name: 'Vite' },
               { icon: <SiTailwindcss/>, name: 'Tailwind CSS' },
               { icon: <SiSupabase/>, name: 'Supabase' },
-              { icon: <FaFigma/>, name: 'Figma' },
-              { icon: <SiNotion/>, name: 'Notion' },
+              { icon: <VscVscode />, name: 'VS Code' },
               { icon: <FaGithub/>, name: 'GitHub' },
               { icon: <SiVercel/>, name: 'Vercel' },
-              { icon: <SiGoogleanalytics/>, name: 'Google Analytics' },
-              { icon: <TbBrandRumble />, name: 'Relume' },
               { icon: <CgInfinity />, name: 'GSAP' },
-              { icon: <SiOpenai />, name: 'ChatGPT' },
-              { icon: <VscVscode />, name: 'VS Code' },
+              
+              // Design
+              { icon: <FaFigma/>, name: 'Figma' },
               { icon: <SiAdobephotoshop />, name: 'Photoshop' },
               { icon: <SiAdobeillustrator />, name: 'Illustrator' },
               { icon: <SiFramer />, name: 'Framer' },
               { icon: <SiWebflow />, name: 'Webflow' },
+              { icon: <TbBrandRumble />, name: 'Relume' },
+              
+              // AI & Analytics
+              { icon: <SiOpenai />, name: 'ChatGPT' },
+              { icon: <SiGoogleanalytics/>, name: 'Google Analytics' },
+              
+              // Project Management
+              { icon: <SiNotion/>, name: 'Notion' },
             ].map((tool, index) => (
               <div key={index} className="flex items-center gap-4 text-white hover:text-neon-green transition-colors">
                 <div className="text-3xl">{tool.icon}</div>
