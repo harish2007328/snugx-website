@@ -6,6 +6,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { FaReact, FaFigma, FaGithub } from 'react-icons/fa';
+import { SiTypescript, SiVite, SiTailwindcss, SiSupabase, SiVercel, SiNotion, SiOpenai, SiAdobephotoshop, SiAdobeillustrator, SiFramer, SiWebflow, SiGoogleanalytics } from 'react-icons/si';
+import { VscVscode } from 'react-icons/vsc';
+import { TbBrandRumble } from "react-icons/tb";
+import { CgInfinity } from 'react-icons/cg';
 
 const Index = () => {
 interface CaseStudy {
@@ -424,6 +429,46 @@ interface CaseStudy {
         </div>
       </section>
 
+
+      {/* Stack and Tools Section */}
+      <section className="py-20 md:py-20 md:pb-40 px-4 bg-dark-bg">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Stack & <span className="text-neon-green">Tools We Use ✦</span></h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">We use the best tools to build the best products.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-9 gap-y-8">
+            {[
+              { icon: <FaReact/>, name: 'React' },
+              { icon: <SiTypescript/>, name: 'TypeScript' },
+              { icon: <SiVite/>, name: 'Vite' },
+              { icon: <SiTailwindcss/>, name: 'Tailwind CSS' },
+              { icon: <SiSupabase/>, name: 'Supabase' },
+              { icon: <FaFigma/>, name: 'Figma' },
+              { icon: <SiNotion/>, name: 'Notion' },
+              { icon: <FaGithub/>, name: 'GitHub' },
+              { icon: <SiVercel/>, name: 'Vercel' },
+              { icon: <SiGoogleanalytics/>, name: 'Google Analytics' },
+              { icon: <TbBrandRumble />, name: 'Relume' },
+              { icon: <CgInfinity />, name: 'GSAP' },
+              { icon: <SiOpenai />, name: 'ChatGPT' },
+              { icon: <VscVscode />, name: 'VS Code' },
+              { icon: <SiAdobephotoshop />, name: 'Photoshop' },
+              { icon: <SiAdobeillustrator />, name: 'Illustrator' },
+              { icon: <SiFramer />, name: 'Framer' },
+              { icon: <SiWebflow />, name: 'Webflow' },
+            ].map((tool, index) => (
+              <div key={index} className="flex items-center gap-4 text-white hover:text-neon-green transition-colors">
+                <div className="text-3xl">{tool.icon}</div>
+                <span className="text-xs font-medium">{tool.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* Process Section */}
       <section className="relative py-20 px-4 bg-secondary/0 overflow-hidden">
       <div className="process-gradient"></div>
         <div className="relative max-w-7xl mx-auto px-8 ">
