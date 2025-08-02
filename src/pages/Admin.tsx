@@ -24,6 +24,7 @@ interface CaseStudy {
   client?: string;
   duration?: string;
   results: string[];
+  full_page_image?: string;
 }
 
 interface BlogPost {
@@ -69,7 +70,8 @@ const Admin = () => {
     content: '',
     client: '',
     duration: '',
-    results: []
+    results: [],
+    full_page_image: ''
   };
 
   const emptyBlogPost: BlogPost = {
@@ -182,7 +184,8 @@ const Admin = () => {
         content: caseStudy.content || null,
         client: caseStudy.client || null,
         duration: caseStudy.duration || null,
-        results: caseStudy.results
+        results: caseStudy.results,
+        full_page_image: caseStudy.full_page_image || null
       };
 
       if (caseStudy.id) {
@@ -531,8 +534,20 @@ const Admin = () => {
                         value={editingCase.thumbnail || ''}
                         onChange={(e) => setEditingCase({...editingCase, thumbnail: e.target.value})}
                         className="bg-white/5 border-white/10 text-sm"
-                        placeholder="https://example.com/image.jpg"
+                        placeholder="https://example.com/thumbnail.jpg"
                       />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="full_page_image" className="text-sm">Full Page Screenshot URL</Label>
+                      <Input
+                        id="full_page_image"
+                        value={editingCase.full_page_image || ''}
+                        onChange={(e) => setEditingCase({...editingCase, full_page_image: e.target.value})}
+                        className="bg-white/5 border-white/10 text-sm"
+                        placeholder="https://example.com/full-screenshot.jpg"
+                      />
+                      <p className="text-xs text-gray-400 mt-1">Full page screenshot to show the complete project layout</p>
                     </div>
 
                     <div>

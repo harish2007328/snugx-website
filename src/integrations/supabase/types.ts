@@ -61,8 +61,10 @@ export type Database = {
           created_at: string
           description: string
           duration: string | null
+          full_page_image: string | null
           id: string
           live_url: string | null
+          original_image: string | null
           results: string[] | null
           tags: string[] | null
           thumbnail: string | null
@@ -76,8 +78,10 @@ export type Database = {
           created_at?: string
           description: string
           duration?: string | null
+          full_page_image?: string | null
           id?: string
           live_url?: string | null
+          original_image?: string | null
           results?: string[] | null
           tags?: string[] | null
           thumbnail?: string | null
@@ -91,8 +95,10 @@ export type Database = {
           created_at?: string
           description?: string
           duration?: string | null
+          full_page_image?: string | null
           id?: string
           live_url?: string | null
+          original_image?: string | null
           results?: string[] | null
           tags?: string[] | null
           thumbnail?: string | null
