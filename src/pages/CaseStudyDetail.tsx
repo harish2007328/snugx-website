@@ -168,46 +168,68 @@ const CaseStudyDetail = () => {
       {/* Project Details */}
       <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {caseStudy.duration && (
-              <Card className="glass text-center">
-                <CardContent className="p-6">
-                  <Calendar className="w-8 h-8 text-neon-green mx-auto mb-3" />
-                  <h3 className="font-semibold mb-2">Duration</h3>
-                  <p className="text-gray-400">{caseStudy.duration}</p>
-                </CardContent>
-              </Card>
-            )}
-            
-            {caseStudy.client && (
-              <Card className="glass text-center">
-                <CardContent className="p-6">
-                  <Tag className="w-8 h-8 text-neon-green mx-auto mb-3" />
-                  <h3 className="font-semibold mb-2">Client</h3>
-                  <p className="text-gray-400">{caseStudy.client}</p>
-                </CardContent>
-              </Card>
-            )}
-            
-            <Card className="glass text-center">
-              <CardContent className="p-6">
-                <ExternalLink className="w-8 h-8 text-neon-green mx-auto mb-3" />
-                <h3 className="font-semibold mb-2">Category</h3>
-                <p className="text-gray-400">{caseStudy.category}</p>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* Tags */}
-          {caseStudy.tags && caseStudy.tags.length > 0 && (
-            <div className="flex flex-wrap gap-3 justify-center mb-16">
-              {caseStudy.tags.map((tag, index) => (
-                <Badge key={index} variant="outline" className="border-white/20 text-gray-400">
-                  {tag}
-                </Badge>
-              ))}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-16">
+            {/* Left Column - Project Details */}
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-3xl font-bold mb-6 text-left">Project Overview</h2>
+                
+                <div className="space-y-6">
+                  {caseStudy.duration && (
+                    <div className="flex items-start gap-4">
+                      <Calendar className="w-6 h-6 text-neon-green mt-1 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Duration</h3>
+                        <p className="text-gray-400">{caseStudy.duration}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {caseStudy.client && (
+                    <div className="flex items-start gap-4">
+                      <Tag className="w-6 h-6 text-neon-green mt-1 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1">Client</h3>
+                        <p className="text-gray-400">{caseStudy.client}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-start gap-4">
+                    <ExternalLink className="w-6 h-6 text-neon-green mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold mb-1">Category</h3>
+                      <p className="text-gray-400">{caseStudy.category}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Tags */}
+              {caseStudy.tags && caseStudy.tags.length > 0 && (
+                <div>
+                  <h3 className="font-semibold mb-4">Technologies Used</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {caseStudy.tags.map((tag, index) => (
+                      <Badge key={index} variant="outline" className="border-white/20 text-gray-400">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+            
+            {/* Right Column - Visual */}
+            <div className="relative">
+              <img 
+                src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop'}
+                alt={`${caseStudy.title} preview`}
+                className="rounded-lg shadow-2xl w-full h-[400px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
+            </div>
+          </div>
         </div>
       </section>
 
