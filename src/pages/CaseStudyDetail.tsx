@@ -20,6 +20,7 @@ interface CaseStudy {
   client: string;
   duration: string;
   results: string[];
+  full_page_image: string;
   created_at: string;
 }
 
@@ -126,41 +127,40 @@ const CaseStudyDetail = () => {
       {/* Hero Section */}
       <section className="px-4 pb-20">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge variant="secondary" className="bg-neon-green/20 text-neon-green mb-4">
-                {caseStudy.category}
-              </Badge>
-              
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                {caseStudy.title}
-              </h1>
-              
-              <p className="text-xl text-gray-300 mb-8">
-                {caseStudy.description}
-              </p>
-              
-              {caseStudy.live_url && (
-                <Button 
-                  className="btn-primary"
-                  asChild
-                >
-                  <a href={caseStudy.live_url} target="_blank" rel="noopener noreferrer">
-                    View Live Site
-                    <ExternalLink className="ml-2 w-4 h-4" />
-                  </a>
-                </Button>
-              )}
-            </div>
+          <div className="text-center mb-12">
+            <Badge variant="secondary" className="bg-neon-green/20 text-neon-green mb-4">
+              {caseStudy.category}
+            </Badge>
             
-            <div className="relative">
-              <img 
-                src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'}
-                alt={caseStudy.title}
-                className="rounded-lg shadow-2xl w-full"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
-            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              {caseStudy.title}
+            </h1>
+            
+            <p className="text-xl text-gray-300 mb-8">
+              {caseStudy.description}
+            </p>
+            
+            {caseStudy.live_url && (
+              <Button 
+                className="btn-primary mb-12"
+                asChild
+              >
+                <a href={caseStudy.live_url} target="_blank" rel="noopener noreferrer">
+                  View Live Site
+                  <ExternalLink className="ml-2 w-4 h-4" />
+                </a>
+              </Button>
+            )}
+          </div>
+
+          {/* Main Project Image */}
+          <div className="relative mb-16">
+            <img 
+              src={caseStudy.full_page_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'}
+              alt={caseStudy.title}
+              className="rounded-lg shadow-2xl w-full max-h-[600px] object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
           </div>
         </div>
       </section>
