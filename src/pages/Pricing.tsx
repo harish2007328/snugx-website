@@ -1,11 +1,32 @@
 
-import { Check, Star, ArrowRight } from 'lucide-react';
+import { Check, Star, ArrowRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import Footer from '@/components/Footer';
 
 const Pricing = () => {
+  const allFeatures = [
+    "1-page website (like a landing page)",
+    "Mobile-friendly design", 
+    "Contact form setup",
+    "Social media links",
+    "Help with domain & hosting",
+    "Up to 5 pages (Home, About, Services, Contact, etc.)",
+    "Custom design made for your brand",
+    "Smooth scroll and animations",
+    "Works on phone, tablet, and computer",
+    "Basic SEO (for better search visibility)",
+    "Up to 10 pages or product catalog",
+    "Online shop setup (Shopify or WooCommerce)",
+    "Blog or portfolio section",
+    "WhatsApp chat button & lead form",
+    "Strong SEO setup (Google search ready)",
+    "Advanced animations",
+    "Google Analytics + custom features",
+    "Ongoing support (optional)"
+  ];
+
   const plans = [
     {
       name: "Starter Plan",
@@ -27,13 +48,16 @@ const Pricing = () => {
       price: "₹14,999",
       description: "Perfect for small businesses or creators who need a full website",
       features: [
+        "1-page website (like a landing page)",
+        "Mobile-friendly design",
+        "Contact form setup", 
+        "Social media links",
+        "Help with domain & hosting",
         "Up to 5 pages (Home, About, Services, Contact, etc.)",
         "Custom design made for your brand",
         "Smooth scroll and animations",
         "Works on phone, tablet, and computer",
-        "Basic SEO (for better search visibility)",
-        "Contact form + social links",
-        "Help setting up domain & hosting"
+        "Basic SEO (for better search visibility)"
       ],
       popular: true,
       deliveryTime: "7–10 days",
@@ -43,16 +67,7 @@ const Pricing = () => {
       name: "Premium Plan",
       price: "₹29,999+",
       description: "For brands or shops who want an advanced and powerful site",
-      features: [
-        "Up to 10 pages or product catalog",
-        "Online shop setup (Shopify or WooCommerce)",
-        "Blog or portfolio section",
-        "WhatsApp chat button & lead form",
-        "Strong SEO setup (Google search ready)",
-        "Advanced animations",
-        "Google Analytics + custom features",
-        "Ongoing support (optional)"
-      ],
+      features: allFeatures,
       popular: false,
       deliveryTime: "12–15+ days",
       icon: "🔴"
@@ -66,7 +81,6 @@ const Pricing = () => {
     { name: "Advanced SEO package", price: "$999" },
     { name: "Maintenance (per month)", price: "$299" }
   ];
-
 
   return (
     <div className="min-h-screen pt-24">
@@ -103,46 +117,61 @@ const Pricing = () => {
             {plans.map((plan, index) => (
               <Card 
                 key={index} 
-                className={`bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 relative overflow-hidden transition-all duration-300 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 backdrop-blur-sm ${
+                className={`bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 relative overflow-visible transition-all duration-300 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 backdrop-blur-sm h-auto min-h-[700px] flex flex-col ${
                   plan.popular ? 'ring-2 ring-neon-green' : ''
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="bg-neon-green text-dark-bg px-4 py-1 rounded-full text-sm font-semibold flex items-center space-x-1">
-                      <Star size={14} />
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                    <div className="bg-neon-green text-dark-bg px-6 py-2 rounded-full text-sm font-semibold flex items-center space-x-2 shadow-lg">
+                      <Star size={16} />
                       <span>Most Popular</span>
                     </div>
                   </div>
                 )}
                 
-                <CardHeader className="text-center pb-8 pt-8">
-                  <div className="text-3xl mb-4">{plan.icon}</div>
-                  <CardTitle className="text-2xl font-bold mb-2">{plan.name}</CardTitle>
-                  <div className="text-4xl font-bold text-neon-green mb-2">{plan.price}</div>
-                  <p className="text-gray-400 text-sm mb-4 italic">{plan.description}</p>
-                  <div className="text-sm text-neon-green">📦 Ready in {plan.deliveryTime}</div>
+                <CardHeader className="text-center pb-6 pt-8 flex-shrink-0">
+                  <div className="text-4xl mb-4">{plan.icon}</div>
+                  <CardTitle className="text-2xl font-bold mb-3">{plan.name}</CardTitle>
+                  <div className="text-4xl font-bold text-neon-green mb-3">{plan.price}</div>
+                  <p className="text-gray-400 text-sm mb-4 italic leading-relaxed">{plan.description}</p>
+                  <div className="text-sm text-neon-green font-semibold bg-neon-green/10 px-3 py-1 rounded-full inline-block">
+                    📦 Ready in {plan.deliveryTime}
+                  </div>
                 </CardHeader>
                 
-                <CardContent className="space-y-4">
-                  <ul className="space-y-3">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center space-x-3">
-                        <Check size={16} className="text-neon-green flex-shrink-0" />
-                        <span className="text-sm text-gray-300">{feature}</span>
-                      </li>
-                    ))}
+                <CardContent className="flex-grow flex flex-col justify-between">
+                  <ul className="space-y-3 mb-8">
+                    {allFeatures.map((feature, idx) => {
+                      const isIncluded = plan.features.includes(feature);
+                      return (
+                        <li key={idx} className="flex items-start space-x-3">
+                          {isIncluded ? (
+                            <Check size={18} className="text-green-500 flex-shrink-0 mt-0.5" />
+                          ) : (
+                            <X size={18} className="text-red-400 flex-shrink-0 mt-0.5" />
+                          )}
+                          <span className={`text-sm leading-relaxed ${
+                            isIncluded ? 'text-gray-300' : 'text-gray-500 line-through'
+                          }`}>
+                            {feature}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                   
                   <Button 
-                    className={`w-full mt-8 py-3 ${
-                      plan.popular ? 'btn-primary' : 'btn-secondary'
+                    className={`w-full py-4 text-base font-semibold ${
+                      plan.popular 
+                        ? 'bg-neon-green text-dark-bg hover:bg-neon-green/90' 
+                        : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
                     }`}
                     asChild
                   >
                     <Link to="/contact">
                       Get Started
-                      <ArrowRight className="ml-2 w-4 h-4" />
+                      <ArrowRight className="ml-2 w-5 h-5" />
                     </Link>
                   </Button>
                 </CardContent>
@@ -170,7 +199,6 @@ const Pricing = () => {
           </div>
         </div>
       </section>
-
 
       {/* CTA */}
       <section className="py-20 px-4 mx-auto">
