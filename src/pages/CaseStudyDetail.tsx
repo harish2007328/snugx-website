@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
-
 interface CaseStudy {
   id: string;
   title: string;
@@ -23,19 +22,20 @@ interface CaseStudy {
   project_overview_image: string;
   created_at: string;
 }
-
 const CaseStudyDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const {
+    id
+  } = useParams<{
+    id: string;
+  }>();
   const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
     if (id) {
       fetchCaseStudy();
     }
   }, [id]);
-
   const fetchCaseStudy = async () => {
     if (!id) {
       console.log('No ID provided');
@@ -43,18 +43,16 @@ const CaseStudyDetail = () => {
       setLoading(false);
       return;
     }
-
     try {
       console.log('Fetching case study with ID:', id);
-      
-      const { data, error: supabaseError } = await supabase
-        .from('case_studies')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      console.log('Supabase response:', { data, error: supabaseError });
-
+      const {
+        data,
+        error: supabaseError
+      } = await supabase.from('case_studies').select('*').eq('id', id).single();
+      console.log('Supabase response:', {
+        data,
+        error: supabaseError
+      });
       if (supabaseError) {
         console.error('Supabase error:', supabaseError);
         if (supabaseError.code === 'PGRST116') {
@@ -77,27 +75,24 @@ const CaseStudyDetail = () => {
       setLoading(false);
     }
   };
-
   if (!id) {
     console.log('No ID in URL params, redirecting to case studies');
     return <Navigate to="/case-studies" replace />;
   }
-
   if (loading) {
-    return (
-      <div className="min-h-screen pt-24 flex items-center justify-center">
+    return <div className="min-h-screen pt-24 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-2 border-neon-green border-t-transparent rounded-full mx-auto mb-4"></div>
           <p className="text-gray-400">Loading case study...</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
   if (error || !caseStudy) {
-    console.log('Error state or no case study:', { error, caseStudy });
-    return (
-      <div className="min-h-screen pt-24 flex items-center justify-center">
+    console.log('Error state or no case study:', {
+      error,
+      caseStudy
+    });
+    return <div className="min-h-screen pt-24 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Case Study Not Found</h1>
           <p className="text-gray-400 mb-6">{error || 'The case study you\'re looking for doesn\'t exist.'}</p>
@@ -108,12 +103,9 @@ const CaseStudyDetail = () => {
             </Button>
           </Link>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen pt-24">
+  return <div className="min-h-screen pt-24">
       {/* Back Navigation */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Link to="/case-studies">
@@ -140,83 +132,63 @@ const CaseStudyDetail = () => {
               {caseStudy.description}
             </p>
             
-            {caseStudy.live_url && (
-              <Button 
-                className="btn-primary mb-12"
-                asChild
-              >
+            {caseStudy.live_url && <Button className="btn-primary mb-12" asChild>
                 <a href={caseStudy.live_url} target="_blank" rel="noopener noreferrer">
                   View Live Site
                   <ExternalLink className="ml-2 w-4 h-4" />
                 </a>
-              </Button>
-            )}
+              </Button>}
           </div>
 
           {/* Main Project Image */}
           <div className="relative mb-16">
-            <img 
-              src={caseStudy.full_page_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'}
-              alt={caseStudy.title}
-              className="rounded-lg shadow-2xl w-full max-h-[600px] object-cover"
-            />
+            <img src={caseStudy.full_page_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'} alt={caseStudy.title} className="rounded-lg shadow-2xl w-full max-h-[600px] object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
           </div>
         </div>
       </section>
 
       {/* Project Overview Section */}
-      {caseStudy.content && (
-        <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
+      {caseStudy.content && <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl font-bold mb-12 text-left">Project Overview</h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               {/* Left Column - HTML Content */}
               <div className="prose prose-invert prose-lg max-w-none">
-                <div 
-                  dangerouslySetInnerHTML={{ __html: caseStudy.content }}
-                  className="text-gray-300 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>p]:mb-4 [&>ul]:mb-4 [&>li]:mb-2"
-                />
+                <div dangerouslySetInnerHTML={{
+              __html: caseStudy.content
+            }} className="text-gray-300 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>p]:mb-4 [&>ul]:mb-4 [&>li]:mb-2" />
               </div>
               
               {/* Right Column - Visual Image */}
               <div className="relative">
-                <img 
-                  src={caseStudy.project_overview_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop'}
-                  alt={`${caseStudy.title} project overview visual`}
-                  className="rounded-lg shadow-2xl w-full h-[500px] object-cover"
-                />
+                <img src={caseStudy.project_overview_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop'} alt={`${caseStudy.title} project overview visual`} className="rounded-lg shadow-2xl w-full h-[500px] object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
               </div>
             </div>
           </div>
-        </section>
-      )}
+        </section>}
 
       {/* Project Details Section */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {caseStudy.duration && (
-              <Card className="glass text-center">
+            {caseStudy.duration && <Card className="glass text-center">
                 <CardContent className="p-6">
                   <Calendar className="w-8 h-8 text-neon-green mx-auto mb-3" />
                   <h3 className="font-semibold mb-2">Duration</h3>
                   <p className="text-gray-400">{caseStudy.duration}</p>
                 </CardContent>
-              </Card>
-            )}
+              </Card>}
             
-            {caseStudy.client && (
-              <Card className="glass text-center">
+            {caseStudy.client && <Card className="glass text-center">
                 <CardContent className="p-6">
                   <Tag className="w-8 h-8 text-neon-green mx-auto mb-3" />
                   <h3 className="font-semibold mb-2">Client</h3>
                   <p className="text-gray-400">{caseStudy.client}</p>
                 </CardContent>
-              </Card>
-            )}
+              </Card>}
             
             <Card className="glass text-center">
               <CardContent className="p-6">
@@ -228,29 +200,23 @@ const CaseStudyDetail = () => {
           </div>
           
           {/* Tags */}
-          {caseStudy.tags && caseStudy.tags.length > 0 && (
-            <div className="flex flex-wrap gap-3 justify-center mb-16">
-              {caseStudy.tags.map((tag, index) => (
-                <Badge key={index} variant="outline" className="border-white/20 text-gray-400">
+          {caseStudy.tags && caseStudy.tags.length > 0 && <div className="flex flex-wrap gap-3 justify-center mb-16">
+              {caseStudy.tags.map((tag, index) => <Badge key={index} variant="outline" className="border-white/20 text-gray-400">
                   {tag}
-                </Badge>
-              ))}
-            </div>
-          )}
+                </Badge>)}
+            </div>}
         </div>
       </section>
 
       {/* Results */}
-      {caseStudy.results && caseStudy.results.length > 0 && (
-        <section className="py-20 px-4 bg-gradient-to-r from-neon-green/10 to-transparent">
+      {caseStudy.results && caseStudy.results.length > 0 && <section className="py-20 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">
               <span className="text-neon-green">Results</span> Achieved
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {caseStudy.results.map((result, index) => (
-                <Card key={index} className="glass">
+              {caseStudy.results.map((result, index) => <Card key={index} className="glass">
                   <CardContent className="p-6 text-center">
                     <div className="text-2xl font-bold text-neon-green mb-2">
                       {result.split(' ')[0]}
@@ -259,12 +225,10 @@ const CaseStudyDetail = () => {
                       {result.split(' ').slice(1).join(' ')}
                     </p>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
-        </section>
-      )}
+        </section>}
 
       {/* CTA */}
       <section className="py-20 px-4 mx-auto">
@@ -288,8 +252,6 @@ const CaseStudyDetail = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default CaseStudyDetail;
