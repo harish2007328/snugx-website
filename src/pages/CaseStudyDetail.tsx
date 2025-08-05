@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
+
 interface CaseStudy {
   id: string;
   title: string;
@@ -22,6 +23,7 @@ interface CaseStudy {
   project_overview_image: string;
   created_at: string;
 }
+
 const CaseStudyDetail = () => {
   const {
     id
@@ -31,11 +33,13 @@ const CaseStudyDetail = () => {
   const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     if (id) {
       fetchCaseStudy();
     }
   }, [id]);
+
   const fetchCaseStudy = async () => {
     if (!id) {
       console.log('No ID provided');
@@ -75,10 +79,12 @@ const CaseStudyDetail = () => {
       setLoading(false);
     }
   };
+
   if (!id) {
     console.log('No ID in URL params, redirecting to case studies');
     return <Navigate to="/case-studies" replace />;
   }
+
   if (loading) {
     return <div className="min-h-screen pt-24 flex items-center justify-center">
         <div className="text-center">
@@ -87,6 +93,7 @@ const CaseStudyDetail = () => {
         </div>
       </div>;
   }
+
   if (error || !caseStudy) {
     console.log('Error state or no case study:', {
       error,
@@ -105,6 +112,7 @@ const CaseStudyDetail = () => {
         </div>
       </div>;
   }
+
   return <div className="min-h-screen pt-24">
       {/* Back Navigation */}
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -201,7 +209,7 @@ const CaseStudyDetail = () => {
               <div className="prose prose-invert prose-lg max-w-none">
                 <div dangerouslySetInnerHTML={{
               __html: caseStudy.content
-            }} className="text-gray-300 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>p]:mb-4 [&>ul]:mb-4 [&>li]:mb-2" />
+            }} className="text-gray-300 leading-relaxed [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:text-neon-green [&>h1]:mb-6 [&>h1]:mt-8 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>h3]:text-xl [&>h3]:font-semibold [&>h3]:text-light-text [&>h3]:mb-3 [&>h3]:mt-6 [&>p]:mb-4 [&>p]:leading-relaxed [&>ul]:mb-6 [&>ul]:space-y-2 [&>ul]:pl-6 [&>li]:relative [&>li]:mb-2 [&>li]:pl-2 [&>li]:before:content-['•'] [&>li]:before:text-neon-green [&>li]:before:absolute [&>li]:before:-left-4 [&>li]:before:font-bold [&>ol]:mb-6 [&>ol]:space-y-2 [&>ol]:pl-6 [&>ol>li]:relative [&>ol>li]:mb-2 [&>ol>li]:pl-2 [&>ol>li]:before:text-neon-green [&>ol>li]:before:font-bold [&>strong]:text-neon-green [&>strong]:font-semibold [&>em]:text-gray-200 [&>em]:italic [&>blockquote]:border-l-4 [&>blockquote]:border-neon-green [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:text-gray-400 [&>blockquote]:my-6" />
               </div>
             </div>
           </div>
@@ -253,4 +261,5 @@ const CaseStudyDetail = () => {
       <Footer />
     </div>;
 };
+
 export default CaseStudyDetail;
