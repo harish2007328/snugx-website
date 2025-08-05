@@ -149,7 +149,7 @@ const CaseStudyDetail = () => {
       </section>
 
       {/* Project Details Section */}
-      <section className="py-20 px-4">
+      <section className="py-0 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {caseStudy.duration && <Card className="glass text-center">
@@ -201,7 +201,7 @@ const CaseStudyDetail = () => {
               <div className="prose prose-invert prose-lg max-w-none">
                 <div dangerouslySetInnerHTML={{
               __html: caseStudy.content
-            }} className="text-gray-300 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>p]:mb-4 [&>ul]:mb-4 [&>li]:mb-2" />
+            }} className="text-gray-300 text-left [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>h2]:text-center [&>h3]:font-bold [&>h3]:my-2 [&>ul]:list-disc [&>ul]:pl-8 [&>li]:font-bold" />
               </div>
             </div>
           </div>
