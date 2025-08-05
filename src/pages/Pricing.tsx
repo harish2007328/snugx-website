@@ -27,20 +27,20 @@ const Pricing = () => {
     icon: "🔴"
   }];
   const addOns = [{
-    name: "Extra page",
-    price: "$299"
+    name: "Extra page (each)",
+    price: "₹2,499"
   }, {
-    name: "Custom animation",
-    price: "$499"
+    name: "Custom Animation (per section)",
+    price: "₹3,999"
   }, {
     name: "Third-party integration",
-    price: "$799"
+    price: "₹5,499"
   }, {
     name: "Advanced SEO package",
-    price: "$999"
+    price: "₹7,999"
   }, {
     name: "Maintenance (per month)",
-    price: "$299"
+    price: "₹3,499"
   }];
   return <div className="min-h-screen pt-24">
       {/* Header */}
@@ -59,10 +59,6 @@ const Pricing = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Check size={16} className="text-neon-green" />
-              <span>Money-back guarantee</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Check size={16} className="text-neon-green" />
               <span>Free consultation</span>
             </div>
           </div>
@@ -75,9 +71,9 @@ const Pricing = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {plans.map((plan, index) => <Card key={index} className={`bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 relative overflow-visible transition-all duration-300 hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 backdrop-blur-sm flex flex-col ${plan.popular ? 'ring-2 ring-neon-green scale-105' : ''}`}>
                 {plan.popular && <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                    <div className="bg-neon-green text-dark-bg px-6 py-2 rounded-full text-sm font-semibold flex items-center space-x-2 shadow-lg w-auto ">
+                    <div className="bg-neon-green text-dark-bg px-6 py-2 rounded-full text-sm font-semibold flex items-center space-x-2 shadow-lg whitespace-nowrap">
                       <Star size={16} />
-                      <span className="w-full text-center text-xs">Most Popular</span>
+                      <span className="text-center text-xs">Most Popular</span>
                     </div>
                   </div>}
                 
