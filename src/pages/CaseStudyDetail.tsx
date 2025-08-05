@@ -149,7 +149,7 @@ const CaseStudyDetail = () => {
       </section>
 
       {/* Project Overview Section */}
-      {caseStudy.content && <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
+      {caseStudy.content && <section className="py-20 px-4">
           <div className="max-w-7xl mx-auto">
             
             
