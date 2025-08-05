@@ -148,28 +148,6 @@ const CaseStudyDetail = () => {
         </div>
       </section>
 
-      {/* Project Overview Section */}
-      {caseStudy.content && <section className="py-20 px-4">
-          <div className="max-w-7xl mx-auto">
-            
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-              {/* Left Column - HTML Content */}
-              <div className="prose prose-invert prose-lg max-w-none">
-                <div dangerouslySetInnerHTML={{
-              __html: caseStudy.content
-            }} className="text-gray-300 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>p]:mb-4 [&>ul]:mb-4 [&>li]:mb-2" />
-              </div>
-              
-              {/* Right Column - Visual Image */}
-              <div className="relative">
-                <img src={caseStudy.project_overview_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop'} alt={`${caseStudy.title} project overview visual`} className="rounded-lg shadow-2xl w-full h-[500px] object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
-              </div>
-            </div>
-          </div>
-        </section>}
-
       {/* Project Details Section */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
@@ -207,6 +185,27 @@ const CaseStudyDetail = () => {
             </div>}
         </div>
       </section>
+
+     {/* Project Overview Section */}
+      {caseStudy.content && <section className="py-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+              {/* Left Column - HTML Content */}
+              <div className="relative">
+                <img src={caseStudy.project_overview_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop'} alt={`${caseStudy.title} project overview visual`} className="rounded-lg shadow-2xl w-full h-[500px] object-cover" />
+              </div>
+              
+              {/* Right Column - Visual Image */}
+              <div className="prose prose-invert prose-lg max-w-none">
+                <div dangerouslySetInnerHTML={{
+              __html: caseStudy.content
+            }} className="text-gray-300 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-neon-green [&>h2]:mb-4 [&>h2]:mt-8 [&>p]:mb-4 [&>ul]:mb-4 [&>li]:mb-2" />
+              </div>
+            </div>
+          </div>
+        </section>} 
 
       {/* Results */}
       {caseStudy.results && caseStudy.results.length > 0 && <section className="py-20 px-4">
