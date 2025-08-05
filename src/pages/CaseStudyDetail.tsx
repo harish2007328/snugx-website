@@ -142,8 +142,8 @@ const CaseStudyDetail = () => {
 
           {/* Main Project Image */}
           <div className="relative mb-16">
-            <img src={caseStudy.full_page_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'} alt={caseStudy.title} className="rounded-lg shadow-2xl w-full max-h-[600px] object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
+            <img src={caseStudy.full_page_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'} alt={caseStudy.title} className="rounded-lg shadow-2xl w-full h-full object-cover" />
+            
           </div>
         </div>
       </section>
