@@ -25,6 +25,7 @@ interface CaseStudy {
   duration?: string;
   results: string[];
   full_page_image?: string;
+  project_overview_image?: string;
 }
 
 interface BlogPost {
@@ -71,7 +72,8 @@ const Admin = () => {
     client: '',
     duration: '',
     results: [],
-    full_page_image: ''
+    full_page_image: '',
+    project_overview_image: ''
   };
 
   const emptyBlogPost: BlogPost = {
@@ -185,7 +187,8 @@ const Admin = () => {
         client: caseStudy.client || null,
         duration: caseStudy.duration || null,
         results: caseStudy.results,
-        full_page_image: caseStudy.full_page_image || null
+        full_page_image: caseStudy.full_page_image || null,
+        project_overview_image: caseStudy.project_overview_image || null
       };
 
       if (caseStudy.id) {
@@ -551,6 +554,18 @@ const Admin = () => {
                     </div>
 
                     <div>
+                      <Label htmlFor="project_overview_image" className="text-sm">Project Overview Visual Image URL</Label>
+                      <Input
+                        id="project_overview_image"
+                        value={editingCase.project_overview_image || ''}
+                        onChange={(e) => setEditingCase({...editingCase, project_overview_image: e.target.value})}
+                        className="bg-white/5 border-white/10 text-sm"
+                        placeholder="https://example.com/project-overview-visual.jpg"
+                      />
+                      <p className="text-xs text-gray-400 mt-1">Visual image to display alongside the project overview content</p>
+                    </div>
+
+                    <div>
                       <Label htmlFor="live_url" className="text-sm">Live Project URL</Label>
                       <Input
                         id="live_url"
@@ -584,13 +599,13 @@ const Admin = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="content" className="text-sm">Detailed Content (HTML)</Label>
+                      <Label htmlFor="content" className="text-sm">Project Overview Content (HTML)</Label>
                       <Textarea
                         id="content"
                         value={editingCase.content || ''}
                         onChange={(e) => setEditingCase({...editingCase, content: e.target.value})}
                         className="bg-white/5 border-white/10 min-h-[150px] text-sm"
-                        placeholder="Detailed project description with HTML formatting"
+                        placeholder="Project overview content with HTML formatting - this will be displayed on the left side of the project overview section"
                       />
                     </div>
 
