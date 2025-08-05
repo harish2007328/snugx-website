@@ -151,7 +151,7 @@ const CaseStudyDetail = () => {
       {/* Project Overview Section */}
       {caseStudy.content && <section className="py-20 px-4 bg-gradient-to-r from-neon-green/5 to-transparent">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-left">Project Overview</h2>
+            
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               {/* Left Column - HTML Content */}
