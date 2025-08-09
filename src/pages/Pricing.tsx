@@ -3,7 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import Footer from '@/components/Footer';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
+
 const Pricing = () => {
+  useScrollToTop();
+
   const plans = [{
     name: "Starter",
     price: "₹6,999",
@@ -42,6 +46,7 @@ const Pricing = () => {
     name: "Maintenance (per month)",
     price: "₹3,499"
   }];
+
   return <div className="min-h-screen pt-24">
       {/* Header */}
       <section className="py-20 px-4 text-center">
@@ -144,4 +149,5 @@ const Pricing = () => {
       <Footer />
     </div>;
 };
+
 export default Pricing;
