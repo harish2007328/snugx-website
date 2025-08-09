@@ -19,4 +19,27 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-toast', '@radix-ui/react-tabs'],
+          icons: ['lucide-react', 'react-icons'],
+          supabase: ['@supabase/supabase-js'],
+          animations: ['@lottiefiles/dotlottie-react', 'framer-motion']
+        }
+      }
+    },
+    sourcemap: true,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info']
+      }
+    }
+  }
 }));
