@@ -1,67 +1,34 @@
 
-import { Users, Award, Target, Heart, Linkedin, Twitter, Instagram } from 'lucide-react';
+import { Code, Coffee, Laptop, Award, Target, Heart, Linkedin, Twitter, Instagram } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import Footer from '@/components/Footer';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 const About = () => {
+  useScrollToTop();
+
   const values = [
     {
+      icon: Code,
+      title: "Code Excellence",
+      description: "Every line of code is crafted with precision and passion for creating exceptional digital experiences."
+    },
+    {
+      icon: Coffee,
+      title: "Creative Process",
+      description: "Fueled by coffee and creativity, I transform ideas into stunning digital realities."
+    },
+    {
       icon: Target,
-      title: "Innovation First",
-      description: "We embrace cutting-edge technologies and design trends to create forward-thinking digital experiences."
-    },
-    {
-      icon: Users,
       title: "Client Success",
-      description: "Your success is our success. We're committed to delivering results that exceed expectations."
-    },
-    {
-      icon: Award,
-      title: "Quality Craftsmanship",
-      description: "Every pixel, every line of code is crafted with precision and attention to detail."
+      description: "Your success is my mission. I'm committed to delivering results that exceed expectations."
     },
     {
       icon: Heart,
       title: "Passion Driven",
-      description: "We love what we do, and it shows in every project we deliver."
-    }
-  ];
-
-  const team = [
-    {
-      name: "Alex Johnson",
-      role: "Founder & Creative Director",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-      bio: "With 10+ years in digital design, Alex leads our creative vision and ensures every project tells a compelling story.",
-      social: {
-        linkedin: "#",
-        twitter: "#",
-        instagram: "#"
-      }
-    },
-    {
-      name: "Sarah Chen",
-      role: "Lead Developer",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
-      bio: "Sarah brings technical excellence to every project, specializing in modern web technologies and performance optimization.",
-      social: {
-        linkedin: "#",
-        twitter: "#",
-        instagram: "#"
-      }
-    },
-    {
-      name: "Marcus Rodriguez",
-      role: "UX/UI Designer",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-      bio: "Marcus creates intuitive user experiences that not only look beautiful but drive meaningful engagement.",
-      social: {
-        linkedin: "#",
-        twitter: "#",
-        instagram: "#"
-      }
+      description: "I love what I do, and it shows in every project I deliver with dedication and enthusiasm."
     }
   ];
 
@@ -72,17 +39,57 @@ const About = () => {
     { number: "5", label: "Years Experience" }
   ];
 
+  const techStack = [
+    "React", "TypeScript", "Node.js", "Python", "Next.js", "Tailwind CSS", 
+    "Supabase", "MongoDB", "AWS", "Figma", "Adobe Creative Suite"
+  ];
+
   return (
     <div className="min-h-screen pt-24">
       {/* Hero Section */}
       <section className="py-20 px-4 text-center">
         <div className="max-w-7xl mx-auto px-8">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            We're <span className="text-neon-green">Snugx</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-            A passionate team of designers and developers dedicated to crafting exceptional digital experiences that drive business growth.
-          </p>
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="lg:w-1/2 text-left lg:text-left">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6">
+                Hi, I'm <span className="text-neon-green">Harish</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
+                A passionate tech enthusiast and full-stack developer who transforms ideas into exceptional digital experiences. 
+                One developer, unlimited possibilities.
+              </p>
+              
+              <div className="flex flex-wrap gap-4 mb-8">
+                {techStack.slice(0, 6).map((tech, index) => (
+                  <span key={index} className="bg-neon-green/10 text-neon-green px-3 py-1 rounded-full text-sm border border-neon-green/20">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+            
+            <div className="lg:w-1/2 relative">
+              <div className="relative bg-gradient-to-br from-neon-green/20 to-transparent rounded-3xl p-8 backdrop-blur-sm border border-neon-green/20">
+                <div className="flex items-center justify-center space-x-8">
+                  <div className="text-center">
+                    <Laptop size={64} className="text-neon-green mx-auto mb-4" />
+                    <p className="text-sm text-gray-300">ASUS ExpertBook</p>
+                    <p className="text-xs text-gray-400">My coding companion</p>
+                  </div>
+                  <div className="text-center">
+                    <Coffee size={64} className="text-neon-green mx-auto mb-4" />
+                    <p className="text-sm text-gray-300">Coffee</p>
+                    <p className="text-xs text-gray-400">Fuel for creativity</p>
+                  </div>
+                  <div className="text-center">
+                    <Code size={64} className="text-neon-green mx-auto mb-4" />
+                    <p className="text-sm text-gray-300">Clean Code</p>
+                    <p className="text-xs text-gray-400">My philosophy</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
             {stats.map((stat, index) => (
@@ -100,27 +107,31 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6">Our Story</h2>
+              <h2 className="text-4xl font-bold mb-6">My Journey</h2>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  Founded in 2019, Snugx began with a simple mission: to help businesses succeed in the digital world through exceptional design and development.
+                  What started as curiosity about how websites work has evolved into a passion for creating digital experiences that make a difference. Armed with my ASUS ExpertBook and fueled by endless cups of coffee, I've built Snugx from the ground up.
                 </p>
                 <p>
-                  What started as a small team of passionate creatives has grown into a full-service digital agency that has helped over 150 businesses transform their online presence.
+                  As a solo developer and tech enthusiast, I wear many hats - designer, developer, project manager, and problem solver. This gives me the unique ability to understand every aspect of your project and deliver cohesive, high-quality solutions.
                 </p>
                 <p>
-                  We believe that great design isn't just about looking good—it's about creating meaningful connections between brands and their audiences, driving engagement, and ultimately, business growth.
+                  Every project is personal to me. When you succeed, I succeed. That's the foundation of how I work - treating each project as if it were my own.
                 </p>
               </div>
             </div>
             
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop"
-                alt="Team working together"
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&crop=face"
+                alt="Harish working on his laptop"
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
+              <div className="absolute bottom-4 left-4 bg-dark-bg/90 backdrop-blur-sm rounded-lg px-4 py-2">
+                <p className="text-neon-green font-semibold">Harish</p>
+                <p className="text-xs text-gray-400">Founder & Developer</p>
+              </div>
             </div>
           </div>
         </div>
@@ -130,64 +141,43 @@ const About = () => {
       <section className="py-20 px-4 bg-secondary/20">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">Our Values</h2>
+            <h2 className="text-4xl font-bold mb-6">How I Work</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              These core principles guide everything we do and shape how we work with our clients.
+              These principles guide every project I take on and define my approach to development.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 text-center hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
+            {values.map((value, index) => (
+              <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 text-center hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 backdrop-blur-sm">
                 <CardContent className="p-8 relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-neon-green/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative z-10">
-                  <value.icon size={48} className="text-neon-green mx-auto mb-6" />
-                  <h3 className="text-xl font-bold mb-4">{value.title}</h3>
-                  <p className="text-gray-300 text-sm">{value.description}</p>
+                    <value.icon size={48} className="text-neon-green mx-auto mb-6" />
+                    <h3 className="text-xl font-bold mb-4">{value.title}</h3>
+                    <p className="text-gray-300 text-sm">{value.description}</p>
                   </div>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Tech Stack */}
       <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">Meet Our Team</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              The creative minds behind Snugx, dedicated to bringing your vision to life.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {team.map((member, index) => <Card key={index} className="bg-gradient-to-br from-dark-bg via-secondary/20 to-dark-bg border border-white/10 overflow-hidden hover:border-neon-green/30 hover:shadow-xl hover:shadow-neon-green/10 transition-all duration-300 group backdrop-blur-sm">
-                <div className="aspect-square overflow-hidden">
-                  <img 
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-bold mb-2">{member.name}</h3>
-                  <p className="text-neon-green font-medium mb-3">{member.role}</p>
-                  <p className="text-gray-300 text-sm mb-4">{member.bio}</p>
-                  
-                  <div className="flex justify-center space-x-4">
-                    <a href={member.social.linkedin} className="text-gray-400 hover:text-neon-green transition-colors">
-                      <Linkedin size={18} />
-                    </a>
-                    <a href={member.social.twitter} className="text-gray-400 hover:text-neon-green transition-colors">
-                      <Twitter size={18} />
-                    </a>
-                    <a href={member.social.instagram} className="text-gray-400 hover:text-neon-green transition-colors">
-                      <Instagram size={18} />
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>)}
+        <div className="max-w-7xl mx-auto px-8 text-center">
+          <h2 className="text-4xl font-bold mb-6">My Tech Arsenal</h2>
+          <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
+            The tools and technologies I use to bring your ideas to life.
+          </p>
+          
+          <div className="flex flex-wrap justify-center gap-4">
+            {techStack.map((tech, index) => (
+              <div key={index} className="bg-gradient-to-br from-neon-green/10 to-neon-green/5 border border-neon-green/20 rounded-full px-6 py-3 text-neon-green font-semibold hover:bg-neon-green/20 transition-all duration-300 cursor-pointer">
+                {tech}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -200,10 +190,10 @@ const About = () => {
               <CardContent className="p-8 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-16 translate-x-16" />
                 <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-6 text-neon-green">Our Mission</h3>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  To empower businesses with exceptional digital experiences that drive growth, engagement, and success. We're committed to delivering innovative solutions that not only meet but exceed our clients' expectations.
-                </p>
+                  <h3 className="text-2xl font-bold mb-6 text-neon-green">My Mission</h3>
+                  <p className="text-gray-300 text-lg leading-relaxed">
+                    To help businesses and individuals establish a powerful digital presence through exceptional web development. I believe every project deserves personal attention and innovative solutions.
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -212,10 +202,10 @@ const About = () => {
               <CardContent className="p-8 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-neon-green/10 to-transparent rounded-full -translate-y-16 -translate-x-16" />
                 <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-6 text-neon-green">Our Vision</h3>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  To be the leading digital agency that transforms how businesses connect with their audiences online. We envision a world where every business, regardless of size, has access to world-class digital experiences.
-                </p>
+                  <h3 className="text-2xl font-bold mb-6 text-neon-green">My Vision</h3>
+                  <p className="text-gray-300 text-lg leading-relaxed">
+                    To bridge the gap between complex technology and simple solutions. I envision a world where every business can have access to top-tier digital experiences, regardless of their size or budget.
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -225,17 +215,17 @@ const About = () => {
 
       {/* CTA Section */}
       <section className="py-20 px-4 mx-auto">
-        <div className="max-w-7xl mx-auto text-center space-y-10 py-20 px-6 bg-[#e5ff00] max-w-7xl mx-auto rounded-[10px]">
+        <div className="max-w-7xl mx-auto text-center space-y-10 py-20 px-6 bg-[#e5ff00] rounded-[10px]">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-[#111111] leading-relaxed">
-            Ready to <span className="bg-[#1a1a1a] text-[#f5f5f5] text-[#1a1a1a] font-bold px-4 py-1 rounded-md">Transform ✦</span> Your Business?
+            Ready to <span className="bg-[#1a1a1a] text-[#f5f5f5] font-bold px-4 py-1 rounded-md">Collaborate ✦</span>?
           </h2>
           <p className="text-lg text-[#111111]/80 font-normal">
-            Join hundreds of successful businesses that chose Snugx for their digital transformation.
+            Let's work together to bring your digital vision to life.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button size="lg" className="bg-[#111111] text-[#f5f5f5] border-2 border-[#111111]/50 hover:bg-[#f5f5f5]/90 hover:text-[#111111] transition-colors duration-300 px-10 py-4 rounded-full" asChild>
-              <Link to="/contact">Start Your Project Today</Link>
+              <Link to="/contact">Start Your Project</Link>
             </Button>
             <Button size="lg" className="bg-transparent border-2 border-[#111111]/50 text-[#111111] hover:bg-[#f5f5f5]/90 hover:text-[#111111] transition-colors duration-300 px-10 py-4 rounded-full" asChild>
               <Link to="/pricing">View Pricing</Link>
