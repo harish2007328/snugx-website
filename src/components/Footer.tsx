@@ -8,7 +8,15 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           {/* Logo and copyright */}
           <div className="flex flex-col items-center md:items-start space-y-2">
-            <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="Snugx Logo" className="h-10" />
+            <img 
+              src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" 
+              alt="Snugx Logo" 
+              className="h-10" 
+              width={120}
+              height={40}
+              loading="lazy"
+              decoding="async"
+            />
                         <p className="text-gray-400 text-sm mt-2">
               © Copyright 2025 snugx.
             </p>

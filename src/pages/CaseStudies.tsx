@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
+import LazyImage from '@/components/LazyImage';
 
 interface CaseStudy {
   id: string;
@@ -127,10 +128,12 @@ const CaseStudies = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredStudies.map((study) => (
                 <Card key={study.id} className="relative group overflow-hidden rounded-xl shadow-lg hover:shadow-2xl hover:shadow-neon-green/20 transition-all duration-500 ease-in-out aspect-[1/1.3] bg-dark-bg">
-                  <img 
+                  <LazyImage
                     src={study.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
                     alt={study.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                    width={600}
+                    height={400}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/100 via-black/70 to-transparent" />
                   <CardContent className="relative z-10 flex flex-col justify-end h-full p-6 text-white">
@@ -147,6 +150,7 @@ const CaseStudies = () => {
                       variant="outline" 
                       className="absolute top-4 right-4 w-10 h-10 rounded-full border-neon-green bg-neon-green text-dark-bg transition-all duration-300 p-0 flex items-center justify-center" 
                       size="icon" 
+                      aria-label={`View ${study.title} case study details`}
                       asChild
                     >
                       <Link to={`/case-studies/${study.id}`}>

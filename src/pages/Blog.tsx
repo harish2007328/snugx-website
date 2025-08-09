@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet-async';
+import LazyImage from '@/components/LazyImage';
 
 interface BlogPost {
   id: string;
@@ -225,10 +226,12 @@ const Blog = () => {
                 {filteredPosts.map((post) => (
                   <Card key={post.id} className="glass hover:glass-strong transition-all duration-300 group overflow-hidden">
                     <div className="aspect-video overflow-hidden">
-                      <img 
+                      <LazyImage
                         src={post.featured_image || 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop'}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        width={600}
+                        height={400}
                       />
                     </div>
                     

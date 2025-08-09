@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet-async';
+import LazyImage from '@/components/LazyImage';
 
 interface BlogPost {
   id: string;
@@ -191,10 +192,12 @@ const BlogPost = () => {
             
             {blogPost.featured_image && (
               <div className="relative mb-12">
-                <img 
+                <LazyImage
                   src={blogPost.featured_image}
                   alt={blogPost.title}
                   className="rounded-lg shadow-2xl w-full max-h-96 object-cover"
+                  width={800}
+                  height={400}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
               </div>

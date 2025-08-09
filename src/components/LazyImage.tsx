@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { getOptimizedImageUrl } from '@/utils/imageOptimization';
 
 interface LazyImageProps {
   src: string;
@@ -7,6 +8,7 @@ interface LazyImageProps {
   width?: number;
   height?: number;
   placeholder?: string;
+  priority?: boolean;
 }
 
 const LazyImage: React.FC<LazyImageProps> = ({ 
@@ -15,13 +17,24 @@ const LazyImage: React.FC<LazyImageProps> = ({
   className = '', 
   width, 
   height,
-  placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMTExMTExIi8+CjxwYXRoIGQ9Ik0yMCAyMEwyMCAyMCIgc3Ryb2tlPSIjZTVmZjAwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K'
+  placeholder,
+  priority = false
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+  
+  // Generate placeholder if not provided
+  const defaultPlaceholder = placeholder || `data:image/svg+xml;base64,${btoa(`
+    <svg width="${width || 40}" height="${height || 40}" viewBox="0 0 ${width || 40} ${height || 40}" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${width || 40}" height="${height || 40}" fill="#111111"/>
+      <circle cx="${(width || 40)/2}" cy="${(height || 40)/2}" r="4" fill="#e5ff00" opacity="0.3"/>
+    </svg>
+  `)}`;
 
   useEffect(() => {
+    if (priority) return; // Skip intersection observer for priority images
+    
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -37,19 +50,22 @@ const LazyImage: React.FC<LazyImageProps> = ({
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [priority]);
+  
+  const optimizedSrc = getOptimizedImageUrl(src, width, height, 'auto');
 
   return (
     <img
       ref={imgRef}
-      src={isInView ? src : placeholder}
+      src={isInView ? optimizedSrc : defaultPlaceholder}
       alt={alt}
       className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
       width={width}
       height={height}
       onLoad={() => setIsLoaded(true)}
-      loading="lazy"
+      loading={priority ? "eager" : "lazy"}
       decoding="async"
+      style={width && height ? { aspectRatio: `${width}/${height}` } : undefined}
     />
   );
 };

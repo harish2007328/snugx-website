@@ -5,12 +5,45 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { FaReact, FaFigma, FaGithub } from 'react-icons/fa';
-import { SiTypescript, SiVite, SiTailwindcss, SiSupabase, SiVercel, SiNotion, SiOpenai, SiAdobephotoshop, SiAdobeillustrator, SiFramer, SiWebflow, SiGoogleanalytics } from 'react-icons/si';
-import { VscVscode } from 'react-icons/vsc';
-import { TbBrandRumble } from "react-icons/tb";
-import { CgInfinity } from 'react-icons/cg';
+import LazyImage from '@/components/LazyImage';
+import React from 'react';
+
+// Lazy load heavy components
+const DotLottieReact = React.lazy(() => 
+  import('@lottiefiles/dotlottie-react').then(module => ({ default: module.DotLottieReact }))
+);
+
+// Lazy load icon libraries
+const IconLibraries = React.lazy(() => 
+  Promise.all([
+    import('react-icons/fa'),
+    import('react-icons/si'),
+    import('react-icons/vsc'),
+    import('react-icons/tb'),
+    import('react-icons/cg')
+  ]).then(([fa, si, vsc, tb, cg]) => ({
+    default: {
+      FaReact: fa.FaReact,
+      FaFigma: fa.FaFigma,
+      FaGithub: fa.FaGithub,
+      SiTypescript: si.SiTypescript,
+      SiVite: si.SiVite,
+      SiTailwindcss: si.SiTailwindcss,
+      SiSupabase: si.SiSupabase,
+      SiVercel: si.SiVercel,
+      SiNotion: si.SiNotion,
+      SiOpenai: si.SiOpenai,
+      SiAdobephotoshop: si.SiAdobephotoshop,
+      SiAdobeillustrator: si.SiAdobeillustrator,
+      SiFramer: si.SiFramer,
+      SiWebflow: si.SiWebflow,
+      SiGoogleanalytics: si.SiGoogleanalytics,
+      VscVscode: vsc.VscVscode,
+      TbBrandRumble: tb.TbBrandRumble,
+      CgInfinity: cg.CgInfinity
+    }
+  }))
+);
 
 const Index = () => {
 interface CaseStudy {
@@ -29,14 +62,32 @@ interface CaseStudy {
   const [featuredCaseStudies, setFeaturedCaseStudies] = useState<CaseStudy[]>([]);
   const [currentServicePage, setCurrentServicePage] = useState(0);
   const servicesPerPage = window.innerWidth < 768 ? 1 : 3;
+  const [iconsLoaded, setIconsLoaded] = useState(false);
 
   useEffect(() => {
     fetchFeaturedCaseStudies();
+    
+    // Preload critical images
+    const preloadImages = [
+      '/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png',
+      '/hero-images/c1.png',
+      '/hero-images/c2.png',
+      '/hero-images/c3.png'
+    ];
+    
+    preloadImages.forEach(src => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = src;
+      document.head.appendChild(link);
+    });
     
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
     };
+    
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -45,14 +96,19 @@ interface CaseStudy {
           // Trigger stats animation when stats section is visible
           if (entry.target === statsRef.current && !hasAnimated) {
             setHasAnimated(true);
-            animateStats();
+            // Defer stats animation to avoid blocking
+            requestAnimationFrame(() => {
+              setTimeout(animateStats, 100);
+            });
           }
         }
       });
     }, observerOptions);
+    
     if (heroRef.current) observer.observe(heroRef.current);
     if (servicesRef.current) observer.observe(servicesRef.current);
     if (statsRef.current) observer.observe(statsRef.current);
+    
     return () => observer.disconnect();
   }, []);
 
@@ -108,6 +164,7 @@ interface CaseStudy {
       }
     }, stepDuration);
   };
+  
   const services = [
     {
       icon: Code, // Using Code icon from already imported lucide-react icons
@@ -197,7 +254,7 @@ interface CaseStudy {
       {/* Hero Section */}
       <section ref={heroRef} className="relative flex items-center justify-center px-4 pt-28 pb-40  bg-dark-bg hero-noise-effect overflow-hidden">
         {/* Blurred Circles */}
-        <div className="hero-blur-circle-1"></div>
+        <div className="hero-blur-circle-1" aria-hidden="true"></div>
         <div className="hero-blur-circle-2"></div>
         <div className="hero-blur-circle-3"></div>
         
@@ -212,7 +269,15 @@ interface CaseStudy {
         <div
           className='Btm-text scroll-down-indicator cursor-pointer'
           onClick={() => statsRef.current?.scrollIntoView({ behavior: 'smooth' })}
-          style={{ cursor: 'pointer' }}
+          role="button"
+          tabIndex={0}
+          aria-label="Scroll down to view more content"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              statsRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
           >
           Scroll Down
           <svg
@@ -234,7 +299,7 @@ interface CaseStudy {
         
         <div className="w-full mx-auto text-center space-y-8 md:space-y-12 relative z-10 max-w-none px-8">
           {/* Free Consultation Badge */}
-          <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-2.5 py-1 text-sm font-medium">
+          <div className="inline-flex items-center space-x-2 bg-secondary/50 backdrop-blur-sm border border-neon-green/30 rounded-full px-2.5 py-1 text-sm font-medium performance-optimized">
             <div className="w-2 h-2 glow-dot"></div>
             <span>Free Consultation</span>
           </div>
@@ -314,10 +379,12 @@ interface CaseStudy {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
               {featuredCaseStudies.map((caseStudy) => (
                 <Card key={caseStudy.id} className="relative group overflow-hidden rounded-xl shadow-lg hover:shadow-2xl hover:shadow-neon-green/20 transition-all duration-500 ease-in-out aspect-[1/1.3] bg-dark-bg">
-                  <img 
+                  <LazyImage
                     src={caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop'}
                     alt={caseStudy.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+                    width={600}
+                    height={400}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/100 via-black/70 to-transparent" />
                   <CardContent className="relative z-10 flex flex-col justify-end h-full p-6 text-white">
@@ -338,6 +405,7 @@ interface CaseStudy {
                       variant="outline" 
                       className="absolute top-4 right-4 w-10 h-10 rounded-full border-neon-green bg-neon-green text-dark-bg transition-all duration-300 p-0 flex items-center justify-center" 
                       size="icon" 
+                      aria-label={`View ${caseStudy.title} case study details`}
                       asChild
                     >
                       <Link to={`/case-studies/${caseStudy.id}`}>
@@ -366,7 +434,7 @@ interface CaseStudy {
       <section className="relative py-20 px-4 bg-dark-bg z-10">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Why Brands Choose <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="snugx logo" className="inline-block h-10 align-center" /></h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Why Brands Choose <LazyImage src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="Snugx logo" className="inline-block h-10 align-center" width={120} height={40} /></h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">Small tweaks. Big impact. Here's what sets us apart.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-5 gap-8 min-h-[650px]">
@@ -376,7 +444,7 @@ interface CaseStudy {
                 <p className="text-gray-400">Easy edits, no waiting.</p>
               </div>
               <div className="bento-lottie-container-1 mt-8 flex-grow">
-                <img src="/bento-files/real-time.svg" alt="Bento 1" className="bento-svg-1" />
+                <LazyImage src="/bento-files/real-time.svg" alt="Real-time updates visualization" className="bento-svg-1" width={350} height={350} />
               </div>
               <div className='bottom-gradient-1'></div>
             </Card>
@@ -386,12 +454,14 @@ interface CaseStudy {
                 <p className="text-gray-400">Built to work better.</p>
               </div>
               <div className="bento-lottie-container-2 mt-8 flex-grow">
-                <DotLottieReact
-                  src="/bento-files/graph.json"
-                  loop
-                  autoplay
-                  className="bento-lottie-2"
-                />
+                <React.Suspense fallback={<div className="w-full h-full bg-white/5 rounded animate-pulse" />}>
+                  <DotLottieReact
+                    src="/bento-files/graph.json"
+                    loop
+                    autoplay
+                    className="bento-lottie-2"
+                  />
+                </React.Suspense>
               </div>
               <div className='bottom-gradient-2'></div>
             </Card>
@@ -401,12 +471,14 @@ interface CaseStudy {
                 <p className="text-gray-400">No stress!!.</p>
               </div>
               <div className="bento-lottie-container-3 mt-8 flex-grow self-end">
-                <DotLottieReact
-                  src="/bento-files/thunder.json"
-                  loop
-                  autoplay
-                  className="bento-lottie-3"
-                />
+                <React.Suspense fallback={<div className="w-full h-full bg-white/5 rounded animate-pulse" />}>
+                  <DotLottieReact
+                    src="/bento-files/thunder.json"
+                    loop
+                    autoplay
+                    className="bento-lottie-3"
+                  />
+                </React.Suspense>
               </div>
               <div className='bottom-gradient-3'></div>
             </Card>
@@ -416,12 +488,14 @@ interface CaseStudy {
                 <p className="text-gray-400">Built to look great.</p>
               </div>
               <div className="bento-lottie-container-4 mt-8 flex-grow">
-                <DotLottieReact
-                  src="/bento-files/pixel.json"
-                  loop
-                  autoplay
-                  className="bento-lottie-4"
-                />
+                <React.Suspense fallback={<div className="w-full h-full bg-white/5 rounded animate-pulse" />}>
+                  <DotLottieReact
+                    src="/bento-files/pixel.json"
+                    loop
+                    autoplay
+                    className="bento-lottie-4"
+                  />
+                </React.Suspense>
               </div>
               <div className='bottom-gradient-4'></div>
             </Card>
@@ -431,45 +505,57 @@ interface CaseStudy {
 
 
       {/* Stack and Tools Section */}
-      <section className="py-20 md:py-20 md:pb-40 px-4 bg-dark-bg">
+      <section className="py-20 md:py-20 md:pb-40 px-4 bg-dark-bg" aria-label="Technology stack and tools">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Stack & <span className="text-neon-green">Tools We Use ✦</span></h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">We use the best tools to build the best products.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-7 gap-y-6">
-            {[
-              // Development
-              { icon: <FaReact/>, name: 'React' },
-              { icon: <SiTypescript/>, name: 'TypeScript' },
-              { icon: <SiVite/>, name: 'Vite' },
-              { icon: <SiTailwindcss/>, name: 'Tailwind CSS' },
-              { icon: <SiSupabase/>, name: 'Supabase' },
-              { icon: <VscVscode />, name: 'VS Code' },
-              { icon: <FaGithub/>, name: 'GitHub' },
-              { icon: <SiVercel/>, name: 'Vercel' },
-              { icon: <CgInfinity />, name: 'GSAP' },
-              
-              // Design
-              { icon: <FaFigma/>, name: 'Figma' },
-              { icon: <SiAdobephotoshop />, name: 'Photoshop' },
-              { icon: <SiAdobeillustrator />, name: 'Illustrator' },
-              { icon: <SiFramer />, name: 'Framer' },
-              { icon: <SiWebflow />, name: 'Webflow' },
-              { icon: <TbBrandRumble />, name: 'Relume' },
-              
-              // AI & Analytics
-              { icon: <SiOpenai />, name: 'ChatGPT' },
-              { icon: <SiGoogleanalytics/>, name: 'Google Analytics' },
-              
-              // Project Management
-              { icon: <SiNotion/>, name: 'Notion' },
-            ].map((tool, index) => (
-              <div key={index} className="flex items-center gap-4 text-white hover:text-neon-green transition-colors">
-                <div className="text-3xl">{tool.icon}</div>
-                <span className="text-xs text-left font-medium">{tool.name}</span>
-              </div>
-            ))}
+            <React.Suspense fallback={
+              // Fallback with simple text-based tools list
+              ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Supabase', 'VS Code', 'GitHub', 'Vercel', 'GSAP', 'Figma', 'Photoshop', 'Illustrator', 'Framer', 'Webflow', 'Relume', 'ChatGPT', 'Google Analytics', 'Notion'].map((tool, index) => (
+                <div key={index} className="flex items-center gap-4 text-white hover:text-neon-green transition-colors">
+                  <div className="w-8 h-8 bg-white/10 rounded animate-pulse"></div>
+                  <span className="text-xs text-left font-medium">{tool}</span>
+                </div>
+              ))
+            }>
+              <IconLibraries>
+                {(icons) => [
+                  // Development
+                  { icon: <icons.FaReact/>, name: 'React' },
+                  { icon: <icons.SiTypescript/>, name: 'TypeScript' },
+                  { icon: <icons.SiVite/>, name: 'Vite' },
+                  { icon: <icons.SiTailwindcss/>, name: 'Tailwind CSS' },
+                  { icon: <icons.SiSupabase/>, name: 'Supabase' },
+                  { icon: <icons.VscVscode />, name: 'VS Code' },
+                  { icon: <icons.FaGithub/>, name: 'GitHub' },
+                  { icon: <icons.SiVercel/>, name: 'Vercel' },
+                  { icon: <icons.CgInfinity />, name: 'GSAP' },
+                  
+                  // Design
+                  { icon: <icons.FaFigma/>, name: 'Figma' },
+                  { icon: <icons.SiAdobephotoshop />, name: 'Photoshop' },
+                  { icon: <icons.SiAdobeillustrator />, name: 'Illustrator' },
+                  { icon: <icons.SiFramer />, name: 'Framer' },
+                  { icon: <icons.SiWebflow />, name: 'Webflow' },
+                  { icon: <icons.TbBrandRumble />, name: 'Relume' },
+                  
+                  // AI & Analytics
+                  { icon: <icons.SiOpenai />, name: 'ChatGPT' },
+                  { icon: <icons.SiGoogleanalytics/>, name: 'Google Analytics' },
+                  
+                  // Project Management
+                  { icon: <icons.SiNotion/>, name: 'Notion' },
+                ].map((tool, index) => (
+                  <div key={index} className="flex items-center gap-4 text-white hover:text-neon-green transition-colors">
+                    <div className="text-3xl">{tool.icon}</div>
+                    <span className="text-xs text-left font-medium">{tool.name}</span>
+                  </div>
+                ))}
+              </IconLibraries>
+            </React.Suspense>
           </div>
         </div>
       </section>
@@ -574,10 +660,12 @@ interface CaseStudy {
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img
+                        <LazyImage
                           src={`/hero-images/c${(index % 5) + 1}.png`}
                           alt={testimonial.name}
                           className="w-8 h-8 rounded-full object-cover mr-4"
+                          width={32}
+                          height={32}
                         />
                         <div>
                           <div className="font-semibold text-sm text-left">{testimonial.name}</div>
@@ -598,10 +686,12 @@ interface CaseStudy {
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img
+                        <LazyImage
                           src={`/hero-images/c${((index + 2) % 5) + 1}.png`}
                           alt={testimonial.name}
                           className="w-8 h-8 rounded-full object-cover mr-4"
+                          width={32}
+                          height={32}
                         />
                         <div>
                           <div className="font-semibold text-sm text-left">{testimonial.name}</div>
@@ -622,10 +712,12 @@ interface CaseStudy {
                   <CardContent className="p-8 relative overflow-hidden">
                     <div className="relative z-10">
                       <div className="flex items-center mb-6">
-                        <img
+                        <LazyImage
                           src={`/hero-images/c${((index + 4) % 5) + 1}.png`}
                           alt={testimonial.name}
                           className="w-8 h-8 rounded-full object-cover mr-4"
+                          width={32}
+                          height={32}
                         />
                         <div>
                           <div className="font-semibold text-sm text-left">{testimonial.name}</div>
