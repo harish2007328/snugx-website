@@ -1,4 +1,3 @@
-
 import { Code, Coffee, Laptop, Award, Target, Heart, Linkedin, Twitter, Instagram } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,7 +11,7 @@ const About = () => {
   const values = [
     {
       icon: Code,
-      title: "Code Excellence",
+      title: "Code Excellence", 
       description: "Every line of code is crafted with precision and passion for creating exceptional digital experiences."
     },
     {
@@ -69,22 +68,74 @@ const About = () => {
             </div>
             
             <div className="lg:w-1/2 relative">
-              <div className="relative bg-gradient-to-br from-neon-green/20 to-transparent rounded-3xl p-8 backdrop-blur-sm border border-neon-green/20">
-                <div className="flex items-center justify-center space-x-8">
-                  <div className="text-center">
-                    <Laptop size={64} className="text-neon-green mx-auto mb-4" />
-                    <p className="text-sm text-gray-300">ASUS ExpertBook</p>
-                    <p className="text-xs text-gray-400">My coding companion</p>
-                  </div>
-                  <div className="text-center">
-                    <Coffee size={64} className="text-neon-green mx-auto mb-4" />
-                    <p className="text-sm text-gray-300">Coffee</p>
-                    <p className="text-xs text-gray-400">Fuel for creativity</p>
-                  </div>
-                  <div className="text-center">
-                    <Code size={64} className="text-neon-green mx-auto mb-4" />
-                    <p className="text-sm text-gray-300">Clean Code</p>
-                    <p className="text-xs text-gray-400">My philosophy</p>
+              <div className="relative group">
+                {/* Modern card with glassmorphism effect */}
+                <div className="relative bg-gradient-to-br from-white/5 via-white/[0.02] to-transparent backdrop-blur-xl rounded-[2rem] p-8 border border-white/10 shadow-2xl hover:shadow-neon-green/20 transition-all duration-500 overflow-hidden">
+                  
+                  {/* Animated background elements */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-neon-green/10 rounded-full blur-3xl animate-pulse" />
+                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-neon-green/5 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <div className="text-center mb-8">
+                      <div className="inline-block p-4 bg-neon-green/10 rounded-2xl border border-neon-green/20 mb-4">
+                        <div className="text-neon-green font-bold text-lg">My Arsenal</div>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 gap-6">
+                      {/* ASUS ExpertBook */}
+                      <div className="flex items-center space-x-6 p-4 bg-gradient-to-r from-neon-green/5 to-transparent rounded-xl border border-neon-green/10 hover:border-neon-green/30 transition-all duration-300 group/item">
+                        <div className="relative">
+                          <div className="p-3 bg-neon-green/10 rounded-xl group-hover/item:bg-neon-green/20 transition-colors">
+                            <Laptop size={32} className="text-neon-green" />
+                          </div>
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-neon-green rounded-full animate-ping" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-white mb-1">ASUS ExpertBook</h3>
+                          <p className="text-sm text-gray-400">My reliable coding companion</p>
+                        </div>
+                      </div>
+                      
+                      {/* Coffee */}
+                      <div className="flex items-center space-x-6 p-4 bg-gradient-to-r from-neon-green/5 to-transparent rounded-xl border border-neon-green/10 hover:border-neon-green/30 transition-all duration-300 group/item">
+                        <div className="relative">
+                          <div className="p-3 bg-neon-green/10 rounded-xl group-hover/item:bg-neon-green/20 transition-colors">
+                            <Coffee size={32} className="text-neon-green" />
+                          </div>
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-neon-green rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-white mb-1">Premium Coffee</h3>
+                          <p className="text-sm text-gray-400">Fuel for endless creativity</p>
+                        </div>
+                      </div>
+                      
+                      {/* Clean Code */}
+                      <div className="flex items-center space-x-6 p-4 bg-gradient-to-r from-neon-green/5 to-transparent rounded-xl border border-neon-green/10 hover:border-neon-green/30 transition-all duration-300 group/item">
+                        <div className="relative">
+                          <div className="p-3 bg-neon-green/10 rounded-xl group-hover/item:bg-neon-green/20 transition-colors">
+                            <Code size={32} className="text-neon-green" />
+                          </div>
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-neon-green rounded-full animate-ping" style={{ animationDelay: '1s' }} />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-white mb-1">Clean Code</h3>
+                          <p className="text-sm text-gray-400">My core philosophy</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Bottom accent */}
+                    <div className="mt-8 text-center">
+                      <div className="inline-flex items-center space-x-2 px-4 py-2 bg-neon-green/5 border border-neon-green/20 rounded-full">
+                        <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse" />
+                        <span className="text-xs text-neon-green font-medium">Always Ready to Code</span>
+                        <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
