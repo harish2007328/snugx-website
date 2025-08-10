@@ -141,7 +141,7 @@ const About = () => {
             
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&crop=face"
+                src="/lovable-uploads/harish.jpg"
                 alt="Harish working on his laptop"
                 className="rounded-lg shadow-2xl"
               />
