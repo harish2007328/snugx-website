@@ -35,15 +35,7 @@ const Header = () => {
         <div className="flex items-center justify-between py-[10px] px-[10px]">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover:scale-105 transition-transform">
-            <img 
-              src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" 
-              alt="Snugx Logo" 
-              className="h-7 pl-3" 
-              width={84}
-              height={28}
-              loading="eager"
-              decoding="async"
-            />
+            <img src="/lovable-uploads/c94513f9-081b-4657-a347-eb2609c9a02f.png" alt="Snugx Logo" className="h-7 pl-3" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -72,8 +64,6 @@ const Header = () => {
           <button 
             className="md:hidden p-2 text-light-text hover:text-neon-green transition-colors rounded-full hover:bg-light-text/5"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

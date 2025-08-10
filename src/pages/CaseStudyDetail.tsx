@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import Footer from '@/components/Footer';
-import LazyImage from '@/components/LazyImage';
 interface CaseStudy {
   id: string;
   title: string;
@@ -143,13 +142,7 @@ const CaseStudyDetail = () => {
 
           {/* Main Project Image */}
           <div className="relative mb-16">
-            <LazyImage 
-              src={caseStudy.full_page_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'} 
-              alt={`${caseStudy.title} full project screenshot`} 
-              className="rounded-lg shadow-2xl w-full h-full object-cover" 
-              width={1200}
-              height={600}
-            />
+            <img src={caseStudy.full_page_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=600&fit=crop'} alt={caseStudy.title} className="rounded-lg shadow-2xl w-full h-full object-cover" />
             
           </div>
         </div>
@@ -201,13 +194,7 @@ const CaseStudyDetail = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               {/* Left Column - HTML Content */}
               <div className="relative">
-                <LazyImage 
-                  src={caseStudy.project_overview_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop'} 
-                  alt={`${caseStudy.title} project overview visual`} 
-                  className="rounded-lg shadow-2xl w-full h-[500px] object-cover" 
-                  width={800}
-                  height={500}
-                />
+                <img src={caseStudy.project_overview_image || caseStudy.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop'} alt={`${caseStudy.title} project overview visual`} className="rounded-lg shadow-2xl w-full h-[500px] object-cover" />
               </div>
               
               {/* Right Column - Visual Image */}

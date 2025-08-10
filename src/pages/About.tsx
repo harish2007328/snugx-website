@@ -140,12 +140,10 @@ const About = () => {
             </div>
             
             <div className="relative">
-              <LazyImage
+              <img 
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&crop=face"
                 alt="Harish working on his laptop"
                 className="rounded-lg shadow-2xl"
-                width={600}
-                height={400}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
               <div className="absolute bottom-4 left-4 bg-dark-bg/90 backdrop-blur-sm rounded-lg px-4 py-2">
