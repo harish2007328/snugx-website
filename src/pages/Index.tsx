@@ -5,22 +5,22 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { AuthProvider } from "./contexts/AuthContext";
-import Header from "./components/Header";
-import NotFound from "./pages/NotFound";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { usePerformanceOptimization } from "./hooks/usePerformanceOptimization";
-import "./App.css";
+import { AuthProvider } from "../contexts/AuthContext";
+import Header from "../components/Header";
+import NotFound from "./NotFound";
+import ProtectedRoute from "../components/ProtectedRoute";
+import { usePerformanceOptimization } from "../hooks/usePerformanceOptimization";
+import "../App.css";
 
 // Lazy load pages for better performance
-const About = React.lazy(() => import("./pages/About"));
-const CaseStudies = React.lazy(() => import("./pages/CaseStudies"));
-const CaseStudyDetail = React.lazy(() => import("./pages/CaseStudyDetail"));
-const Blog = React.lazy(() => import("./pages/Blog"));
-const BlogPost = React.lazy(() => import("./pages/BlogPost"));
-const Contact = React.lazy(() => import("./pages/Contact"));
-const Pricing = React.lazy(() => import("./pages/Pricing"));
-const Admin = React.lazy(() => import("./pages/Admin"));
+const About = React.lazy(() => import("./About"));
+const CaseStudies = React.lazy(() => import("./CaseStudies"));
+const CaseStudyDetail = React.lazy(() => import("./CaseStudyDetail"));
+const Blog = React.lazy(() => import("./Blog"));
+const BlogPost = React.lazy(() => import("./BlogPost"));
+const Contact = React.lazy(() => import("./Contact"));
+const Pricing = React.lazy(() => import("./Pricing"));
+const Admin = React.lazy(() => import("./Admin"));
 
 const queryClient = new QueryClient();
 
