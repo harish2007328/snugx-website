@@ -1,72 +1,20 @@
 
 import React from 'react';
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
-import { AuthProvider } from "../contexts/AuthContext";
-import Header from "../components/Header";
-import NotFound from "./NotFound";
-import ProtectedRoute from "../components/ProtectedRoute";
-import { usePerformanceOptimization } from "../hooks/usePerformanceOptimization";
-import "../App.css";
-
-// Lazy load pages for better performance
-const About = React.lazy(() => import("./About"));
-const CaseStudies = React.lazy(() => import("./CaseStudies"));
-const CaseStudyDetail = React.lazy(() => import("./CaseStudyDetail"));
-const Blog = React.lazy(() => import("./Blog"));
-const BlogPost = React.lazy(() => import("./BlogPost"));
-const Contact = React.lazy(() => import("./Contact"));
-const Pricing = React.lazy(() => import("./Pricing"));
-const Admin = React.lazy(() => import("./Admin"));
-
-const queryClient = new QueryClient();
 
 const Index = () => {
-  usePerformanceOptimization();
-  
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <BrowserRouter>
-              <div className="min-h-screen bg-dark-bg text-light-text">
-                <Header />
-                <React.Suspense fallback={
-                  <div className="min-h-screen flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="animate-spin w-8 h-8 border-2 border-neon-green border-t-transparent rounded-full mx-auto mb-4"></div>
-                      <p className="text-gray-400">Loading...</p>
-                    </div>
-                  </div>
-                }>
-                  <Routes>
-                    <Route path="/" element={<div>Welcome to Snugx</div>} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/case-studies" element={<CaseStudies />} />
-                    <Route path="/case-studies/:id" element={<CaseStudyDetail />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/blog/:id" element={<BlogPost />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/pricing" element={<Pricing />} />
-                    <Route path="/admin" element={
-                      <ProtectedRoute>
-                        <Admin />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </React.Suspense>
-              </div>
-            </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
-      </HelmetProvider>
-    </QueryClientProvider>
+    <div className="min-h-screen pt-24 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center py-20">
+          <h1 className="text-5xl font-bold text-white mb-6">
+            Welcome to Snugx
+          </h1>
+          <p className="text-xl text-gray-400 mb-8">
+            Your premium web development partner
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 
