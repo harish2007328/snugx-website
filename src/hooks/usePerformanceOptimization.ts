@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 
 export const usePerformanceOptimization = () => {
@@ -60,8 +59,7 @@ export const usePerformanceOptimization = () => {
             console.log('LCP:', entry.startTime);
           }
           if (entry.entryType === 'first-input') {
-            const firstInputEntry = entry as PerformanceEventTiming;
-            console.log('FID:', firstInputEntry.processingStart - firstInputEntry.startTime);
+            console.log('FID:', entry.processingStart - entry.startTime);
           }
         });
       });
