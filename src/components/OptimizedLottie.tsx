@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
@@ -30,7 +31,7 @@ const OptimizedLottie: React.FC<OptimizedLottieProps> = ({
   }, [isIntersecting, LottieComponent]);
 
   return (
-    <div ref={elementRef} className={className}>
+    <div ref={elementRef as React.RefObject<HTMLDivElement>} className={className}>
       {LottieComponent ? (
         <LottieComponent
           src={src}

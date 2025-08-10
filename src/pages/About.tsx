@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import Footer from '@/components/Footer';
+import LazyImage from '@/components/LazyImage';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 const About = () => {
