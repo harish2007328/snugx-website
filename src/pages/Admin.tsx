@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X, Eye, EyeOff, LogOut, Mail, Phone, Calendar } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Eye, EyeOff, LogOut, Mail, Phone, Calendar, Building, Clock, DollarSign, MessageSquare, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import ContactSubmissionModal from '@/components/ContactSubmissionModal';
 
 interface CaseStudy {
   id?: string;
@@ -43,8 +44,13 @@ interface ContactSubmission {
   id: string;
   name: string;
   email: string;
+  phone?: string;
+  company?: string;
+  project_type?: string;
   budget?: string;
+  timeline?: string;
   message: string;
+  referral?: string;
   created_at: string;
 }
 
@@ -59,6 +65,8 @@ const Admin = () => {
   const [showBlogForm, setShowBlogForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [homepageProjects, setHomepageProjects] = useState<string[]>([]);
+  const [selectedSubmission, setSelectedSubmission] = useState<ContactSubmission | null>(null);
+  const [showSubmissionModal, setShowSubmissionModal] = useState(false);
   const { toast } = useToast();
 
   const emptyCaseStudy: CaseStudy = {
@@ -382,6 +390,37 @@ const Admin = () => {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const openSubmissionModal = (submission: ContactSubmission) => {
+    setSelectedSubmission(submission);
+    setShowSubmissionModal(true);
+  };
+
+  const closeSubmissionModal = () => {
+    setSelectedSubmission(null);
+    setShowSubmissionModal(false);
+  };
+
+  const getProjectTypeColor = (type?: string) => {
+    switch (type) {
+      case 'website': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'redesign': return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
+      case 'ecommerce': return 'bg-green-500/20 text-green-400 border-green-500/30';
+      case 'webapp': return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+      case 'maintenance': return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+      default: return 'bg-neon-green/20 text-neon-green border-neon-green/30';
+    }
+  };
+
+  const getBudgetColor = (budget?: string) => {
+    switch (budget) {
+      case 'starter': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      case 'standard': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'premium': return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
+      case 'custom': return 'bg-neon-green/20 text-neon-green border-neon-green/30';
+      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+    }
   };
 
   if (loading) {
@@ -1054,65 +1093,82 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {contactSubmissions.map((submission) => (
-                  <Card key={submission.id} className="glass hover:glass-strong transition-all duration-300">
-                    <CardContent className="p-3 sm:p-6">
-                      <div className="flex flex-col gap-3 sm:gap-4">
-                        <div className="flex-1">
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3">
-                            <h3 className="font-bold text-sm sm:text-lg">{submission.name}</h3>
-                            {submission.budget && (
-                              <Badge variant="secondary" className="bg-neon-green/20 text-neon-green text-xs w-fit">
-                                {submission.budget}
-                              </Badge>
-                            )}
-                          </div>
-                          
-                          <div className="flex flex-col gap-2 mb-3 text-xs sm:text-sm text-gray-400">
-                            <div className="flex items-center gap-2">
-                              <Mail className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                              <a 
-                                href={`mailto:${submission.email}`} 
-                                className="hover:text-neon-green transition-colors break-all"
-                              >
-                                {submission.email}
-                              </a>
+                  <Card 
+                    key={submission.id} 
+                    className="glass hover:glass-strong transition-all duration-300 cursor-pointer"
+                    onClick={() => openSubmissionModal(submission)}
+                  >
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="space-y-4">
+                        {/* Header */}
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-neon-green/20 rounded-lg flex items-center justify-center">
+                              <Users className="w-5 h-5 text-neon-green" />
                             </div>
-                            <div className="flex items-center gap-2">
-                              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                              <span>{formatDate(submission.created_at)}</span>
+                            <div>
+                              <h3 className="font-bold text-white text-sm">{submission.name}</h3>
+                              <p className="text-xs text-gray-400">{formatDate(submission.created_at)}</p>
                             </div>
                           </div>
-                          
-                          <div className="bg-white/5 rounded-lg p-2 sm:p-4">
-                            <h4 className="font-medium mb-2 text-xs sm:text-sm">Message:</h4>
-                            <p className="text-gray-300 text-xs sm:text-sm leading-relaxed break-words">{submission.message}</p>
+                          <Eye className="w-4 h-4 text-gray-400" />
+                        </div>
+
+                        {/* Contact Info */}
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-xs">
+                            <Mail className="w-3 h-3 text-blue-400" />
+                            <span className="text-gray-300 truncate">{submission.email}</span>
                           </div>
+                          {submission.phone && (
+                            <div className="flex items-center gap-2 text-xs">
+                              <Phone className="w-3 h-3 text-green-400" />
+                              <span className="text-gray-300">{submission.phone}</span>
+                            </div>
+                          )}
+                          {submission.company && (
+                            <div className="flex items-center gap-2 text-xs">
+                              <Building className="w-3 h-3 text-purple-400" />
+                              <span className="text-gray-300">{submission.company}</span>
+                            </div>
+                          )}
                         </div>
-                        
-                        <div className="flex gap-2">
-                          <Button 
-                            size="sm"
-                            asChild
-                            className="btn-primary text-xs flex-1"
-                          >
-                            <a href={`mailto:${submission.email}?subject=Re: Your Project Inquiry`}>
-                              <Mail className="mr-1 w-3 h-3" />
-                              Reply
-                            </a>
-                          </Button>
-                          <Button 
-                            size="sm"
-                            asChild
-                            variant="outline"
-                            className="btn-secondary text-xs px-2"
-                          >
-                            <a href={`tel:${submission.email}`}>
-                              <Phone className="w-3 h-3" />
-                            </a>
-                          </Button>
+
+                        {/* Project Details */}
+                        <div className="flex flex-wrap gap-2">
+                          {submission.project_type && (
+                            <Badge className={`${getProjectTypeColor(submission.project_type)} text-xs border`}>
+                              {submission.project_type?.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                            </Badge>
+                          )}
+                          {submission.budget && (
+                            <Badge className={`${getBudgetColor(submission.budget)} text-xs border`}>
+                              {submission.budget === 'starter' && '₹6,999'}
+                              {submission.budget === 'standard' && '₹14,999'}
+                              {submission.budget === 'premium' && '₹29,999+'}
+                              {submission.budget === 'custom' && 'Custom'}
+                            </Badge>
+                          )}
                         </div>
+
+                        {/* Message Preview */}
+                        <div className="bg-white/5 rounded-lg p-3">
+                          <p className="text-xs text-gray-300 line-clamp-3 leading-relaxed">
+                            {submission.message}
+                          </p>
+                        </div>
+
+                        {/* Timeline */}
+                        {submission.timeline && (
+                          <div className="flex items-center gap-2">
+                            <Clock className="w-3 h-3 text-orange-400" />
+                            <span className="text-xs text-gray-400 capitalize">
+                              {submission.timeline.replace('-', ' to ')}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -1122,6 +1178,15 @@ const Admin = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Contact Submission Modal */}
+      {selectedSubmission && (
+        <ContactSubmissionModal
+          submission={selectedSubmission}
+          isOpen={showSubmissionModal}
+          onClose={closeSubmissionModal}
+        />
+      )}
     </div>
   );
 };
