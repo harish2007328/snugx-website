@@ -68,43 +68,16 @@ const About = () => {
               </div>
             </div>
             
-            <div className="lg:w-1/2 relative">
-              <div className="relative group">
-                {/* Minimal clean card */}
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                  <div className="text-center mb-6">
-                    <h3 className="text-xl font-semibold text-neon-green mb-2">My Setup</h3>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {/* ASUS ExpertBook */}
-                    <div className="flex items-center space-x-4 p-3 rounded-lg bg-white/5">
-                      <Laptop size={24} className="text-neon-green" />
-                      <div>
-                        <h4 className="font-medium text-white">ASUS ExpertBook</h4>
-                        <p className="text-sm text-gray-400">My coding companion</p>
-                      </div>
-                    </div>
-                    
-                    {/* Coffee */}
-                    <div className="flex items-center space-x-4 p-3 rounded-lg bg-white/5">
-                      <Coffee size={24} className="text-neon-green" />
-                      <div>
-                        <h4 className="font-medium text-white">Premium Coffee</h4>
-                        <p className="text-sm text-gray-400">Creative fuel</p>
-                      </div>
-                    </div>
-                    
-                    {/* Clean Code */}
-                    <div className="flex items-center space-x-4 p-3 rounded-lg bg-white/5">
-                      <Code size={24} className="text-neon-green" />
-                      <div>
-                        <h4 className="font-medium text-white">Clean Code</h4>
-                        <p className="text-sm text-gray-400">My philosophy</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="relative w-full lg:w-1/2">
+              <img 
+                src="/lovable-uploads/harish.jpg"
+                alt="Harish working on his laptop"
+                className="rounded-lg shadow-2xl w-full h-auto object-cover max-h-[500px]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
+              <div className="absolute bottom-4 left-4 bg-dark-bg/90 backdrop-blur-sm rounded-lg px-4 py-2">
+                <p className="text-neon-green font-semibold">Harish</p>
+                <p className="text-xs text-gray-400">Founder & Developer</p>
               </div>
             </div>
           </div>
@@ -121,34 +94,69 @@ const About = () => {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-gradient-to-br from-dark-bg via-secondary/5 to-dark-bg">
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl font-bold mb-6">My Journey</h2>
-              <div className="space-y-4 text-gray-300">
-                <p>
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 shadow-lg hover:shadow-neon-green/10 transition-all duration-300">
+              <h2 className="text-4xl font-bold mb-6 text-neon-green">My Journey</h2>
+              <div className="space-y-6 text-gray-300">
+                <p className="leading-relaxed">
                   What started as curiosity about how websites work has evolved into a passion for creating digital experiences that make a difference. Armed with my ASUS ExpertBook and fueled by endless cups of coffee, I've built Snugx from the ground up.
                 </p>
-                <p>
+                <p className="leading-relaxed">
                   As a solo developer and tech enthusiast, I wear many hats - designer, developer, project manager, and problem solver. This gives me the unique ability to understand every aspect of your project and deliver cohesive, high-quality solutions.
                 </p>
-                <p>
+                <p className="leading-relaxed">
                   Every project is personal to me. When you succeed, I succeed. That's the foundation of how I work - treating each project as if it were my own.
                 </p>
+                <div className="h-1 w-32 bg-gradient-to-r from-neon-green to-transparent rounded-full mt-4"></div>
               </div>
             </div>
             
-            <div className="relative">
-              <img 
-                src="/lovable-uploads/harish.jpg"
-                alt="Harish working on his laptop"
-                className="rounded-lg shadow-2xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neon-green/20 to-transparent rounded-lg" />
-              <div className="absolute bottom-4 left-4 bg-dark-bg/90 backdrop-blur-sm rounded-lg px-4 py-2">
-                <p className="text-neon-green font-semibold">Harish</p>
-                <p className="text-xs text-gray-400">Founder & Developer</p>
+            <div className="lg:w-full relative">
+              <div className="relative group">
+                {/* Redesigned setup card */}
+                <div className="bg-gradient-to-br from-dark-bg/80 via-white/5 to-neon-green/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 shadow-xl hover:shadow-neon-green/20 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-2xl font-bold text-neon-green">My Setup</h3>
+                    <div className="h-1 w-20 bg-gradient-to-r from-neon-green to-transparent rounded-full"></div>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    {/* ASUS ExpertBook */}
+                    <div className="flex items-center space-x-5 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors duration-300 border border-white/5 hover:border-neon-green/30">
+                      <div className="bg-neon-green/10 p-3 rounded-lg">
+                        <Laptop size={28} className="text-neon-green" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-white text-lg">ASUS ExpertBook</h4>
+                        <p className="text-gray-400">My coding companion</p>
+                      </div>
+                    </div>
+                    
+                    {/* Coffee */}
+                    <div className="flex items-center space-x-5 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors duration-300 border border-white/5 hover:border-neon-green/30">
+                      <div className="bg-neon-green/10 p-3 rounded-lg">
+                        <Coffee size={28} className="text-neon-green" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-white text-lg">Premium Coffee</h4>
+                        <p className="text-gray-400">Creative fuel</p>
+                      </div>
+                    </div>
+                    
+                    {/* Clean Code */}
+                    <div className="flex items-center space-x-5 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors duration-300 border border-white/5 hover:border-neon-green/30">
+                      <div className="bg-neon-green/10 p-3 rounded-lg">
+                        <Code size={28} className="text-neon-green" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-white text-lg">Clean Code</h4>
+                        <p className="text-gray-400">My philosophy</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
